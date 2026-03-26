@@ -23,7 +23,7 @@
     "db:stop": "docker compose down",
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
-    "db:seed": "prisma db seed",
+    "db:seed": "node prisma/seed.mjs",
     "db:import:json": "node prisma/import-json.mjs",
     "db:user:upsert": "node prisma/upsert-user.mjs",
     "db:studio": "prisma studio"
