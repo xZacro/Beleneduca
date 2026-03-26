@@ -1,0 +1,267 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  FUNDACION
+  COLEGIO
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  INVITED
+  DISABLED
+}
+
+enum SchoolStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum CycleStatus {
+  OPEN
+  CLOSED
+  ARCHIVED
+}
+
+enum AreaStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum IndicatorStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum SubmissionStatus {
+  BORRADOR
+  ENVIADO
+  DEVUELTO
+  APROBADO
+}
+
+enum ReviewStatus {
+  PENDIENTE
+  APROBADO
+  OBSERVADO
+  BLOQUEADO
+}
+
+enum WorkspaceReviewStatus {
+  PENDING
+  IN_REVIEW
+  OBSERVED
+  APPROVED
+  BLOCKED
+}
+
+enum SessionStatus {
+  ONLINE
+  IDLE
+  OFFLINE
+  REVOKED
+}
+
+enum AuditEventType {
+  LOGIN
+  LOGOUT
+  HEARTBEAT
+  ROLE_SWITCH
+  CHANGE
+}
+
+model User {
+  id            String              @id @default(cuid())
+  email         String              @unique
+  name          String
+  passwordHash  String?             @map("password_hash")
+  status        UserStatus          @default(ACTIVE)
+  schoolId      String?             @map("school_id")
+  createdAt     DateTime            @default(now()) @map("created_at")
+  updatedAt     DateTime            @updatedAt @map("updated_at")
+  school        School?             @relation(fields: [schoolId], references: [id], onDelete: SetNull)
+  roles         UserRole[]
+  responseEdits IndicatorResponse[] @relation("response_updated_by")
+  reviewsDone   IndicatorReview[]   @relation("reviewed_by")
+  auditEvents   AuditEvent[]        @relation("audit_actor")
+  sessions      UserSession[]
+
+  @@map("users")
+  @@index([schoolId])
+}
+
+model UserRole {
+  userId String @map("user_id")
+  role   Role
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, role])
+  @@map("user_roles")
+}
+
+model School {
+  id           String       @id
+  code         String       @unique
+  name         String
+  managerName  String?      @map("manager_name")
+  managerEmail String?      @map("manager_email")
+  status       SchoolStatus @default(ACTIVE)
+  createdAt    DateTime     @default(now()) @map("created_at")
+  updatedAt    DateTime     @updatedAt @map("updated_at")
+  users        User[]
+  workspaces   FniWorkspace[]
+
+  @@map("schools")
+}
+
+model Cycle {
+  id         String       @id
+  name       String
+  status     CycleStatus  @default(OPEN)
+  startsAt   DateTime?    @map("starts_at")
+  endsAt     DateTime?    @map("ends_at")
+  closedAt   DateTime?    @map("closed_at")
+  createdAt  DateTime     @default(now()) @map("created_at")
+  updatedAt  DateTime     @updatedAt @map("updated_at")
+  workspaces FniWorkspace[]
+
+  @@map("cycles")
+}
+
+model Area {
+  id         String      @id
+  code       String      @unique
+  name       String
+  sortOrder  Int         @map("sort_order")
+  status     AreaStatus  @default(ACTIVE)
+  createdAt  DateTime    @default(now()) @map("created_at")
+  updatedAt  DateTime    @updatedAt @map("updated_at")
+  indicators Indicator[]
+
+  @@map("areas")
+}
+
+model Indicator {
+  id                String            @id
+  areaId            String            @map("area_id")
+  code              String            @unique
+  name              String
+  sortOrder         Int               @map("sort_order")
+  expectedPct       Int               @default(100) @map("expected_pct")
+  hasDocumentFields Boolean           @default(true) @map("has_document_fields")
+  questions         Json
+  visibleWhen       Json?             @map("visible_when")
+  status            IndicatorStatus   @default(ACTIVE)
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime          @updatedAt @map("updated_at")
+  area              Area              @relation(fields: [areaId], references: [id], onDelete: Restrict)
+  responses         IndicatorResponse[]
+  reviews           IndicatorReview[]
+
+  @@map("indicators")
+  @@index([areaId, sortOrder])
+}
+
+model FniWorkspace {
+  id               String                @id @default(cuid())
+  schoolId         String                @map("school_id")
+  cycleId          String                @map("cycle_id")
+  submissionStatus SubmissionStatus      @default(BORRADOR) @map("submission_status")
+  submittedAt      DateTime?             @map("submitted_at")
+  returnedAt       DateTime?             @map("returned_at")
+  approvedAt       DateTime?             @map("approved_at")
+  message          String                @default("")
+  reviewStatus     WorkspaceReviewStatus @default(PENDING) @map("review_status")
+  lastActivityAt   DateTime?             @map("last_activity_at")
+  createdAt        DateTime              @default(now()) @map("created_at")
+  updatedAt        DateTime              @updatedAt @map("updated_at")
+  school           School                @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  cycle            Cycle                 @relation(fields: [cycleId], references: [id], onDelete: Restrict)
+  responses        IndicatorResponse[]
+  reviews          IndicatorReview[]
+
+  @@unique([schoolId, cycleId])
+  @@map("fni_workspaces")
+  @@index([cycleId, reviewStatus])
+}
+
+model IndicatorResponse {
+  id             String       @id @default(cuid())
+  workspaceId    String       @map("workspace_id")
+  indicatorId    String       @map("indicator_id")
+  answers        Json
+  documentRef    String       @default("") @map("document_ref")
+  comments       String       @default("")
+  fileName       String?      @map("file_name")
+  fileMimeType   String?      @map("file_mime_type")
+  fileSizeBytes  Int?         @map("file_size_bytes")
+  fileStorageKey String?      @map("file_storage_key")
+  uploadedAt     DateTime?    @map("uploaded_at")
+  updatedAt      DateTime?    @map("updated_at")
+  updatedById    String?      @map("updated_by_id")
+  workspace      FniWorkspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  indicator      Indicator    @relation(fields: [indicatorId], references: [id], onDelete: Restrict)
+  updatedBy      User?        @relation("response_updated_by", fields: [updatedById], references: [id], onDelete: SetNull)
+
+  @@unique([workspaceId, indicatorId])
+  @@map("indicator_responses")
+  @@index([indicatorId])
+}
+
+model IndicatorReview {
+  id            String       @id @default(cuid())
+  workspaceId   String       @map("workspace_id")
+  indicatorId   String       @map("indicator_id")
+  status        ReviewStatus @default(PENDIENTE)
+  reviewComment String       @default("") @map("review_comment")
+  reviewedAt    DateTime?    @map("reviewed_at")
+  reviewedById  String?      @map("reviewed_by_id")
+  workspace     FniWorkspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  indicator     Indicator    @relation(fields: [indicatorId], references: [id], onDelete: Restrict)
+  reviewedBy    User?        @relation("reviewed_by", fields: [reviewedById], references: [id], onDelete: SetNull)
+
+  @@unique([workspaceId, indicatorId])
+  @@map("indicator_reviews")
+  @@index([status])
+}
+
+model UserSession {
+  id           String        @id @default(cuid())
+  userId       String        @map("user_id")
+  status       SessionStatus @default(OFFLINE)
+  tokenHash    String?       @unique @map("token_hash")
+  lastSeenAt   DateTime?     @map("last_seen_at")
+  lastLoginAt  DateTime?     @map("last_login_at")
+  lastLogoutAt DateTime?     @map("last_logout_at")
+  ipAddress    String?       @map("ip_address")
+  userAgent    String?       @map("user_agent")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_sessions")
+  @@index([status, lastSeenAt])
+}
+
+model AuditEvent {
+  id            String         @id @default(cuid())
+  type          AuditEventType
+  at            DateTime       @default(now())
+  actorUserId   String?        @map("actor_user_id")
+  actorName     String         @map("actor_name")
+  actorEmail    String         @map("actor_email")
+  actorSchoolId String?        @map("actor_school_id")
+  actorRoles    Json           @map("actor_roles")
+  meta          Json?
+  actorUser     User?          @relation("audit_actor", fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@map("audit_events")
+  @@index([type, at])
+  @@index([actorEmail, at])
+}

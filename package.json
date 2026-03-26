@@ -1,0 +1,64 @@
+{
+  "name": "fni-portal",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "api": "node server/api-server.mjs",
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "check": "npm run lint && npm run build && npm run test:api",
+    "check:full": "npm run check && npm run test:api:prisma",
+    "test:api": "node --test server/tests/*.test.mjs",
+    "test:api:prisma": "node --test server/tests/api-prisma-smoke.mjs",
+    "test:api:all": "npm run test:api && npm run test:api:prisma",
+    "ops:backup": "node scripts/ops/backup.mjs",
+    "ops:backup:json": "node scripts/ops/backup.mjs json",
+    "ops:backup:prisma": "node scripts/ops/backup.mjs prisma",
+    "preview": "vite preview",
+    "db:generate": "prisma generate",
+    "db:validate": "prisma validate",
+    "db:start": "docker compose up -d postgres",
+    "db:stop": "docker compose down",
+    "db:migrate": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:seed": "prisma db seed",
+    "db:import:json": "node prisma/import-json.mjs",
+    "db:user:upsert": "node prisma/upsert-user.mjs",
+    "db:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.5.0",
+    "@prisma/client": "^7.5.0",
+    "pg": "^8.20.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.13.0"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "autoprefixer": "^10.4.24",
+    "dotenv": "^17.3.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "postcss": "^8.5.6",
+    "prisma": "^7.5.0",
+    "tailwindcss": "^3.4.17",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.4",
+    "vite": "npm:rolldown-vite@7.2.5"
+  },
+  "overrides": {
+    "vite": "npm:rolldown-vite@7.2.5"
+  }
+}

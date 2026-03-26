@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: "Segoe UI", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+      "Helvetica Neue", sans-serif;
+  }
+
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+}
+
+@layer components {
+  .fni-page-kicker {
+    @apply text-sm font-medium tracking-tight text-slate-600;
+  }
+
+  .fni-page-shell {
+    @apply w-full space-y-6;
+  }
+
+  .fni-page-title {
+    @apply mt-1 text-[2rem] font-semibold leading-tight tracking-tight text-slate-900;
+  }
+
+  .fni-page-subtitle {
+    @apply mt-2 text-sm leading-6 text-slate-600;
+  }
+
+  .fni-toolbar-button {
+    @apply rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50;
+  }
+
+  .fni-toolbar-button-primary {
+    @apply rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800;
+  }
+
+  .fni-toolbar-select {
+    @apply rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 outline-none;
+  }
+
+  .fni-cycle-select {
+    @apply min-w-[140px] rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 outline-none;
+  }
+
+  .fni-brand-ribbon {
+    background:
+      linear-gradient(
+        98deg,
+        #f4b51f 0%,
+        #f4b51f 8%,
+        #cf302d 8%,
+        #cf302d 22%,
+        #dd5b2f 22%,
+        #dd5b2f 33%,
+        #2090ce 33%,
+        #2090ce 50%,
+        #7b329d 50%,
+        #7b329d 68%,
+        #b72a58 68%,
+        #b72a58 88%,
+        #f3aa2d 88%,
+        #f3aa2d 100%
+      );
+  }
+
+  .fni-brand-ribbon-thin {
+    @apply h-4 w-full;
+  }
+
+  .fni-logo-shell {
+    @apply grid place-items-center rounded-2xl border border-white/80 bg-white px-4 py-3 shadow-[0_10px_30px_rgba(15,23,42,0.12)];
+  }
+
+  .fni-logo-shell-header {
+    @apply min-h-[72px] min-w-[260px] px-5 py-3;
+  }
+
+  .fni-logo-shell-login {
+    @apply min-h-[92px] min-w-[320px] px-6 py-4;
+  }
+
+  .fni-menu-label {
+    @apply px-2 py-2 text-xs font-semibold tracking-wide text-slate-600;
+  }
+
+  .fni-menu-item {
+    @apply w-full rounded-xl px-3 py-2 text-left text-sm font-medium text-slate-700 outline-none transition hover:bg-slate-50 focus:ring-2 focus:ring-slate-200;
+  }
+
+  .fni-menu-item-active {
+    @apply bg-slate-900 text-white hover:bg-slate-900;
+  }
+
+  .fni-tab-button {
+    @apply rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50;
+  }
+
+  .fni-tab-button-active {
+    @apply bg-slate-900 text-white hover:bg-slate-900;
+  }
+
+  .fni-field-label {
+    @apply block text-xs font-medium tracking-wide text-slate-600;
+  }
+
+  .fni-data-panel {
+    @apply w-full rounded-2xl border border-slate-200 bg-white p-5 shadow-sm;
+  }
+
+  .fni-metric-card {
+    @apply min-h-[132px] rounded-2xl border p-4 shadow-sm;
+  }
+
+  .fni-data-table-shell {
+    @apply w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm;
+  }
+
+  .fni-data-table-scroll {
+    @apply w-full overflow-x-auto;
+  }
+
+  .fni-data-table {
+    @apply min-w-[1120px] w-full text-sm;
+  }
+
+  .fni-empty-state-panel {
+    @apply flex min-h-[180px] w-full items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500;
+  }
+}
