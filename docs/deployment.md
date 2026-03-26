@@ -72,14 +72,14 @@ Flujo recomendado:
 1. Copia el repo o la imagen al VPS.
 2. Configura `POSTGRES_PASSWORD`.
 3. Ejecuta `docker compose -f docker-compose.prod.yml up -d --build`.
-4. Corre `docker compose -f docker-compose.prod.yml exec app npm run db:seed` una sola vez.
+4. Corre `docker compose -f docker-compose.prod.yml --profile tools run --rm seed` una sola vez.
 5. Verifica `GET /api/ready`.
 
 Si ya cambiaste codigo:
 
 1. actualiza el repo
 2. corre `docker compose -f docker-compose.prod.yml up -d --build`
-3. si hubo cambios de esquema, ejecuta `npm run db:push` o `npm run db:migrate` dentro del contenedor app
+3. si hubo cambios de esquema, ejecuta `docker compose -f docker-compose.prod.yml --profile tools run --rm seed` o usa `npm run db:push` / `npm run db:migrate` dentro de un contenedor de herramientas
 
 Si solo cambiaste configuracion:
 
