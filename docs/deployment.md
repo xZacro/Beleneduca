@@ -52,6 +52,46 @@ Con eso:
 - rutas SPA como `/login` o `/foundation/dashboard` responden `index.html`
 - assets en `dist/assets/*` salen directo desde el mismo proceso Node
 
+## Stack de produccion recomendado
+
+Hay un stack listo en [docker-compose.prod.yml](C:/Users/tokyotech/Desktop/Lunaria%20IA/BELEN%20EDUCA/fni-portal/docker-compose.prod.yml).
+
+Incluye:
+
+- `app` con la imagen del proyecto
+- `postgres` interno y persistente
+- volumen separado para documentos
+
+Variables que debes definir al desplegar:
+
+- `POSTGRES_PASSWORD`: contrasena del superusuario de PostgreSQL
+- `APP_PORT`: opcional, puerto publico del host, por defecto `80`
+
+Flujo recomendado:
+
+1. Copia el repo o la imagen al VPS.
+2. Configura `POSTGRES_PASSWORD`.
+3. Ejecuta `docker compose -f docker-compose.prod.yml up -d --build`.
+4. Corre `docker compose -f docker-compose.prod.yml exec app npm run db:seed` una sola vez.
+5. Verifica `GET /api/ready`.
+
+Si ya cambiaste codigo:
+
+1. actualiza el repo
+2. corre `docker compose -f docker-compose.prod.yml up -d --build`
+3. si hubo cambios de esquema, ejecuta `npm run db:push` o `npm run db:migrate` dentro del contenedor app
+
+Si solo cambiaste configuracion:
+
+1. cambia las variables de entorno
+2. reinicia el stack con `docker compose -f docker-compose.prod.yml up -d`
+
+Si solo cambiaste datos:
+
+1. corre un backup con `npm run ops:backup:prisma`
+2. modifica PostgreSQL o el storage de documentos
+3. revalida con `GET /api/ready`
+
 ## Contenedor base
 
 Hay un contenedor listo en [Dockerfile](C:/Users/tokyotech/Desktop/Lunaria%20IA/BELEN%20EDUCA/fni-portal/Dockerfile).
@@ -79,6 +119,7 @@ Uso de referencia:
 6. Confirmar que `GET /api/ready` responda `200`.
 7. Definir respaldos periodicos de PostgreSQL mas el storage local de documentos.
 8. Si usas un solo proceso para frontend + backend, activar `FNI_SERVE_STATIC=true`.
+9. Si usas Docker Compose, preferir [docker-compose.prod.yml](C:/Users/tokyotech/Desktop/Lunaria%20IA/BELEN%20EDUCA/fni-portal/docker-compose.prod.yml).
 
 ## Respaldos operativos
 

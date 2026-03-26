@@ -16,6 +16,7 @@ Frontend React/Vite del portal FNI, trabajando en modo API-only contra una API l
 - `npm run ops:backup`: genera un respaldo segun `FNI_API_STORAGE`.
 - `npm run ops:backup:json`: respalda `server/.data`.
 - `npm run ops:backup:prisma`: exporta tablas Prisma y documentos locales.
+- `docker compose -f docker-compose.prod.yml up -d --build`: levanta app + Postgres en produccion.
 
 ## Flujo local recomendado
 
@@ -117,7 +118,9 @@ Esas mismas credenciales quedan sembradas en Prisma cuando corres `npm run db:se
 - Guia de despliegue y respaldos: [docs/deployment.md](C:/Users/tokyotech/Desktop/Lunaria%20IA/BELEN%20EDUCA/fni-portal/docs/deployment.md)
 - Guia de arquitectura y buenas practicas: [docs/guia-arquitectura-buenas-practicas.md](docs/guia-arquitectura-buenas-practicas.md)
 - Guia de contribucion: [docs/guia-contribucion.md](docs/guia-contribucion.md)
+- Checklist de QA manual: [docs/qa-manual-checklist.md](docs/qa-manual-checklist.md)
 - Imagen lista para staging: [Dockerfile](C:/Users/tokyotech/Desktop/Lunaria%20IA/BELEN%20EDUCA/fni-portal/Dockerfile)
+- Stack de despliegue: [docker-compose.prod.yml](C:/Users/tokyotech/Desktop/Lunaria%20IA/BELEN%20EDUCA/fni-portal/docker-compose.prod.yml)
 
 ## Contratos frontend
 
