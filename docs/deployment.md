@@ -33,11 +33,12 @@ Variables clave:
 
 1. Copiar [`.env.staging.example`](C:/Users/tokyotech/Desktop/Lunaria%20IA/BELEN%20EDUCA/fni-portal/.env.staging.example) a `.env`.
 2. Confirmar PostgreSQL accesible y correr `npm run db:push`.
-3. Sembrar datos base con `npm run db:seed`.
-4. Validar el proyecto con `npm run check:full`.
-5. Levantar la API con `npm run api`.
-6. Confirmar `GET /api/health` y `GET /api/ready`.
-7. Levantar frontend con `npm run dev` o publicar `dist/` despues de `npm run build`.
+3. Aplicar migraciones con `npm run db:deploy`.
+4. Sembrar datos base con `npm run db:seed`.
+5. Validar el proyecto con `npm run check:full`.
+6. Levantar la API con `npm run api`.
+7. Confirmar `GET /api/health` y `GET /api/ready`.
+8. Levantar frontend con `npm run dev` o publicar `dist/` despues de `npm run build`.
 
 ## Despliegue con un solo proceso
 

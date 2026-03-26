@@ -17,6 +17,7 @@ Frontend React/Vite del portal FNI, trabajando en modo API-only contra una API l
 - `npm run ops:backup:json`: respalda `server/.data`.
 - `npm run ops:backup:prisma`: exporta tablas Prisma y documentos locales.
 - `docker compose -f docker-compose.prod.yml up -d --build`: levanta app + Postgres en produccion.
+- `npm run db:deploy`: aplica migraciones Prisma en entornos no interactivos.
 
 ## Flujo local recomendado
 
@@ -30,7 +31,7 @@ VITE_API_BASE=/api
 # VITE_API_PROXY_TARGET=http://localhost:4100
 ```
 
-La API local usa `FNI_API_PORT=4100` por defecto. Para probar contra PostgreSQL + Prisma, cambia `FNI_API_STORAGE=prisma`, asegurate de tener `DATABASE_URL` configurado y ejecuta `npm run db:seed`.
+La API local usa `FNI_API_PORT=4100` por defecto. Para probar contra PostgreSQL + Prisma, cambia `FNI_API_STORAGE=prisma`, asegurate de tener `DATABASE_URL` configurado y ejecuta `npm run db:deploy` y luego `npm run db:seed`.
 
 El proxy de Vite usa `FNI_API_PORT` por defecto y tambien acepta `VITE_API_PROXY_TARGET` si necesitas apuntar el frontend a otro host o puerto.
 
