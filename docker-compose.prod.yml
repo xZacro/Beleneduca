@@ -41,7 +41,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: deps
+      target: build
     depends_on:
       postgres:
         condition: service_healthy
@@ -55,7 +55,7 @@ services:
       FNI_SERVE_STATIC: "true"
       FNI_STATIC_DIR: dist
       DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/fni_portal?schema=public
-    command: ["sh", "-lc", "npm run db:generate && npm run db:seed"]
+    command: ["sh", "-lc", "npm run db:seed"]
     profiles:
       - tools
 
