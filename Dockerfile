@@ -8,7 +8,7 @@ FROM deps AS build
 WORKDIR /app
 
 COPY . .
-RUN npm run db:generate
+RUN DATABASE_URL=postgresql://postgres:postgres@localhost:5432/fni_portal?schema=public npm run db:generate
 RUN npm run build
 
 FROM node:22-alpine AS runtime
