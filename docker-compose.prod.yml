@@ -36,7 +36,6 @@ services:
       - "${APP_PORT:-80}:4100"
     volumes:
       - fni_documents:/app/server/.data
-    command: ["sh", "-lc", "npm run db:deploy && node server/api-server.mjs"]
 
   seed:
     build:
