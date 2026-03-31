@@ -68,6 +68,7 @@ Ademas, GitHub Actions ejecuta automaticamente:
 - `crsh@demo.cl`, `csah@demo.cl`, `csdm@demo.cl`, `csfa@demo.cl` / `demo`
 
 Esas mismas credenciales quedan sembradas en Prisma cuando corres `npm run db:seed`.
+El seed deja el ciclo 2026 vacio para que los usuarios finales comiencen a completarlo desde cero.
 
 ## Endpoints locales disponibles
 
