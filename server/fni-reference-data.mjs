@@ -39,7 +39,19 @@ export async function seedSchools(prisma) {
           status: "ACTIVE",
         },
       });
+      continue;
     }
+
+    await prisma.school.update({
+      where: { id: school.id },
+      data: {
+        code: school.code,
+        name: school.name,
+        managerName: school.managerName ?? null,
+        managerEmail: school.managerEmail ?? null,
+        status: "ACTIVE",
+      },
+    });
   }
 }
 

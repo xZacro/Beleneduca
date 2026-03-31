@@ -385,11 +385,13 @@ export default function FoundationSchoolsPage() {
                 </Link>
               </div>
 
-              {(s.managerName || s.managerEmail) && (
+              {s.managerEmail && (
                 <div className="mt-auto border-t border-slate-100 pt-3 text-xs text-slate-600">
-                  <div className="font-medium text-slate-700">Encargado/a</div>
-                  <div>{s.managerName ?? "-"}</div>
-                  <div>{s.managerEmail ?? ""}</div>
+                  <div className="font-medium text-slate-700">Correo del colegio</div>
+                  <div className="break-all text-slate-900">{s.managerEmail}</div>
+                  {s.managerName && s.managerName.trim().toLowerCase() !== "encargado/a" && (
+                    <div className="mt-1 text-slate-500">Encargado/a: {s.managerName}</div>
+                  )}
                 </div>
               )}
             </div>
