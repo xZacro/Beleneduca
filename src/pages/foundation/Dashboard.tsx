@@ -13,6 +13,7 @@ import {
   updateManagementCycle,
 } from "../../shared/management/client";
 import { useResolvedAuthUser } from "../../shared/useResolvedAuthUser";
+import { normalizeSchoolName } from "../../shared/fni/schools";
 import type {
   ManagementDashboardDto,
   ManagementDashboardIssueDto,
@@ -871,66 +872,70 @@ export function ManagementDashboard({ mode }: { mode: ManagementDashboardMode })
               </div>
 
               <div className="mt-4 space-y-3">
-                {attentionSchools.map((school) => (
-                  <div key={school.id} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                    <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-                      <div className="min-w-0">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <div className="text-sm font-semibold text-slate-900">{school.name}</div>
-                          <MiniBadge tone={school.submitted ? "blue" : "amber"}>
-                            {school.submitted ? "Enviado" : "Sin envío"}
-                          </MiniBadge>
-                          <MiniBadge tone={statusTone(school.status)}>{statusLabel(school.status)}</MiniBadge>
-                        </div>
+                {attentionSchools.map((school) => {
+                  const displayName = normalizeSchoolName(school.code, school.name);
 
-                        <div className="mt-2 flex flex-wrap gap-2">
-                          {school.pendingCount > 0 && (
-                            <MiniBadge tone="amber">Pendientes: {school.pendingCount}</MiniBadge>
-                          )}
-                          {school.observedCount > 0 && (
-                            <MiniBadge tone="amber">Observados: {school.observedCount}</MiniBadge>
-                          )}
-                          {school.blockingCount > 0 && (
-                            <MiniBadge tone="rose">Bloqueados: {school.blockingCount}</MiniBadge>
-                          )}
-                          {school.missingEvidenceCount > 0 && (
-                            <MiniBadge tone="slate">Sin evidencia: {school.missingEvidenceCount}</MiniBadge>
-                          )}
-                        </div>
-
-                        <div className="mt-3">
-                          <div className="mb-2 flex items-center justify-between text-xs text-slate-500">
-                            <span>Avance</span>
-                            <span>{school.completionPct}%</span>
+                  return (
+                    <div key={school.id} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                      <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <div className="text-sm font-semibold text-slate-900">{displayName}</div>
+                            <MiniBadge tone={school.submitted ? "blue" : "amber"}>
+                              {school.submitted ? "Enviado" : "Sin envío"}
+                            </MiniBadge>
+                            <MiniBadge tone={statusTone(school.status)}>{statusLabel(school.status)}</MiniBadge>
                           </div>
 
-                          <div className="h-3 w-full overflow-hidden rounded-full bg-slate-100">
-                            <div
-                              className={`h-full rounded-full ${barTone(school.completionPct)}`}
-                              style={{ width: `${school.completionPct}%` }}
-                            />
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {school.pendingCount > 0 && (
+                              <MiniBadge tone="amber">Pendientes: {school.pendingCount}</MiniBadge>
+                            )}
+                            {school.observedCount > 0 && (
+                              <MiniBadge tone="amber">Observados: {school.observedCount}</MiniBadge>
+                            )}
+                            {school.blockingCount > 0 && (
+                              <MiniBadge tone="rose">Bloqueados: {school.blockingCount}</MiniBadge>
+                            )}
+                            {school.missingEvidenceCount > 0 && (
+                              <MiniBadge tone="slate">Sin evidencia: {school.missingEvidenceCount}</MiniBadge>
+                            )}
+                          </div>
+
+                          <div className="mt-3">
+                            <div className="mb-2 flex items-center justify-between text-xs text-slate-500">
+                              <span>Avance</span>
+                              <span>{school.completionPct}%</span>
+                            </div>
+
+                            <div className="h-3 w-full overflow-hidden rounded-full bg-slate-100">
+                              <div
+                                className={`h-full rounded-full ${barTone(school.completionPct)}`}
+                                style={{ width: `${school.completionPct}%` }}
+                              />
+                            </div>
+                          </div>
+
+                          <div className="mt-2 text-xs text-slate-500">
+                            Última actividad: {formatRelative(school.lastActivityAt)}
                           </div>
                         </div>
 
-                        <div className="mt-2 text-xs text-slate-500">
-                          Última actividad: {formatRelative(school.lastActivityAt)}
+                        <div className="flex flex-wrap gap-2">
+                          <Link to={schoolReviewLink(cycle.id, school.id)} className="fni-toolbar-button-primary">
+                            Revisión
+                          </Link>
+                          <Link
+                            to={schoolDocumentsLink(cycle.id, school.id)}
+                            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-100"
+                          >
+                            Documentos
+                          </Link>
                         </div>
-                      </div>
-
-                      <div className="flex flex-wrap gap-2">
-                        <Link to={schoolReviewLink(cycle.id, school.id)} className="fni-toolbar-button-primary">
-                          Revisión
-                        </Link>
-                        <Link
-                          to={schoolDocumentsLink(cycle.id, school.id)}
-                          className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-100"
-                        >
-                          Documentos
-                        </Link>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
@@ -1027,44 +1032,48 @@ export function ManagementDashboard({ mode }: { mode: ManagementDashboardMode })
             <div className="mt-5 grid grid-cols-1 gap-4 xl:grid-cols-3">
               {[...schools]
                 .sort((left, right) => left.completionPct - right.completionPct)
-                .map((school) => (
-                  <div key={school.id} className="rounded-xl border border-slate-200 p-4">
-                    <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                      <div>
-                        <div className="text-sm font-semibold text-slate-900">{school.name}</div>
-                        <div className="mt-1 text-xs text-slate-500">
-                          {school.code} / Última actividad {formatRelative(school.lastActivityAt)}
+                .map((school) => {
+                  const displayName = normalizeSchoolName(school.code, school.name);
+
+                  return (
+                    <div key={school.id} className="rounded-xl border border-slate-200 p-4">
+                      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                        <div>
+                          <div className="text-sm font-semibold text-slate-900">{displayName}</div>
+                          <div className="mt-1 text-xs text-slate-500">
+                            {school.code} / Última actividad {formatRelative(school.lastActivityAt)}
+                          </div>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                          {school.blockingCount > 0 && (
+                            <MiniBadge tone="rose">Bloqueados: {school.blockingCount}</MiniBadge>
+                          )}
+                          {school.observedCount > 0 && (
+                            <MiniBadge tone="amber">Observados: {school.observedCount}</MiniBadge>
+                          )}
+                          {school.pendingCount > 0 && (
+                            <MiniBadge tone="blue">En revisión: {school.pendingCount}</MiniBadge>
+                          )}
                         </div>
                       </div>
 
-                      <div className="flex flex-wrap gap-2">
-                        {school.blockingCount > 0 && (
-                          <MiniBadge tone="rose">Bloqueados: {school.blockingCount}</MiniBadge>
-                        )}
-                        {school.observedCount > 0 && (
-                          <MiniBadge tone="amber">Observados: {school.observedCount}</MiniBadge>
-                        )}
-                        {school.pendingCount > 0 && (
-                          <MiniBadge tone="blue">En revisión: {school.pendingCount}</MiniBadge>
-                        )}
+                      <div className="mt-4">
+                        <div className="mb-2 flex items-center justify-between text-xs text-slate-500">
+                          <span>Avance</span>
+                          <span>{school.completionPct}%</span>
+                        </div>
+
+                        <div className="h-3 w-full overflow-hidden rounded-full bg-slate-100">
+                          <div
+                            className={`h-full rounded-full transition-all ${barTone(school.completionPct)}`}
+                            style={{ width: `${school.completionPct}%` }}
+                          />
+                        </div>
                       </div>
                     </div>
-
-                    <div className="mt-4">
-                      <div className="mb-2 flex items-center justify-between text-xs text-slate-500">
-                        <span>Avance</span>
-                        <span>{school.completionPct}%</span>
-                      </div>
-
-                      <div className="h-3 w-full overflow-hidden rounded-full bg-slate-100">
-                        <div
-                          className={`h-full rounded-full transition-all ${barTone(school.completionPct)}`}
-                          style={{ width: `${school.completionPct}%` }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
             </div>
           </div>
         </>

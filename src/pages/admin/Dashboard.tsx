@@ -1089,7 +1089,9 @@ export default function AdminDashboard() {
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <div className="text-sm font-semibold text-slate-900">{school.code}</div>
-                        <div className="mt-1 text-sm text-slate-700">{school.name}</div>
+                        <div className="mt-1 text-sm text-slate-700">
+                          {normalizeSchoolName(school.code, school.name)}
+                        </div>
                       </div>
 
                       <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-800">
