@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import AreasTab from "../catalog/AreasTab";
 import IndicatorsTab from "../catalog/IndicatorsTab";
-import { apiPost } from "../../../shared/api";
+import { apiGet, apiPost } from "../../../shared/api";
 import { getUser, hasRole } from "../../../shared/auth";
 import type { CatalogAreaDto, CatalogIndicatorDto, CatalogSeedResponse } from "../../../shared/fni/apiContracts";
 

@@ -79,6 +79,7 @@ export function calcIndicatorPct(
   const visibleQuestions = indicator.questions.filter((question) =>
     isQuestionVisible(question, response.answers)
   );
+  const hasUploadedPdf = Boolean(response.file?.downloadUrl || response.file?.dataUrl || response.file?.name);
 
   const numericQuestions = visibleQuestions.filter(
     (question): question is Extract<Question, { kind: "number" }> => question.kind === "number"
@@ -107,8 +108,6 @@ export function calcIndicatorPct(
     const answer = response.answers[key];
     return typeof answer === "number" ? undefined : answer;
   };
-
-  const hasUploadedPdf = Boolean(response.file?.downloadUrl || response.file?.dataUrl || response.file?.name);
 
   const hasDocumentQuestion = yesNoQuestions.some((question) => question.key === "hasDocument");
   const isUpdatedQuestion = yesNoQuestions.some((question) => question.key === "isUpdated");

@@ -17,7 +17,7 @@ import {
 import { defaultIndicatorResponse, type IndicatorResponse } from "../../../shared/fni/types";
 import { useFniWorkspace } from "../../../shared/fni/useFniWorkspace";
 import { useCycleOptions } from "../../../shared/useCycleOptions";
-import { useSchoolDisplayName } from "../../../shared/useSchoolDirectory";
+import { useFoundationSchoolDisplayName } from "../../../shared/useSchoolDirectory";
 
 // Formulario operativo de fundacion: permite navegar por areas, indicadores y estados derivados.
 function SectionTitle({ title, subtitle }: { title: string; subtitle?: string }) {
@@ -313,7 +313,7 @@ function SchoolFormWorkspace({
   searchParams,
   setSearchParams,
 }: SchoolFormWorkspaceProps) {
-  const { schoolLabel } = useSchoolDisplayName(schoolId);
+  const { schoolLabel } = useFoundationSchoolDisplayName(schoolId, cycleId);
   const { cycles, loading: cyclesLoading } = useCycleOptions(cycleId);
   const { workspace, loading, error, setResponses } = useFniWorkspace({
     schoolId,
