@@ -370,10 +370,10 @@ export default function FoundationSchoolsPage() {
 
               <div className="mt-4 flex flex-wrap gap-2">
                 <Link
-                  to={`/foundation/schools/${encodeURIComponent(s.id)}/form${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
+                  to={`/foundation/schools/${encodeURIComponent(s.id)}/review${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
                   className="rounded-lg bg-slate-900 px-3 py-2 text-sm text-white"
                 >
-                  Gestionar colegio
+                  Revisión
                 </Link>
                 <Link
                   to={`/foundation/schools/${encodeURIComponent(s.id)}/documents${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
@@ -442,16 +442,16 @@ export default function FoundationSchoolsPage() {
                     <td className="px-4 py-3 text-right">
                       <div className="flex justify-end gap-2">
                         <Link
-                          to={`/foundation/schools/${encodeURIComponent(s.id)}/form${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
+                          to={`/foundation/schools/${encodeURIComponent(s.id)}/review${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
                           className="rounded-lg bg-slate-900 px-3 py-2 text-xs text-white"
                         >
-                          Gestionar
+                          Revisión
                         </Link>
                         <Link
                           to={`/foundation/schools/${encodeURIComponent(s.id)}/documents${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
                           className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 hover:bg-slate-50"
                         >
-                          Docs
+                          Documentos
                         </Link>
                       </div>
                     </td>
