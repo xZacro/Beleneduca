@@ -6,6 +6,7 @@ import { useSchoolDisplayName } from "../../shared/useSchoolDirectory";
 export default function AccountSecurity() {
   const user = getUser();
   const { schoolLabel } = useSchoolDisplayName(user?.schoolId ?? null);
+  const accountName = user?.roles.includes("COLEGIO") ? schoolLabel : user?.name ?? "-";
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -156,7 +157,7 @@ export default function AccountSecurity() {
           <div className="mt-4 space-y-3 text-sm text-slate-700">
             <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
               <div className="text-xs font-semibold tracking-wide text-slate-500">Nombre</div>
-              <div className="mt-1 font-medium text-slate-900">{user?.name ?? "-"}</div>
+              <div className="mt-1 font-medium text-slate-900">{accountName}</div>
             </div>
 
             <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
