@@ -2,6 +2,7 @@ import { Link, useSearchParams } from "react-router-dom";
 
 import { ROUTES } from "../../app/routes/routeConfig";
 import { getUser } from "../../shared/auth";
+import { getUploadedPdfHref, openUploadedPdf } from "../../shared/fni/documentClient";
 import { calcIndicatorPct, isIndicatorVisible, statusFromPct } from "../../shared/fni/logic";
 import { AREAS_SCHEMA } from "../../shared/fni/schema/evaluacionSchema";
 import { defaultIndicatorResponse, defaultSubmissionRecord } from "../../shared/fni/types";
@@ -426,6 +427,18 @@ export default function Dashboard() {
                   <div className="mt-1 whitespace-pre-wrap text-sm text-slate-700">
                     {item.review?.reviewComment?.trim() || "Sin comentario."}
                   </div>
+                  {getUploadedPdfHref(item.response.file) && (
+                    <div className="mt-3 flex flex-wrap items-center gap-2">
+                      <MiniBadge tone="blue">PDF adjunto</MiniBadge>
+                      <button
+                        type="button"
+                        onClick={() => openUploadedPdf(item.response.file)}
+                        className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-700 transition hover:bg-slate-100"
+                      >
+                        Ver PDF
+                      </button>
+                    </div>
+                  )}
                   <div className="mt-2 text-xs text-slate-500">
                     {formatDate(item.review?.reviewedAt ?? null)}
                   </div>
