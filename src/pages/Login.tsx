@@ -90,8 +90,8 @@ export default function Login() {
               <b>Credenciales de desarrollo:</b>
               <div>- admin@demo.cl / demo</div>
               <div>- fundacion.01@demo.cl a fundacion.06@demo.cl / demo</div>
-              <div>- cace@demo.cl, camv@demo.cl, ccoc@demo.cl, cjff@demo.cl / demo</div>
-              <div>- cjlu@demo.cl, cjmc@demo.cl, clsm@demo.cl, cpdm@demo.cl / demo</div>
+              <div>- cc@demo.cl, cace@demo.cl, camv@demo.cl, ccoc@demo.cl, cjff@demo.cl / demo</div>
+              <div>- cjlu@demo.cl, cjmc@demo.cl, cls@demo.cl, cpd@demo.cl / demo</div>
               <div>- crsh@demo.cl, csah@demo.cl, csdm@demo.cl, csfa@demo.cl / demo</div>
             </div>
 

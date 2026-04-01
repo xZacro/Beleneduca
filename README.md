@@ -63,8 +63,8 @@ Ademas, GitHub Actions ejecuta automaticamente:
 
 - `admin@demo.cl` / `demo`
 - `fundacion.01@demo.cl` a `fundacion.06@demo.cl` / `demo`
-- `cace@demo.cl`, `camv@demo.cl`, `ccoc@demo.cl`, `cjff@demo.cl` / `demo`
-- `cjlu@demo.cl`, `cjmc@demo.cl`, `clsm@demo.cl`, `cpdm@demo.cl` / `demo`
+- `cc@demo.cl`, `cace@demo.cl`, `camv@demo.cl`, `ccoc@demo.cl`, `cjff@demo.cl` / `demo`
+- `cjlu@demo.cl`, `cjmc@demo.cl`, `cls@demo.cl`, `cpd@demo.cl` / `demo`
 - `crsh@demo.cl`, `csah@demo.cl`, `csdm@demo.cl`, `csfa@demo.cl` / `demo`
 
 Esas mismas credenciales quedan sembradas en Prisma cuando corres `npm run db:seed`.

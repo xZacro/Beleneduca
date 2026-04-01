@@ -14,7 +14,7 @@ const FOUNDATION_USERS = Array.from({ length: 6 }, (_, index) => ({
 
 const SCHOOL_USERS = DEMO_SCHOOLS.map((school) => ({
   email: `${school.code.toLowerCase()}@demo.cl`,
-  name: `Colegio ${school.code}`,
+  name: school.name,
   roles: ["COLEGIO"],
   schoolId: school.id,
   password: "demo",
