@@ -913,7 +913,7 @@ export function ManagementDashboard({ mode }: { mode: ManagementDashboardMode })
                       </div>
 
                       <div className="flex flex-wrap gap-2">
-                        <Link to={schoolReviewLink(cycle.id, school.id)} className="fni-toolbar-button">
+                        <Link to={schoolReviewLink(cycle.id, school.id)} className="fni-toolbar-button-primary">
                           Revisión
                         </Link>
                         <Link

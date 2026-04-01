@@ -38,11 +38,11 @@
   }
 
   .fni-toolbar-button {
-    @apply rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50;
+    @apply rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:border-slate-400 hover:bg-slate-50 active:translate-y-[1px];
   }
 
   .fni-toolbar-button-primary {
-    @apply rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800;
+    @apply rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 active:translate-y-[1px];
   }
 
   .fni-toolbar-select {
