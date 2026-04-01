@@ -99,6 +99,7 @@ export default function FoundationSchoolDocumentsPage() {
   const { workspace, loading, error } = useFniWorkspace(ref);
   const cycleId = ref?.cycleId ?? null;
   const { schoolLabel } = useFoundationSchoolDisplayName(schoolId, cycleId);
+  const resolvedSchoolLabel = searchParams.get("schoolLabel")?.trim() || schoolLabel;
 
   const rows = useMemo<DocumentRow[]>(() => {
     if (!workspace) return [];
@@ -270,7 +271,7 @@ export default function FoundationSchoolDocumentsPage() {
 
         <div className="rounded-xl bg-slate-50 p-3 text-sm text-slate-700">
           <div>
-            <span className="font-medium">Colegio:</span> {schoolLabel}
+            <span className="font-medium">Colegio:</span> {resolvedSchoolLabel}
           </div>
           <div>
             <span className="font-medium">Ciclo:</span> {cycleId}

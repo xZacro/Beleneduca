@@ -175,7 +175,9 @@ function SchoolReviewWorkspace({
   searchParams,
   setSearchParams,
 }: SchoolReviewWorkspaceProps) {
+  const schoolLabelParam = searchParams.get("schoolLabel");
   const { schoolLabel } = useFoundationSchoolDisplayName(schoolId, cycleId);
+  const resolvedSchoolLabel = schoolLabelParam?.trim() || schoolLabel;
   const { cycles, loading: cyclesLoading } = useCycleOptions(cycleId);
   const { workspace, loading, error, setReviews, setResponses } = useFniWorkspace({
     schoolId,
@@ -339,11 +341,11 @@ function SchoolReviewWorkspace({
 
   return (
     <div className="fni-page-shell">
-      <Crumb schoolLabel={schoolLabel} />
+      <Crumb schoolLabel={resolvedSchoolLabel} />
 
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <SectionTitle
-          title={`Revisión - ${schoolLabel}`}
+          title={`Revisión - ${resolvedSchoolLabel}`}
           subtitle="Revisión consistente con las mismas reglas que usa la vista de colegio."
         />
 

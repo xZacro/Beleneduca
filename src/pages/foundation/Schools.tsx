@@ -103,6 +103,10 @@ export default function FoundationSchoolsPage() {
   const [err, setErr] = useState<string | null>(null);
   const cycleQuery = `?cycleId=${encodeURIComponent(cycleId)}`;
 
+  function buildSchoolLabel(school: SchoolRow) {
+    return `${school.code} - ${school.name}`;
+  }
+
   useEffect(() => {
     setCycleId(initialCycleId);
   }, [initialCycleId]);
@@ -366,19 +370,19 @@ export default function FoundationSchoolsPage() {
 
               <div className="mt-4 flex flex-wrap gap-2">
                 <Link
-                  to={`/foundation/schools/${encodeURIComponent(s.id)}/form${cycleQuery}`}
+                  to={`/foundation/schools/${encodeURIComponent(s.id)}/form${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
                   className="rounded-lg bg-slate-900 px-3 py-2 text-sm text-white"
                 >
                   Ver formulario
                 </Link>
                 <Link
-                  to={`/foundation/schools/${encodeURIComponent(s.id)}/documents${cycleQuery}`}
+                  to={`/foundation/schools/${encodeURIComponent(s.id)}/documents${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
                   className="fni-toolbar-button"
                 >
                   Documentos
                 </Link>
                 <Link
-                  to={`/foundation/schools/${encodeURIComponent(s.id)}/review${cycleQuery}`}
+                  to={`/foundation/schools/${encodeURIComponent(s.id)}/review${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
                   className="fni-toolbar-button"
                 >
                   Revisión
@@ -444,19 +448,19 @@ export default function FoundationSchoolsPage() {
                     <td className="px-4 py-3 text-right">
                       <div className="flex justify-end gap-2">
                         <Link
-                          to={`/foundation/schools/${encodeURIComponent(s.id)}/form${cycleQuery}`}
+                          to={`/foundation/schools/${encodeURIComponent(s.id)}/form${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
                           className="rounded-lg bg-slate-900 px-3 py-2 text-xs text-white"
                         >
                           Formulario
                         </Link>
                         <Link
-                          to={`/foundation/schools/${encodeURIComponent(s.id)}/documents${cycleQuery}`}
+                          to={`/foundation/schools/${encodeURIComponent(s.id)}/documents${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
                           className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 hover:bg-slate-50"
                         >
                           Docs
                         </Link>
                         <Link
-                          to={`/foundation/schools/${encodeURIComponent(s.id)}/review${cycleQuery}`}
+                          to={`/foundation/schools/${encodeURIComponent(s.id)}/review${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
                           className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 hover:bg-slate-50"
                         >
                           Revisión

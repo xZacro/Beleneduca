@@ -313,7 +313,9 @@ function SchoolFormWorkspace({
   searchParams,
   setSearchParams,
 }: SchoolFormWorkspaceProps) {
+  const schoolLabelParam = searchParams.get("schoolLabel");
   const { schoolLabel } = useFoundationSchoolDisplayName(schoolId, cycleId);
+  const resolvedSchoolLabel = schoolLabelParam?.trim() || schoolLabel;
   const { cycles, loading: cyclesLoading } = useCycleOptions(cycleId);
   const { workspace, loading, error, setResponses } = useFniWorkspace({
     schoolId,
@@ -423,11 +425,11 @@ function SchoolFormWorkspace({
 
   return (
     <div className="fni-page-shell">
-      <Crumb schoolLabel={schoolLabel} />
+      <Crumb schoolLabel={resolvedSchoolLabel} />
 
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <SectionTitle
-          title={`Formulario - ${schoolLabel}`}
+          title={`Formulario - ${resolvedSchoolLabel}`}
           subtitle="Captura por ciclo con evidencia PDF y validación compartida."
         />
 

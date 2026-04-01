@@ -367,6 +367,13 @@ export default function AdminDashboard() {
     const submittedCount = cycleSchools.filter((school) => school.submitted).length;
     const noSubmissionCount = cycleSchools.length - submittedCount;
     const blockedSchools = cycleSchools.filter((school) => school.blockingCount > 0).length;
+    const schoolsWithMissingEvidence = cycleSchools.filter(
+      (school) => (school.missingEvidenceCount ?? 0) > 0
+    );
+    const missingEvidenceTotal = schoolsWithMissingEvidence.reduce(
+      (accumulator, school) => accumulator + (school.missingEvidenceCount ?? 0),
+      0
+    );
     const schoolsWithoutManager = schools.filter(
       (school) => !school.managerName || !school.managerEmail
     ).length;
@@ -378,6 +385,8 @@ export default function AdminDashboard() {
       submittedCount,
       noSubmissionCount,
       blockedSchools,
+      schoolsWithMissingEvidence,
+      missingEvidenceTotal,
       schoolsWithoutManager,
       schoolUsersWithoutSchool,
     };
@@ -394,6 +403,13 @@ export default function AdminDashboard() {
       todaySensitive,
     };
   }, [audit]);
+
+  const documentQueue = useMemo(() => {
+    return [...cycleSchools]
+      .filter((school) => (school.missingEvidenceCount ?? 0) > 0)
+      .sort((left, right) => (right.missingEvidenceCount ?? 0) - (left.missingEvidenceCount ?? 0))
+      .slice(0, 5);
+  }, [cycleSchools]);
 
   const adminQueue = useMemo(() => {
     const items = [
@@ -453,6 +469,18 @@ export default function AdminDashboard() {
           governanceSummary.schoolUsersWithoutSchool > 0 ? ("rose" as const) : ("slate" as const),
         visible: governanceSummary.schoolUsersWithoutSchool > 0,
       },
+      {
+        key: "documents",
+        title: `${governanceSummary.schoolsWithMissingEvidence.length} colegios con evidencia pendiente`,
+        description: `${governanceSummary.missingEvidenceTotal} archivos faltantes en el ciclo seleccionado.`,
+        href: `${ROUTES.foundation.schools}?cycleId=${encodeURIComponent(cycleId)}`,
+        action: "Abrir colegios",
+        tone:
+          governanceSummary.schoolsWithMissingEvidence.length > 0
+            ? ("amber" as const)
+            : ("slate" as const),
+        visible: governanceSummary.schoolsWithMissingEvidence.length > 0,
+      },
     ];
 
     return items.filter((item) => item.visible);
@@ -460,7 +488,9 @@ export default function AdminDashboard() {
     cycleId,
     cycleIssues.length,
     governanceSummary.noSubmissionCount,
+    governanceSummary.missingEvidenceTotal,
     governanceSummary.schoolsWithoutManager,
+    governanceSummary.schoolsWithMissingEvidence.length,
     governanceSummary.schoolUsersWithoutSchool,
     sessionsSummary.revoked,
     usersSummary.invited,
@@ -491,6 +521,12 @@ export default function AdminDashboard() {
         description: "Rastreo de cambios sensibles, ingresos y operaciones de control.",
         href: ROUTES.admin.audit,
         action: "Abrir auditoría",
+      },
+      {
+        title: "Documentos del ciclo",
+        description: "Acceso directo a los colegios con archivos faltantes o pendientes de revisión.",
+        href: `${ROUTES.foundation.schools}?cycleId=${encodeURIComponent(cycleId)}`,
+        action: "Ver documentos",
       },
     ];
   }, [cycleId]);
@@ -710,7 +746,7 @@ export default function AdminDashboard() {
 
       {!loading && cycle && (
         <>
-          <div className="grid grid-cols-1 gap-4 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 xl:grid-cols-5">
             <MetricCard
               title="Ciclos configurados"
               value={cycles.length}
@@ -734,6 +770,12 @@ export default function AdminDashboard() {
               value={auditSummary.todaySensitive}
               subtitle={`${usersSummary.admins} usuarios con rol administrador`}
               tone="rose"
+            />
+            <MetricCard
+              title="Evidencias faltantes"
+              value={governanceSummary.missingEvidenceTotal}
+              subtitle={`${governanceSummary.schoolsWithMissingEvidence.length} colegios con documentos pendientes`}
+              tone="amber"
             />
           </div>
 
@@ -999,6 +1041,80 @@ export default function AdminDashboard() {
                 </div>
               </div>
             </div>
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <div>
+                <h2 className="text-lg font-semibold text-slate-900">Control documental</h2>
+                <p className="mt-1 text-sm text-slate-600">
+                  Colegios con evidencias faltantes y acceso directo a sus documentos.
+                </p>
+              </div>
+
+              <span
+                className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-medium ${badgeTone(
+                  documentQueue.length > 0 ? "amber" : "green"
+                )}`}
+              >
+                {documentQueue.length > 0
+                  ? `${documentQueue.length} colegios con faltantes visibles`
+                  : "Sin faltantes documentales"}
+              </span>
+            </div>
+
+            {documentQueue.length === 0 ? (
+              <div className="fni-empty-state-panel mt-4 min-h-[160px]">
+                No hay colegios con evidencias faltantes en el ciclo seleccionado.
+              </div>
+            ) : (
+              <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+                {documentQueue.map((school) => (
+                  <div
+                    key={school.id}
+                    className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <div className="text-sm font-semibold text-slate-900">{school.code}</div>
+                        <div className="mt-1 text-sm text-slate-700">{school.name}</div>
+                      </div>
+
+                      <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-800">
+                        {school.missingEvidenceCount} faltantes
+                      </span>
+                    </div>
+
+                    <div className="mt-3 text-xs text-slate-500">
+                      Completitud: {Math.round(school.completionPct)}% / Estado: {school.status}
+                    </div>
+
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      <Link
+                        to={`/foundation/schools/${encodeURIComponent(
+                          school.id
+                        )}/documents?cycleId=${encodeURIComponent(
+                          cycleId
+                        )}&schoolLabel=${encodeURIComponent(`${school.code} - ${school.name}`)}`}
+                        className="fni-toolbar-button"
+                      >
+                        Ver documentos
+                      </Link>
+                      <Link
+                        to={`/foundation/schools/${encodeURIComponent(
+                          school.id
+                        )}/review?cycleId=${encodeURIComponent(
+                          cycleId
+                        )}&schoolLabel=${encodeURIComponent(`${school.code} - ${school.name}`)}`}
+                        className="fni-toolbar-button"
+                      >
+                        Ir a revisión
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">

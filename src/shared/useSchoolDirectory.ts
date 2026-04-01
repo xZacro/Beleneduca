@@ -136,7 +136,7 @@ export function useFoundationSchoolDisplayName(
     cycleId: string;
     label: string | null;
   } | null>(null);
-  const shouldResolveFromFoundation = Boolean(schoolId && cycleId && directoryLabel === schoolId);
+  const shouldResolveFromFoundation = Boolean(schoolId && cycleId);
   const foundationLabel =
     foundationResolution &&
     foundationResolution.schoolId === schoolId &&
@@ -191,7 +191,7 @@ export function useFoundationSchoolDisplayName(
     return () => {
       cancelled = true;
     };
-  }, [cycleId, directoryLabel, repository, schoolId, shouldResolveFromFoundation]);
+  }, [cycleId, repository, schoolId, shouldResolveFromFoundation]);
 
   return {
     schoolLabel: foundationLabel ?? directoryLabel,
