@@ -373,19 +373,13 @@ export default function FoundationSchoolsPage() {
                   to={`/foundation/schools/${encodeURIComponent(s.id)}/form${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
                   className="rounded-lg bg-slate-900 px-3 py-2 text-sm text-white"
                 >
-                  Ver formulario
+                  Gestionar colegio
                 </Link>
                 <Link
                   to={`/foundation/schools/${encodeURIComponent(s.id)}/documents${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
                   className="fni-toolbar-button"
                 >
                   Documentos
-                </Link>
-                <Link
-                  to={`/foundation/schools/${encodeURIComponent(s.id)}/review${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
-                  className="fni-toolbar-button"
-                >
-                  Revisión
                 </Link>
               </div>
 
@@ -451,19 +445,13 @@ export default function FoundationSchoolsPage() {
                           to={`/foundation/schools/${encodeURIComponent(s.id)}/form${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
                           className="rounded-lg bg-slate-900 px-3 py-2 text-xs text-white"
                         >
-                          Formulario
+                          Gestionar
                         </Link>
                         <Link
                           to={`/foundation/schools/${encodeURIComponent(s.id)}/documents${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
                           className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 hover:bg-slate-50"
                         >
                           Docs
-                        </Link>
-                        <Link
-                          to={`/foundation/schools/${encodeURIComponent(s.id)}/review${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
-                          className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 hover:bg-slate-50"
-                        >
-                          Revisión
                         </Link>
                       </div>
                     </td>
