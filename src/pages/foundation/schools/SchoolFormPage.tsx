@@ -14,6 +14,12 @@ import {
   pruneHiddenAnswers,
   statusFromPct,
 } from "../../../shared/fni/logic";
+import {
+  deleteIndicatorDocument,
+  getUploadedPdfHref,
+  openUploadedPdf,
+  uploadIndicatorDocument,
+} from "../../../shared/fni/documentClient";
 import { defaultIndicatorResponse, type IndicatorResponse } from "../../../shared/fni/types";
 import { useFniWorkspace } from "../../../shared/fni/useFniWorkspace";
 import { useCycleOptions } from "../../../shared/useCycleOptions";
@@ -79,7 +85,7 @@ function YesNoNAControl({
   disabled?: boolean;
   onChange: (value: YesNoNA | undefined) => void;
 }) {
-  const buttonBase = "px-3 py-1.5 rounded-lg text-sm border transition";
+  const buttonBase = "min-w-[3.25rem] px-3 py-1.5 rounded-lg text-sm border transition text-center";
 
   const activeClassFor = (option: YesNoNA) => {
     if (option === "SI") return "border-emerald-600 bg-emerald-600 text-white";
@@ -103,7 +109,7 @@ function YesNoNAControl({
   );
 
   return (
-    <div className="flex gap-2">
+    <div className="flex flex-wrap gap-2 md:justify-end">
       {renderOption("SI", "Sí")}
       {renderOption("NO", "No")}
       {renderOption("NA", "N/A")}
@@ -153,12 +159,16 @@ function IndicatorCard({
   response,
   highlighted,
   disabled,
+  canManageEvidence,
+  onUpdateEvidence,
   onUpdate,
 }: {
   indicator: IndicatorSchema;
   response: IndicatorResponse;
   highlighted: boolean;
   disabled: boolean;
+  canManageEvidence: boolean;
+  onUpdateEvidence: (indicator: IndicatorSchema, response: IndicatorResponse, nextFile: File | null) => Promise<void>;
   onUpdate: (next: IndicatorResponse) => void;
 }) {
   const pct = calcIndicatorPct(indicator, response);
@@ -211,7 +221,7 @@ function IndicatorCard({
         {visibleQuestions.map((question) => (
           <div
             key={question.key}
-            className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between"
+            className="grid grid-cols-1 gap-2 md:grid-cols-[minmax(0,1fr)_auto] md:items-center"
           >
             <div className="text-sm text-slate-800">{question.label}</div>
 
@@ -242,6 +252,7 @@ function IndicatorCard({
         ))}
 
         {indicator.hasDocumentFields && (
+          <>
           <div className="grid grid-cols-1 gap-3 md:grid-cols-12">
             <div className="md:col-span-5">
               <label className="block text-xs font-medium text-slate-600">
@@ -283,6 +294,64 @@ function IndicatorCard({
               />
             </div>
           </div>
+
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+            <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              PDF de soporte
+            </div>
+
+            {getUploadedPdfHref(response.file) ? (
+              <div className="mt-2 space-y-2">
+                <div className="break-words text-sm font-medium text-slate-800">
+                  {response.file?.name ?? "Documento adjunto"}
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {response.file && (
+                    <button
+                      type="button"
+                      onClick={() => openUploadedPdf(response.file)}
+                      className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-100"
+                    >
+                      Ver PDF
+                    </button>
+                  )}
+
+                  {canManageEvidence && response.file?.id && (
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        await onUpdateEvidence(indicator, response, null);
+                      }}
+                      className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700 hover:bg-rose-100"
+                    >
+                      Quitar PDF
+                    </button>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="mt-2 text-sm text-slate-500">Sin PDF adjunto.</div>
+            )}
+
+            {canManageEvidence && (
+              <div className="mt-3 space-y-2">
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  className="block w-full text-sm"
+                  onChange={async (event) => {
+                    const file = event.target.files?.[0] ?? null;
+                    await onUpdateEvidence(indicator, response, file);
+                    event.currentTarget.value = "";
+                  }}
+                />
+                <p className="text-xs text-slate-500">
+                  Fundación y administración pueden adjuntar o reemplazar el respaldo PDF de este indicador.
+                </p>
+              </div>
+            )}
+          </div>
+          </>
         )}
       </div>
     </div>
@@ -330,6 +399,14 @@ function SchoolFormWorkspace({
     [cycleId, cycles]
   );
   const cycleLocked = selectedCycle?.isClosed ?? false;
+  const canManageEvidence = !cycleLocked;
+  const schoolCode = useMemo(() => {
+    const label = resolvedSchoolLabel.trim();
+    if (label.includes(" - ")) {
+      return label.split(" - ")[0].trim() || schoolId;
+    }
+    return schoolId;
+  }, [resolvedSchoolLabel, schoolId]);
 
   const activeArea: AreaSchema | undefined =
     AREAS_SCHEMA.find((area) => area.id === activeAreaId) ?? AREAS_SCHEMA[0];
@@ -342,6 +419,51 @@ function SchoolFormWorkspace({
     ],
     []
   );
+
+  const updateEvidence = async (
+    indicator: IndicatorSchema,
+    response: IndicatorResponse,
+    nextFile: File | null
+  ) => {
+    if (!canManageEvidence) return;
+
+    if (nextFile === null) {
+      if (!response.file?.id) return;
+
+      await deleteIndicatorDocument(response.file.id);
+      void setResponses((current) => ({
+        ...current,
+        [indicator.id]: {
+          ...response,
+          file: null,
+          updatedAt: new Date().toISOString(),
+        },
+      }));
+      return;
+    }
+
+    const uploadMoment = new Date().toISOString();
+    const uploadedFile = await uploadIndicatorDocument(
+      { schoolId, cycleId },
+      indicator.id,
+      nextFile,
+      response.file,
+      {
+        indicatorName: indicator.name,
+        schoolCode,
+        uploadedAt: uploadMoment,
+      }
+    );
+
+    void setResponses((current) => ({
+      ...current,
+      [indicator.id]: {
+        ...response,
+        file: uploadedFile,
+        updatedAt: uploadMoment,
+      },
+    }));
+  };
 
   const updateParams = (updater: (next: URLSearchParams) => void) => {
     const next = new URLSearchParams(searchParams);
@@ -570,6 +692,8 @@ function SchoolFormWorkspace({
                   response={response}
                   highlighted={indicator.id === highlightedIndicatorId}
                   disabled={cycleLocked}
+                  canManageEvidence={canManageEvidence}
+                  onUpdateEvidence={updateEvidence}
                   onUpdate={(next) => {
                     if (cycleLocked) return;
 
