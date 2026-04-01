@@ -372,7 +372,7 @@ function IndicatorCard({
                   }}
                 />
                 <p className="mt-1 text-xs text-slate-500">
-                  Modo API: el PDF se guarda en el backend local y se descarga desde un endpoint real.
+                  El archivo adjunto queda disponible para revisión y descarga desde el historial de evidencias.
                 </p>
               </div>
 
@@ -466,7 +466,7 @@ function EvaluationWorkspace({
   const { schoolLabel } = useSchoolDisplayName(schoolId);
   const { schools } = useSchoolDirectory();
   const { cycles, loading: cyclesLoading } = useCycleOptions(cycleId);
-  const { workspace, loading, error, setResponses, setSubmission, repository } = useFniWorkspace({
+  const { workspace, loading, error, setResponses, setSubmission } = useFniWorkspace({
     schoolId,
     cycleId,
   });
@@ -552,24 +552,26 @@ function EvaluationWorkspace({
   }, [activeArea, highlightedIndicatorId, responses, search]);
 
   const areaStats = useMemo(() => {
-    if (!activeArea) return { total: 0, completos: 0, incompletos: 0, pendientes: 0 };
+    if (!activeArea) return { total: 0, completos: 0, incompletos: 0, pendientes: 0, conPdf: 0 };
 
     const indicators = activeArea.indicators.filter((indicator) => isIndicatorVisible(indicator, responses));
 
     let completos = 0;
     let incompletos = 0;
     let pendientes = 0;
+    let conPdf = 0;
 
     for (const indicator of indicators) {
       const response = responses[indicator.id] ?? defaultIndicatorResponse();
       const status = statusFromPct(calcIndicatorPct(indicator, response));
+      if (response.file) conPdf++;
 
       if (status === "completo") completos++;
       else if (status === "incompleto") incompletos++;
       else pendientes++;
     }
 
-    return { total: indicators.length, completos, incompletos, pendientes };
+    return { total: indicators.length, completos, incompletos, pendientes, conPdf };
   }, [activeArea, responses]);
 
   const globalStats = useMemo(() => {
@@ -580,17 +582,19 @@ function EvaluationWorkspace({
     let completos = 0;
     let incompletos = 0;
     let pendientes = 0;
+    let conPdf = 0;
 
     for (const indicator of allIndicators) {
       const response = responses[indicator.id] ?? defaultIndicatorResponse();
       const status = statusFromPct(calcIndicatorPct(indicator, response));
+      if (response.file) conPdf++;
 
       if (status === "completo") completos++;
       else if (status === "incompleto") incompletos++;
       else pendientes++;
     }
 
-    return { total: allIndicators.length, completos, incompletos, pendientes };
+    return { total: allIndicators.length, completos, incompletos, pendientes, conPdf };
   }, [responses]);
 
   const onUpdateIndicator = (indicatorId: string, next: IndicatorResponse) => {
@@ -718,7 +722,8 @@ function EvaluationWorkspace({
       </div>
 
       <div className="fni-data-panel p-4 text-sm text-slate-600">
-        Fuente activa: <span className="font-medium text-slate-900">{repository.source}</span>
+        Ciclo {cycleId} · <span className="font-medium text-slate-900">{globalStats.completos} completos</span> ·{" "}
+        <span className="font-medium text-slate-900">{globalStats.conPdf} con PDF</span>
       </div>
 
       {loading && !workspace && (
@@ -786,9 +791,9 @@ function EvaluationWorkspace({
                 </div>
               </div>
 
-              <div className="mt-3 text-xs text-slate-500">
-                La pantalla ya guarda usando la capa compartida sobre {repository.source}.
-              </div>
+                <div className="mt-3 text-xs text-slate-500">
+                  {areaStats.conPdf} indicadores de esta área tienen PDF adjunto.
+                </div>
             </div>
 
             <div className="mt-4 rounded-xl border border-slate-200 p-3">

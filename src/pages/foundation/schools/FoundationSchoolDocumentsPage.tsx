@@ -92,7 +92,7 @@ export default function FoundationSchoolDocumentsPage() {
 
   const cycleIdParam = searchParams.get("cycleId");
   const selectedIndicatorId = searchParams.get("indicatorId") ?? "";
-  const { ref, loading: resolvingRef, error: contextError, repository } = useResolvedSchoolCycleRef({
+  const { ref, loading: resolvingRef, error: contextError } = useResolvedSchoolCycleRef({
     schoolId,
     cycleId: cycleIdParam,
   });
@@ -129,6 +129,14 @@ export default function FoundationSchoolDocumentsPage() {
 
     return nextRows;
   }, [workspace]);
+
+  const documentSummary = useMemo(() => {
+    const total = rows.length;
+    const pdfs = rows.filter((row) => Boolean(row.response?.file)).length;
+    const reviewed = rows.filter((row) => row.review && row.review.status !== "pendiente").length;
+
+    return { total, pdfs, reviewed };
+  }, [rows]);
 
   const filteredRows = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -225,7 +233,8 @@ export default function FoundationSchoolDocumentsPage() {
       </div>
 
       <div className="fni-data-panel p-4 text-sm text-slate-600">
-        Fuente activa: <span className="font-medium text-slate-900">{repository.source}</span>
+        {documentSummary.total} evidencias visibles · {documentSummary.pdfs} con PDF ·{" "}
+        {documentSummary.reviewed} con revisión
       </div>
 
       {error && (

@@ -172,7 +172,7 @@ function SchoolReviewWorkspace({
 }: SchoolReviewWorkspaceProps) {
   const { schoolLabel } = useFoundationSchoolDisplayName(schoolId, cycleId);
   const { cycles, loading: cyclesLoading } = useCycleOptions(cycleId);
-  const { workspace, loading, error, setReviews, repository } = useFniWorkspace({
+  const { workspace, loading, error, setReviews } = useFniWorkspace({
     schoolId,
     cycleId,
   });
@@ -324,7 +324,7 @@ function SchoolReviewWorkspace({
       </div>
 
       <div className="fni-data-panel p-4 text-sm text-slate-600">
-        Fuente activa: <span className="font-medium text-slate-900">{repository.source}</span>
+        Revisión activa · {summary.aprobados} aprobados · {summary.observados} observados · {summary.bloqueados} bloqueados
       </div>
 
       {loading && !workspace && (

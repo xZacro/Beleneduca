@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import belenLogo from "../assets/belen-logo.png";
@@ -20,13 +20,13 @@ export default function Login() {
     try {
       const user = await login(email, password);
       if (!user) {
-        setError("Credenciales inválidas o sesión no disponible.");
+        setError("Credenciales invÃ¡lidas o sesiÃ³n no disponible.");
         return;
       }
 
       navigate(getHomeForUser(user), { replace: true });
     } catch (submitError) {
-      setError(submitError instanceof Error ? submitError.message : "No se pudo iniciar sesión.");
+      setError(submitError instanceof Error ? submitError.message : "No se pudo iniciar sesiÃ³n.");
     } finally {
       setSubmitting(false);
     }
@@ -64,7 +64,7 @@ export default function Login() {
               onChange={(event) => setEmail(event.target.value)}
             />
 
-            <label className="text-sm font-semibold text-slate-700">Contraseña</label>
+            <label className="text-sm font-semibold text-slate-700">ContraseÃ±a</label>
             <input
               type="password"
               className="rounded-xl border border-slate-200 px-3 py-2 outline-none focus:ring-4 focus:ring-slate-200"
@@ -96,7 +96,7 @@ export default function Login() {
             </div>
 
             <div className="text-xs text-slate-500">
-              Modo API obligatorio: el frontend valida sesión y datos contra el backend local.
+              El acceso se valida contra el servidor y tus datos se cargan según tu perfil.
             </div>
           </form>
         </div>
@@ -108,3 +108,4 @@ export default function Login() {
     </div>
   );
 }
+

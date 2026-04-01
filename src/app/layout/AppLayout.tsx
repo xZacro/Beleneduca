@@ -54,7 +54,7 @@ export default function AppLayout() {
         items: [
           { to: ROUTES.foundation.dashboard, label: isAdmin ? "Operacion ciclo" : "Dashboard" },
           { to: ROUTES.foundation.schools, label: "Colegios" },
-          { to: ROUTES.foundation.catalog, label: "Cat\u00E1logo FNI" },
+          { to: ROUTES.foundation.catalog, label: "Catálogo FNI" },
         ],
       });
     }
@@ -65,7 +65,7 @@ export default function AppLayout() {
         label: "Mi colegio",
         items: [
           { to: ROUTES.school.dashboard, label: "Dashboard" },
-          { to: ROUTES.school.evaluation, label: "Evaluaci\u00F3n FNI" },
+          { to: ROUTES.school.evaluation, label: "Evaluación FNI" },
           { to: ROUTES.school.documents, label: "Documentos" },
         ],
       });
@@ -80,12 +80,12 @@ export default function AppLayout() {
     if (isAdmin) {
       sections.push({
         key: "admin",
-        label: "Administraci\u00F3n",
+        label: "Administración",
         items: [
           { to: ROUTES.admin.root, label: "Centro de control" },
           { to: ROUTES.admin.users, label: "Usuarios" },
           { to: ROUTES.admin.sessions, label: "Sesiones" },
-          { to: ROUTES.admin.audit, label: "Auditor\u00EDa" },
+          { to: ROUTES.admin.audit, label: "Auditoría" },
         ],
       });
     }
@@ -103,7 +103,7 @@ export default function AppLayout() {
     return (
       <div className="min-h-screen bg-slate-50 p-6">
         <div className="mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-600 shadow-sm">
-          {"Validando sesi\u00F3n..."}
+          {"Validando sesión..."}
         </div>
       </div>
     );
@@ -181,8 +181,8 @@ export default function AppLayout() {
         </section>
       </main>
 
-      <footer className="mx-auto w-full max-w-[1600px] px-4 pb-6">
-        <div className="rounded-2xl border border-slate-200 bg-white px-6 py-5 text-center shadow-sm">
+      <footer className="w-full border-t border-slate-200 bg-white px-4 py-6">
+        <div className="mx-auto w-full max-w-[1600px] text-center">
           <div className="text-sm font-semibold tracking-[0.18em] text-slate-900 uppercase">
             Fundación Belén Educa
           </div>

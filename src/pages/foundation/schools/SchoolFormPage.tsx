@@ -315,7 +315,7 @@ function SchoolFormWorkspace({
 }: SchoolFormWorkspaceProps) {
   const { schoolLabel } = useSchoolDisplayName(schoolId);
   const { cycles, loading: cyclesLoading } = useCycleOptions(cycleId);
-  const { workspace, loading, error, setResponses, repository } = useFniWorkspace({
+  const { workspace, loading, error, setResponses } = useFniWorkspace({
     schoolId,
     cycleId,
   });
@@ -394,22 +394,24 @@ function SchoolFormWorkspace({
   }, [activeArea, highlightedIndicatorId, search]);
 
   const areaStats = useMemo(() => {
-    if (!activeArea) return { total: 0, completos: 0, incompletos: 0, pendientes: 0 };
+    if (!activeArea) return { total: 0, completos: 0, incompletos: 0, pendientes: 0, conPdf: 0 };
 
     let completos = 0;
     let incompletos = 0;
     let pendientes = 0;
+    let conPdf = 0;
 
     for (const indicator of activeArea.indicators) {
       const response = responses[indicator.id] ?? defaultIndicatorResponse();
       const status = statusFromPct(calcIndicatorPct(indicator, response));
+      if (response.file) conPdf++;
 
       if (status === "completo") completos++;
       else if (status === "incompleto") incompletos++;
       else pendientes++;
     }
 
-    return { total: activeArea.indicators.length, completos, incompletos, pendientes };
+    return { total: activeArea.indicators.length, completos, incompletos, pendientes, conPdf };
   }, [activeArea, responses]);
 
   const documentsHref = `/foundation/schools/${encodeURIComponent(
@@ -426,7 +428,7 @@ function SchoolFormWorkspace({
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <SectionTitle
           title={`Formulario - ${schoolLabel}`}
-          subtitle="Captura por ciclo con lógica compartida para la futura integración API."
+          subtitle="Captura por ciclo con evidencia PDF y validación compartida."
         />
 
         <div className="flex flex-wrap items-center gap-2">
@@ -509,9 +511,9 @@ function SchoolFormWorkspace({
                   </div>
                 </div>
 
-                <div className="mt-3 text-xs text-slate-500">
-                  Fuente de datos activa: {repository.source}. Esta pantalla ya usa la misma capa compartida de la integración operativa.
-                </div>
+              <div className="mt-3 text-xs text-slate-500">
+                {areaStats.conPdf} de {areaStats.total} indicadores de esta área ya tienen PDF adjunto.
+              </div>
               </div>
             </div>
           </div>
@@ -522,7 +524,7 @@ function SchoolFormWorkspace({
                 <div>
                   <div className="text-sm font-semibold text-slate-900">{activeArea?.name}</div>
                   <p className="mt-1 text-sm text-slate-600">
-                    Indicadores cargados desde el esquema compartido del proyecto.
+                    Indicadores disponibles para este ciclo y esta área.
                   </p>
                 </div>
 
@@ -615,10 +617,10 @@ function SchoolFormWorkspace({
                 </thead>
                 <tbody className="divide-y divide-slate-100 bg-white">
                   <tr>
-                    <td className="px-4 py-4 text-slate-700">Placeholder estructurado</td>
-                    <td className="px-4 py-4 text-slate-700">Schema FNI</td>
-                    <td className="px-4 py-4 text-slate-700">Pendiente de iteración</td>
-                    <td className="px-4 py-4 text-slate-700">Usará la misma capa de datos compartida</td>
+                    <td className="px-4 py-4 text-slate-700">Indicadores del ciclo activo</td>
+                    <td className="px-4 py-4 text-slate-700">Área seleccionada</td>
+                    <td className="px-4 py-4 text-slate-700">Listado navegable</td>
+                    <td className="px-4 py-4 text-slate-700">Disponible para consulta y edición</td>
                   </tr>
                 </tbody>
               </table>
@@ -629,13 +631,13 @@ function SchoolFormWorkspace({
 
       {view === "activity" && (
         <div className="fni-data-panel">
-          <div className="text-lg font-semibold text-slate-900">Historial</div>
+          <div className="text-lg font-semibold text-slate-900">Historial del ciclo</div>
           <p className="mt-1 text-sm text-slate-600">
-            Espacio reservado para timeline y trazabilidad del ciclo con el mismo patrón visual del portal.
+            Aquí podrás seguir los cambios de cada indicador mientras avanzas en el formulario.
           </p>
 
           <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
-            Aquí se mostrarán eventos por indicador, cambios y revisiones una vez se conecte el backend operativo.
+            El historial detallado aparecerá a medida que guardes respuestas y se registren revisiones.
           </div>
         </div>
       )}

@@ -305,7 +305,8 @@ export default function Dashboard() {
       </div>
 
       <div className="fni-data-panel p-4 text-sm text-slate-600">
-        Fuente activa: <span className="font-medium text-slate-900">{repository.source}</span>
+        Ciclo {cycleId} · <span className="font-medium text-slate-900">{totals.completos} completos</span> ·{" "}
+        <span className="font-medium text-slate-900">{totals.observados + totals.bloqueados} con feedback</span>
       </div>
 
       {loading && !workspace && (
@@ -385,7 +386,7 @@ export default function Dashboard() {
                 className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 md:flex-row md:items-center md:justify-between"
               >
                 <div className="flex items-start gap-3">
-                  <MiniBadge tone={step.priority === "Alta" ? "rose" : "blue"}>
+                  <MiniBadge tone={step.priority === "Alta" ? "rose" : "amber"}>
                     Prioridad {step.priority}
                   </MiniBadge>
                   <div className="text-sm text-slate-800">{step.text}</div>

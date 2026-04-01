@@ -88,7 +88,9 @@ export function calcIndicatorPct(
     const value = response.answers[numericQuestions[0].key];
     if (typeof value === "number") {
       const normalized = value >= 0 && value <= 1 ? value * 100 : value;
-      return clamp(normalized);
+      const clamped = clamp(normalized);
+      if (indicator.hasDocumentFields && !hasUploadedPdf && clamped >= 100) return 0;
+      return clamped;
     }
 
     return null;
@@ -106,6 +108,8 @@ export function calcIndicatorPct(
     return typeof answer === "number" ? undefined : answer;
   };
 
+  const hasUploadedPdf = Boolean(response.file?.downloadUrl || response.file?.dataUrl || response.file?.name);
+
   const hasDocumentQuestion = yesNoQuestions.some((question) => question.key === "hasDocument");
   const isUpdatedQuestion = yesNoQuestions.some((question) => question.key === "isUpdated");
 
@@ -115,20 +119,30 @@ export function calcIndicatorPct(
 
     if ([hasDocument, isUpdated].some((value) => value == null || value === "NA")) return null;
     if (hasDocument === "NO" || isUpdated === "NO") return 0;
+    if (!hasUploadedPdf) return 0;
     return 100;
   }
 
   if (hasDocumentQuestion) {
-    return pctFromYesNo(getAnswer("hasDocument"));
+    const hasDocument = getAnswer("hasDocument");
+    if (hasDocument == null || hasDocument === "NA") return null;
+    if (hasDocument === "NO") return 0;
+    if (!hasUploadedPdf) return 0;
+    return 100;
   }
 
   if (yesNoQuestions.length === 1) {
-    return pctFromYesNo(getAnswer(yesNoQuestions[0].key));
+    const answer = getAnswer(yesNoQuestions[0].key);
+    if (answer == null || answer === "NA") return null;
+    if (answer === "NO") return 0;
+    if (indicator.hasDocumentFields && !hasUploadedPdf) return 0;
+    return 100;
   }
 
   const values = yesNoQuestions.map((question) => getAnswer(question.key));
   if (values.some((value) => value == null || value === "NA")) return null;
   if (values.some((value) => value === "NO")) return 0;
+  if (indicator.hasDocumentFields && !hasUploadedPdf) return 0;
   return 100;
 }
 
