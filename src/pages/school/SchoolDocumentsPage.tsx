@@ -55,7 +55,7 @@ function getIndicatorLabel(indicator: IndicatorLike) {
 }
 
 function getReviewLabel(review: IndicatorReview | null) {
-  if (!review) return "Sin revisiÃ³n";
+  if (!review) return "Sin revisión";
 
   switch (review.status) {
     case "aprobado":
@@ -78,9 +78,9 @@ function getDocumentStatus(
 
   if (!hasEvidence) return "Sin evidencia";
   if (review?.status === "aprobado") return "Validado";
-  if (review?.status === "observado") return "Con observaciÃ³n";
+  if (review?.status === "observado") return "Con observación";
   if (review?.status === "bloqueado") return "Bloqueado";
-  if (submission.status === "enviado") return "En revisiÃ³n";
+  if (submission.status === "enviado") return "En revisión";
   if (submission.status === "devuelto") return "Devuelto con feedback";
   if (submission.status === "aprobado") return "Formulario aprobado";
   return "Cargado";
@@ -187,7 +187,7 @@ export default function SchoolDocumentsPage() {
             <span className="font-medium">cycleId</span>.
           </p>
 
-                    <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+          <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
             Para esta vista necesitas abrir la ruta con <span className="font-medium">schoolId</span> y <span className="font-medium">cycleId</span> definidos, o entrar desde un enlace que ya traiga ese contexto.
             <br />
             <code className="mt-2 inline-block rounded bg-white px-2 py-1">
@@ -219,14 +219,14 @@ export default function SchoolDocumentsPage() {
             )}`}
             className="fni-toolbar-button inline-flex items-center"
           >
-            Ir a evaluaciÃ³n
+            Ir a evaluación
           </Link>
         </div>
       </div>
 
       <div className="fni-data-panel p-4 text-sm text-slate-600">
-        {documentSummary.total} evidencias visibles Â· {documentSummary.pdfs} con PDF Â·{" "}
-        {documentSummary.reviewed} con revisiÃ³n
+        {documentSummary.total} evidencias visibles · {documentSummary.pdfs} con PDF ·{" "}
+        {documentSummary.reviewed} con revisión
       </div>
 
       {error && (
@@ -247,7 +247,7 @@ export default function SchoolDocumentsPage() {
         </label>
 
         <label className="space-y-1">
-          <span className="fni-field-label">Ãrea</span>
+          <span className="fni-field-label">Área</span>
           <select
             value={selectedArea}
             onChange={(event) => setSelectedArea(event.target.value)}
@@ -270,7 +270,7 @@ export default function SchoolDocumentsPage() {
             <span className="font-medium">Ciclo:</span> {cycleId}
           </div>
           <div>
-            <span className="font-medium">Estado de envÃ­o:</span> {workspace.submission.status}
+            <span className="font-medium">Estado de envío:</span> {workspace.submission.status}
           </div>
         </div>
       </div>
@@ -283,12 +283,12 @@ export default function SchoolDocumentsPage() {
             <table className="fni-data-table">
               <thead className="bg-slate-50 text-slate-600">
                 <tr>
-                  <th className="px-4 py-3 text-left font-semibold">Ãrea</th>
+                  <th className="px-4 py-3 text-left font-semibold">Área</th>
                   <th className="px-4 py-3 text-left font-semibold">Indicador</th>
                   <th className="px-4 py-3 text-left font-semibold">Estado documental</th>
                   <th className="px-4 py-3 text-left font-semibold">Archivo / referencia</th>
-                  <th className="px-4 py-3 text-left font-semibold">RevisiÃ³n</th>
-                  <th className="px-4 py-3 text-left font-semibold">ActualizaciÃ³n</th>
+                  <th className="px-4 py-3 text-left font-semibold">Revisión</th>
+                  <th className="px-4 py-3 text-left font-semibold">Actualización</th>
                   <th className="px-4 py-3 text-right font-semibold">Acciones</th>
                 </tr>
               </thead>
@@ -320,7 +320,7 @@ export default function SchoolDocumentsPage() {
                     <td className="px-4 py-4">
                       <div className="text-sm font-medium text-slate-800">{getReviewLabel(row.review)}</div>
                       <div className="mt-1 max-w-sm text-xs text-slate-500 whitespace-pre-wrap">
-                        {row.review?.reviewComment.trim() || "Sin feedback todavÃ­a"}
+                        {row.review?.reviewComment.trim() || "Sin feedback todavía"}
                       </div>
                     </td>
                     <td className="px-4 py-4 text-sm text-slate-600">{formatDate(row.updatedAt)}</td>

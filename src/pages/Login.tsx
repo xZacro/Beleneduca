@@ -20,13 +20,13 @@ export default function Login() {
     try {
       const user = await login(email, password);
       if (!user) {
-        setError("Credenciales invÃ¡lidas o sesiÃ³n no disponible.");
+        setError("Credenciales inválidas o sesión no disponible.");
         return;
       }
 
       navigate(getHomeForUser(user), { replace: true });
     } catch (submitError) {
-      setError(submitError instanceof Error ? submitError.message : "No se pudo iniciar sesiÃ³n.");
+      setError(submitError instanceof Error ? submitError.message : "No se pudo iniciar sesión.");
     } finally {
       setSubmitting(false);
     }
@@ -64,7 +64,7 @@ export default function Login() {
               onChange={(event) => setEmail(event.target.value)}
             />
 
-            <label className="text-sm font-semibold text-slate-700">ContraseÃ±a</label>
+            <label className="text-sm font-semibold text-slate-700">Contraseña</label>
             <input
               type="password"
               className="rounded-xl border border-slate-200 px-3 py-2 outline-none focus:ring-4 focus:ring-slate-200"
