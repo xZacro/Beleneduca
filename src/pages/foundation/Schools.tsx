@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { getFniRepository } from "../../shared/fni/repository";
 import type { FoundationReviewStatus, FoundationSchoolRow } from "../../shared/fni/schools";
+import { normalizeSchoolName } from "../../shared/fni/schools";
 import { useCycleOptions } from "../../shared/useCycleOptions";
 
 type ReviewStatus = FoundationReviewStatus;
@@ -104,7 +105,7 @@ export default function FoundationSchoolsPage() {
   const cycleQuery = `?cycleId=${encodeURIComponent(cycleId)}`;
 
   function buildSchoolLabel(school: SchoolRow) {
-    return `${school.code} - ${school.name}`;
+    return `${school.code} - ${normalizeSchoolName(school.code, school.name)}`;
   }
 
   useEffect(() => {

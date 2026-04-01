@@ -18,6 +18,7 @@ import {
   updateManagementCycle,
 } from "../../shared/management/client";
 import type { ManagementDashboardDto } from "../../shared/management/apiContracts";
+import { normalizeSchoolName } from "../../shared/fni/schools";
 import { useCycleOptions } from "../../shared/useCycleOptions";
 
 // Centro de control administrativo: usuarios, sesiones, auditoria y salud del ciclo.
@@ -1095,7 +1096,7 @@ export default function AdminDashboard() {
                           school.id
                         )}/documents?cycleId=${encodeURIComponent(
                           cycleId
-                        )}&schoolLabel=${encodeURIComponent(`${school.code} - ${school.name}`)}`}
+                        )}&schoolLabel=${encodeURIComponent(`${school.code} - ${normalizeSchoolName(school.code, school.name)}`)}`}
                         className="fni-toolbar-button"
                       >
                         Ver documentos
@@ -1105,7 +1106,7 @@ export default function AdminDashboard() {
                           school.id
                         )}/review?cycleId=${encodeURIComponent(
                           cycleId
-                        )}&schoolLabel=${encodeURIComponent(`${school.code} - ${school.name}`)}`}
+                        )}&schoolLabel=${encodeURIComponent(`${school.code} - ${normalizeSchoolName(school.code, school.name)}`)}`}
                         className="fni-toolbar-button"
                       >
                         Ir a revisión
