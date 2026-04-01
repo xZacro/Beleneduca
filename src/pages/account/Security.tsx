@@ -1,9 +1,11 @@
 import { useState } from "react";
 
 import { changeOwnPassword, getUser, roleLabel } from "../../shared/auth";
+import { useSchoolDisplayName } from "../../shared/useSchoolDirectory";
 
 export default function AccountSecurity() {
   const user = getUser();
+  const { schoolLabel } = useSchoolDisplayName(user?.schoolId ?? null);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -169,7 +171,7 @@ export default function AccountSecurity() {
 
             <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
               <div className="text-xs font-semibold tracking-wide text-slate-500">Colegio asociado</div>
-              <div className="mt-1 font-medium text-slate-900">{user?.schoolId ?? "No aplica"}</div>
+              <div className="mt-1 font-medium text-slate-900">{schoolLabel}</div>
             </div>
           </div>
         </div>
