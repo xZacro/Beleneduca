@@ -108,6 +108,10 @@ export default function FoundationSchoolsPage() {
     return `${school.code} - ${normalizeSchoolName(school.code, school.name)}`;
   }
 
+  function buildSchoolDisplayName(school: SchoolRow) {
+    return normalizeSchoolName(school.code, school.name);
+  }
+
   useEffect(() => {
     setCycleId(initialCycleId);
   }, [initialCycleId]);
@@ -137,7 +141,7 @@ export default function FoundationSchoolsPage() {
 
     if (qq) {
       out = out.filter((s) => {
-        const hay = `${s.code} ${s.name} ${s.managerName ?? ""} ${s.managerEmail ?? ""}`.toLowerCase();
+        const hay = `${s.code} ${buildSchoolDisplayName(s)} ${s.managerName ?? ""} ${s.managerEmail ?? ""}`.toLowerCase();
         return hay.includes(qq);
       });
     }
@@ -337,7 +341,7 @@ export default function FoundationSchoolsPage() {
       {!loading && !err && view === "cards" && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {filtered.map((s) => (
-            <div key={s.id} className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                <div key={s.id} className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <div className="flex items-center gap-2">
@@ -346,7 +350,7 @@ export default function FoundationSchoolsPage() {
                       {STATUS_LABEL[s.status]}
                     </span>
                   </div>
-                  <div className="mt-1 text-sm text-slate-700">{s.name}</div>
+                  <div className="mt-1 text-sm text-slate-700">{buildSchoolDisplayName(s)}</div>
                   <div className="mt-1 text-xs text-slate-500">
                     Última actividad: {fmtAgo(s.lastActivityAt)}
                   </div>
@@ -418,7 +422,7 @@ export default function FoundationSchoolsPage() {
                   <tr key={s.id} className="hover:bg-slate-50/50">
                     <td className="px-4 py-3">
                       <div className="font-semibold text-slate-900">{s.code}</div>
-                      <div className="text-slate-600">{s.name}</div>
+                      <div className="text-slate-600">{buildSchoolDisplayName(s)}</div>
                     </td>
                     <td className="px-4 py-3">
                       <span className={`rounded-full px-2 py-0.5 text-xs ${STATUS_BADGE[s.status]}`}>

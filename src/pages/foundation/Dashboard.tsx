@@ -976,7 +976,9 @@ export function ManagementDashboard({ mode }: { mode: ManagementDashboardMode })
                         issues.map((issue) => (
                           <tr key={`${issue.schoolId}-${issue.indicatorId}`} className="text-sm text-slate-700">
                             <td className="px-4 py-3">
-                              <div className="font-medium text-slate-900">{issue.schoolName}</div>
+                              <div className="font-medium text-slate-900">
+                                {normalizeSchoolName(issue.schoolCode, issue.schoolName)}
+                              </div>
                               <div className="text-xs text-slate-500">{issue.schoolCode}</div>
                             </td>
 
