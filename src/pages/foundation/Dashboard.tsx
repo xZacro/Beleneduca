@@ -321,8 +321,8 @@ function schoolReviewLink(cycleId: string, schoolId: string) {
   return `/foundation/schools/${encodeURIComponent(schoolId)}/review?cycleId=${encodeURIComponent(cycleId)}`;
 }
 
-function schoolFormLink(cycleId: string, schoolId: string) {
-  return `/foundation/schools/${encodeURIComponent(schoolId)}/form?cycleId=${encodeURIComponent(cycleId)}`;
+function schoolDocumentsLink(cycleId: string, schoolId: string) {
+  return `/foundation/schools/${encodeURIComponent(schoolId)}/documents?cycleId=${encodeURIComponent(cycleId)}`;
 }
 
 export function ManagementDashboard({ mode }: { mode: ManagementDashboardMode }) {
@@ -913,14 +913,14 @@ export function ManagementDashboard({ mode }: { mode: ManagementDashboardMode })
                       </div>
 
                       <div className="flex flex-wrap gap-2">
-                        <Link
-                          to={schoolFormLink(cycle.id, school.id)}
-                          className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-100"
-                        >
-                          Formulario
-                        </Link>
                         <Link to={schoolReviewLink(cycle.id, school.id)} className="fni-toolbar-button">
                           Revisión
+                        </Link>
+                        <Link
+                          to={schoolDocumentsLink(cycle.id, school.id)}
+                          className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-100"
+                        >
+                          Documentos
                         </Link>
                       </div>
                     </div>
