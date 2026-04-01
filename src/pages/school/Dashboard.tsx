@@ -23,11 +23,11 @@ function formatDate(value: string | null) {
 }
 
 function kpiTone(kind: "neutral" | "blue" | "amber" | "green" | "rose") {
-  if (kind === "blue") return "border-blue-200 bg-blue-50";
-  if (kind === "amber") return "border-amber-200 bg-amber-50";
-  if (kind === "green") return "border-emerald-200 bg-emerald-50";
-  if (kind === "rose") return "border-rose-200 bg-rose-50";
-  return "border-slate-200 bg-white";
+  if (kind === "blue") return { shell: "border-blue-200 bg-gradient-to-br from-blue-50 via-white to-white", value: "text-blue-700", accent: "bg-blue-500" };
+  if (kind === "amber") return { shell: "border-amber-200 bg-gradient-to-br from-amber-50 via-white to-white", value: "text-amber-700", accent: "bg-amber-500" };
+  if (kind === "green") return { shell: "border-emerald-200 bg-gradient-to-br from-emerald-50 via-white to-white", value: "text-emerald-700", accent: "bg-emerald-500" };
+  if (kind === "rose") return { shell: "border-rose-200 bg-gradient-to-br from-rose-50 via-white to-white", value: "text-rose-700", accent: "bg-rose-500" };
+  return { shell: "border-slate-200 bg-gradient-to-br from-slate-50 via-white to-white", value: "text-slate-700", accent: "bg-slate-500" };
 }
 
 function barTone(pct: number) {
@@ -84,11 +84,16 @@ function KpiCard({
   subtitle: string;
   tone?: "neutral" | "blue" | "amber" | "green" | "rose";
 }) {
+  const styles = kpiTone(tone);
+
   return (
-    <div className={`fni-metric-card ${kpiTone(tone)}`}>
-      <div className="text-sm font-medium text-slate-600">{title}</div>
-      <div className="mt-2 text-4xl font-bold tracking-tight text-slate-900">{value}</div>
-      <div className="mt-1 text-sm text-slate-600">{subtitle}</div>
+    <div className={`fni-metric-card ${styles.shell}`}>
+      <div className="flex items-start justify-between gap-3">
+        <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{title}</div>
+        <span className={`mt-1 h-2.5 w-10 rounded-full ${styles.accent}`} />
+      </div>
+      <div className={`mt-4 text-4xl font-semibold tracking-tight ${styles.value}`}>{value}</div>
+      <div className="mt-2 text-sm leading-6 text-slate-600">{subtitle}</div>
     </div>
   );
 }

@@ -119,7 +119,7 @@
   }
 
   .fni-metric-card {
-    @apply min-h-[132px] rounded-2xl border p-4 shadow-sm;
+    @apply min-h-[132px] rounded-3xl border p-5 shadow-sm;
   }
 
   .fni-data-table-shell {

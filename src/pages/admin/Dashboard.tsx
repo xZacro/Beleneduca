@@ -158,11 +158,22 @@ function MetricCard({
   subtitle: string;
   tone: Tone;
 }) {
+  const styles = {
+    blue: { shell: "border-blue-200 bg-gradient-to-br from-blue-50 via-white to-white", value: "text-blue-700", accent: "bg-blue-500" },
+    amber: { shell: "border-amber-200 bg-gradient-to-br from-amber-50 via-white to-white", value: "text-amber-700", accent: "bg-amber-500" },
+    green: { shell: "border-emerald-200 bg-gradient-to-br from-emerald-50 via-white to-white", value: "text-emerald-700", accent: "bg-emerald-500" },
+    rose: { shell: "border-rose-200 bg-gradient-to-br from-rose-50 via-white to-white", value: "text-rose-700", accent: "bg-rose-500" },
+    slate: { shell: "border-slate-200 bg-gradient-to-br from-slate-50 via-white to-white", value: "text-slate-700", accent: "bg-slate-500" },
+  }[tone];
+
   return (
-    <div className={`fni-metric-card ${surfaceTone(tone)}`}>
-      <div className="text-sm font-medium text-slate-600">{title}</div>
-      <div className="mt-2 text-4xl font-bold tracking-tight text-slate-900">{value}</div>
-      <div className="mt-1 text-sm text-slate-600">{subtitle}</div>
+    <div className={`fni-metric-card ${styles.shell}`}>
+      <div className="flex items-start justify-between gap-3">
+        <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{title}</div>
+        <span className={`mt-1 h-2.5 w-10 rounded-full ${styles.accent}`} />
+      </div>
+      <div className={`mt-4 text-4xl font-semibold tracking-tight ${styles.value}`}>{value}</div>
+      <div className="mt-2 text-sm leading-6 text-slate-600">{subtitle}</div>
     </div>
   );
 }
