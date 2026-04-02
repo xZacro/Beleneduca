@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 
 import type { Role } from "../shared/auth";
+import { getUser } from "../shared/auth";
 import { canAccess } from "../shared/authZ";
 import { useResolvedAuthUser } from "../shared/useResolvedAuthUser";
 import { getHomeForUser } from "./routes/home";
@@ -25,8 +26,9 @@ export function HomeRedirect() {
 }
 
 export function LoginRedirect({ children }: { children: ReactNode }) {
-  const { user, loading } = useResolvedAuthUser({ requireSession: true });
-  if (loading) return <AuthPending />;
+  const cachedUser = getUser();
+  const { user, loading } = useResolvedAuthUser({ validateOnMount: true });
+  if (cachedUser && loading) return <AuthPending />;
   if (user) return <Navigate to={getHomeForUser(user)} replace />;
   return <>{children}</>;
 }
