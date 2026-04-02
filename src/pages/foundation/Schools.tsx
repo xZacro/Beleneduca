@@ -74,12 +74,45 @@ function Chip({ children, tone = "default" }: { children: React.ReactNode; tone?
   return <span className={`px-2 py-0.5 rounded-full text-xs ${cls}`}>{children}</span>;
 }
 
-function StatCard({ label, value, hint }: { label: string; value: string; hint?: string }) {
+type StatTone = "blue" | "amber" | "rose" | "emerald" | "indigo";
+
+const STAT_TONES: Record<StatTone, string> = {
+  blue: "border-sky-200 bg-sky-50/60",
+  amber: "border-amber-200 bg-amber-50/60",
+  rose: "border-rose-200 bg-rose-50/60",
+  emerald: "border-emerald-200 bg-emerald-50/60",
+  indigo: "border-indigo-200 bg-indigo-50/60",
+};
+
+const STAT_ACCENTS: Record<StatTone, string> = {
+  blue: "bg-sky-500",
+  amber: "bg-amber-500",
+  rose: "bg-rose-500",
+  emerald: "bg-emerald-500",
+  indigo: "bg-indigo-500",
+};
+
+function StatCard({
+  label,
+  value,
+  hint,
+  tone = "blue",
+}: {
+  label: string;
+  value: string;
+  hint?: string;
+  tone?: StatTone;
+}) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-      <div className="text-sm text-slate-600">{label}</div>
-      <div className="mt-1 text-2xl font-semibold text-slate-900">{value}</div>
-      {hint && <div className="mt-1 text-xs text-slate-500">{hint}</div>}
+    <div className={`fni-metric-card border-t-4 ${STAT_TONES[tone]} bg-white`}>
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-slate-500">{label}</div>
+          <div className="mt-2 text-[2.35rem] font-semibold leading-none tracking-tight text-slate-900">{value}</div>
+          {hint && <div className="mt-2 text-sm text-slate-600">{hint}</div>}
+        </div>
+        <div className={`mt-1 h-2.5 w-10 rounded-full ${STAT_ACCENTS[tone]}`} />
+      </div>
     </div>
   );
 }
@@ -239,11 +272,11 @@ export default function FoundationSchoolsPage() {
 
       {/* KPIs */}
       <div className="grid grid-cols-1 gap-3 md:grid-cols-5">
-        <StatCard label="Colegios" value={`${kpis.total}`} />
-        <StatCard label="Completitud promedio" value={`${kpis.avg}%`} hint="Ciclo actual" />
-        <StatCard label="Pendientes" value={`${kpis.pending}`} hint="Indicadores por completar" />
-        <StatCard label="Bloqueados" value={`${kpis.blocked}`} hint="Con bloqueantes" />
-        <StatCard label="Observados" value={`${kpis.observed}`} hint="Requieren ajustes" />
+        <StatCard label="Colegios" value={`${kpis.total}`} hint="Activos en el ciclo" tone="blue" />
+        <StatCard label="Completitud promedio" value={`${kpis.avg}%`} hint="Promedio real del ciclo" tone="emerald" />
+        <StatCard label="Pendientes" value={`${kpis.pending}`} hint="Indicadores por completar" tone="amber" />
+        <StatCard label="Bloqueados" value={`${kpis.blocked}`} hint="Con bloqueantes críticos" tone="rose" />
+        <StatCard label="Observados" value={`${kpis.observed}`} hint="Requieren ajustes" tone="indigo" />
       </div>
 
       {/* Filters */}
@@ -341,24 +374,27 @@ export default function FoundationSchoolsPage() {
       {!loading && !err && view === "cards" && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {filtered.map((s) => (
-                <div key={s.id} className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                <div
+                  key={s.id}
+                  className="flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                >
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <div className="flex items-center gap-2">
-                    <div className="text-sm font-semibold text-slate-900">{s.code}</div>
-                    <span className={`rounded-full px-2 py-0.5 text-xs ${STATUS_BADGE[s.status]}`}>
+                    <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">{s.code}</div>
+                    <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${STATUS_BADGE[s.status]}`}>
                       {STATUS_LABEL[s.status]}
                     </span>
                   </div>
-                  <div className="mt-1 text-sm text-slate-700">{buildSchoolDisplayName(s)}</div>
+                  <div className="mt-2 text-lg font-semibold leading-tight text-slate-900">{buildSchoolDisplayName(s)}</div>
                   <div className="mt-1 text-xs text-slate-500">
                     Última actividad: {fmtAgo(s.lastActivityAt)}
                   </div>
                 </div>
 
                 <div className="text-right">
-                  <div className="text-xs text-slate-500">Ciclo</div>
-                  <div className="text-sm font-semibold text-slate-900">{s.cycleId}</div>
+                  <div className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-slate-500">Ciclo</div>
+                  <div className="mt-1 text-lg font-semibold text-slate-900">{s.cycleId}</div>
                 </div>
               </div>
 
@@ -366,17 +402,17 @@ export default function FoundationSchoolsPage() {
                 <ProgressBar value={s.completionPct} />
               </div>
 
-              <div className="mt-3 flex flex-wrap gap-2">
+              <div className="mt-4 grid grid-cols-2 gap-2">
                 {(s.blockingCount ?? 0) > 0 && <Chip tone="danger">Bloqueantes: {s.blockingCount}</Chip>}
                 {(s.observedCount ?? 0) > 0 && <Chip tone="warn">Observaciones: {s.observedCount}</Chip>}
                 {(s.missingEvidenceCount ?? 0) > 0 && <Chip>Sin evidencia: {s.missingEvidenceCount}</Chip>}
                 {(s.pendingCount ?? 0) > 0 && <Chip>Pendientes: {s.pendingCount}</Chip>}
               </div>
 
-              <div className="mt-4 flex flex-wrap gap-2">
+              <div className="mt-5 flex flex-wrap gap-2">
                 <Link
                   to={`/foundation/schools/${encodeURIComponent(s.id)}/review${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
-                  className="rounded-lg bg-slate-900 px-3 py-2 text-sm text-white"
+                  className="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
                 >
                   Revisión
                 </Link>
