@@ -99,13 +99,13 @@ function FeatureIcon({ kind }: { kind: (typeof features)[number]["icon"] }) {
 
 function Illustration() {
   return (
-    <div className="relative mx-auto flex min-h-[380px] w-full max-w-[500px] items-center justify-start px-2">
-      <div className="absolute left-0 top-8 h-28 w-28 rounded-full bg-sky-100/70 blur-3xl" />
-      <div className="absolute right-0 top-20 h-32 w-32 rounded-full bg-amber-100/60 blur-3xl" />
-      <div className="absolute left-10 bottom-8 h-24 w-24 rounded-full bg-violet-100/55 blur-3xl" />
+    <div className="relative mx-auto flex min-h-[300px] w-full max-w-[380px] items-center justify-start px-1">
+      <div className="absolute left-0 top-6 h-24 w-24 rounded-full bg-sky-100/70 blur-3xl" />
+      <div className="absolute right-0 top-14 h-24 w-24 rounded-full bg-amber-100/60 blur-3xl" />
+      <div className="absolute left-6 bottom-6 h-20 w-20 rounded-full bg-violet-100/55 blur-3xl" />
 
       <div
-        className="absolute left-0 top-16 h-[265px] w-[360px] rounded-[2rem] border border-dashed border-slate-200/80"
+        className="absolute left-0 top-14 h-[220px] w-[300px] rounded-[2rem] border border-dashed border-slate-200/80"
         style={{
           backgroundImage:
             "radial-gradient(circle, rgba(148,163,184,0.20) 1.3px, transparent 1.3px), radial-gradient(circle, rgba(148,163,184,0.12) 1.1px, transparent 1.1px)",
@@ -114,36 +114,36 @@ function Illustration() {
         }}
       />
 
-      <div className="relative h-[340px] w-[420px]">
-        <div className="absolute left-8 top-12 h-[188px] w-[150px] rounded-[2rem] border border-slate-100 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
-          <div className="px-7 pt-7">
-            <div className="h-3 w-20 rounded-full bg-sky-100" />
-            <div className="mt-4 h-3 w-12 rounded-full bg-sky-100" />
+      <div className="relative h-[270px] w-[320px]">
+        <div className="absolute left-6 top-10 h-[150px] w-[122px] rounded-[1.8rem] border border-slate-100 bg-white shadow-[0_16px_32px_rgba(15,23,42,0.08)]">
+          <div className="px-5 pt-5">
+            <div className="h-2.5 w-16 rounded-full bg-sky-100" />
+            <div className="mt-3 h-2.5 w-10 rounded-full bg-sky-100" />
           </div>
-          <div className="absolute left-1/2 top-[82px] grid h-14 w-14 -translate-x-1/2 place-items-center rounded-full bg-sky-500 text-white shadow-[0_12px_24px_rgba(37,99,235,0.24)]">
-            <span className="text-xl font-semibold leading-none">✓</span>
+          <div className="absolute left-1/2 top-[68px] grid h-12 w-12 -translate-x-1/2 place-items-center rounded-full bg-sky-500 text-white shadow-[0_12px_24px_rgba(37,99,235,0.24)]">
+            <span className="text-lg font-semibold leading-none">✓</span>
           </div>
         </div>
 
-        <div className="absolute left-[54px] top-[170px] h-[142px] w-[150px] rounded-[2rem] border border-slate-100 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
-          <div className="px-5 pt-5">
-            <div className="h-3 w-14 rounded-full bg-slate-100" />
+        <div className="absolute left-8 top-[152px] h-[120px] w-[124px] rounded-[1.8rem] border border-slate-100 bg-white shadow-[0_16px_32px_rgba(15,23,42,0.08)]">
+          <div className="px-4 pt-4">
+            <div className="h-2.5 w-12 rounded-full bg-slate-100" />
             <div className="mt-4 flex items-end gap-2">
-              <div className="h-10 w-6 rounded-t-lg bg-sky-100" />
-              <div className="h-16 w-6 rounded-t-lg bg-sky-200" />
-              <div className="h-8 w-6 rounded-t-lg bg-sky-100" />
-              <div className="h-[72px] w-6 rounded-t-lg bg-sky-300" />
+              <div className="h-8 w-5 rounded-t-lg bg-sky-100" />
+              <div className="h-12 w-5 rounded-t-lg bg-sky-200" />
+              <div className="h-6 w-5 rounded-t-lg bg-sky-100" />
+              <div className="h-14 w-5 rounded-t-lg bg-sky-300" />
             </div>
           </div>
         </div>
 
-        <div className="absolute left-[144px] top-[132px] h-[78px] w-[78px] rounded-[1.5rem] bg-gradient-to-b from-amber-200 to-amber-400 shadow-[0_18px_40px_rgba(245,158,11,0.18)]" />
+        <div className="absolute left-[118px] top-[108px] h-[62px] w-[62px] rounded-[1.25rem] bg-gradient-to-b from-amber-200 to-amber-400 shadow-[0_18px_40px_rgba(245,158,11,0.18)]" />
 
-        <div className="absolute left-[206px] top-[158px] h-[126px] w-[128px] rounded-[2rem] border border-slate-100 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
-          <div className="px-5 pt-5">
-            <div className="h-2.5 w-10 rounded-full bg-slate-100" />
-            <div className="mt-3 h-2.5 w-6 rounded-full bg-slate-100" />
-            <div className="mt-4 h-14 rounded-2xl bg-gradient-to-br from-sky-50 via-sky-100 to-transparent" />
+        <div className="absolute left-[160px] top-[128px] h-[104px] w-[108px] rounded-[1.8rem] border border-slate-100 bg-white shadow-[0_16px_32px_rgba(15,23,42,0.08)]">
+          <div className="px-4 pt-4">
+            <div className="h-2.5 w-8 rounded-full bg-slate-100" />
+            <div className="mt-3 h-2.5 w-5 rounded-full bg-slate-100" />
+            <div className="mt-3 h-12 rounded-2xl bg-gradient-to-br from-sky-50 via-sky-100 to-transparent" />
           </div>
         </div>
       </div>
@@ -190,7 +190,7 @@ export default function Login() {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(37,99,235,0.08),transparent_26%),radial-gradient(circle_at_bottom_left,rgba(245,158,11,0.08),transparent_24%)]" />
 
             <div className="relative flex h-full flex-col">
-              <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[0.58fr_1fr] lg:items-start lg:gap-8">
+              <div className="flex flex-col gap-5 lg:grid lg:grid-cols-[0.48fr_1fr] lg:items-start lg:gap-6">
                 <div className="flex justify-start lg:pt-1">
                   <img src={belenLogo} alt="Fundación Belén Educa" className="h-14 w-auto max-w-[240px] object-contain" />
                 </div>
@@ -209,7 +209,7 @@ export default function Login() {
                 </div>
               </div>
 
-              <div className="mt-10 flex flex-1 items-center justify-start lg:mt-12">
+              <div className="mt-8 flex flex-1 items-center justify-start lg:mt-10">
                 <Illustration />
               </div>
 
