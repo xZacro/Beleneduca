@@ -185,12 +185,12 @@ export default function Login() {
       <div className="fni-brand-ribbon h-4 w-full" />
 
       <div className="mx-auto max-w-6xl px-4 py-8 lg:px-8">
-        <div className="grid gap-6 lg:min-h-[calc(100vh-5rem)] lg:grid-cols-[1fr_0.86fr] lg:items-stretch">
+        <div className="grid gap-6 lg:min-h-[calc(100vh-5rem)] lg:grid-cols-[1.1fr_0.82fr] lg:items-stretch">
           <section className="relative overflow-hidden rounded-[2rem] border border-white/70 bg-white/80 p-6 shadow-[0_22px_60px_rgba(15,23,42,0.08)] backdrop-blur sm:p-8 lg:p-10">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(37,99,235,0.08),transparent_26%),radial-gradient(circle_at_bottom_left,rgba(245,158,11,0.08),transparent_24%)]" />
 
             <div className="relative flex h-full flex-col">
-              <div className="grid gap-6 lg:grid-cols-[0.42fr_0.58fr] lg:items-start lg:gap-8">
+              <div className="grid gap-6 lg:grid-cols-[0.36fr_0.64fr] lg:items-start lg:gap-8">
                 <div className="space-y-3">
                   <div className="flex justify-start lg:pt-1">
                     <img src={belenLogo} alt="Fundación Belén Educa" className="h-14 w-auto max-w-[240px] object-contain" />
@@ -202,7 +202,7 @@ export default function Login() {
                   <div className="text-[0.74rem] font-semibold uppercase tracking-[0.32em] text-blue-700">
                     Fundación Belén Educa
                   </div>
-                  <h1 className="mt-3 text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
+                  <h1 className="mt-3 max-w-[10ch] text-4xl font-semibold leading-[0.95] tracking-tight text-slate-900 sm:text-5xl">
                     Gestor
                     <br />
                     Documental
