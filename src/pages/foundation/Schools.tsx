@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { getFniRepository } from "../../shared/fni/repository";
 import type { FoundationReviewStatus, FoundationSchoolRow } from "../../shared/fni/schools";
-import { normalizeSchoolName } from "../../shared/fni/schools";
+import { normalizeSchoolCode, normalizeSchoolName } from "../../shared/fni/schools";
 import { useCycleOptions } from "../../shared/useCycleOptions";
 
 type ReviewStatus = FoundationReviewStatus;
@@ -138,11 +138,12 @@ export default function FoundationSchoolsPage() {
   const cycleQuery = `?cycleId=${encodeURIComponent(cycleId)}`;
 
   function buildSchoolLabel(school: SchoolRow) {
-    return `${school.code} - ${normalizeSchoolName(school.code, school.name)}`;
+    const code = normalizeSchoolCode(school.code);
+    return `${code} - ${normalizeSchoolName(code, school.name)}`;
   }
 
   function buildSchoolDisplayName(school: SchoolRow) {
-    return normalizeSchoolName(school.code, school.name);
+    return normalizeSchoolName(normalizeSchoolCode(school.code), school.name);
   }
 
   useEffect(() => {
@@ -174,7 +175,7 @@ export default function FoundationSchoolsPage() {
 
     if (qq) {
       out = out.filter((s) => {
-        const hay = `${s.code} ${buildSchoolDisplayName(s)} ${s.managerName ?? ""} ${s.managerEmail ?? ""}`.toLowerCase();
+        const hay = `${normalizeSchoolCode(s.code)} ${buildSchoolDisplayName(s)} ${s.managerName ?? ""} ${s.managerEmail ?? ""}`.toLowerCase();
         return hay.includes(qq);
       });
     }
@@ -381,7 +382,7 @@ export default function FoundationSchoolsPage() {
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <div className="flex items-center gap-2">
-                    <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">{s.code}</div>
+                    <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">{normalizeSchoolCode(s.code)}</div>
                     <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${STATUS_BADGE[s.status]}`}>
                       {STATUS_LABEL[s.status]}
                     </span>
@@ -457,7 +458,7 @@ export default function FoundationSchoolsPage() {
                 {filtered.map((s) => (
                   <tr key={s.id} className="hover:bg-slate-50/50">
                     <td className="px-4 py-3">
-                      <div className="font-semibold text-slate-900">{s.code}</div>
+                      <div className="font-semibold text-slate-900">{normalizeSchoolCode(s.code)}</div>
                       <div className="text-slate-600">{buildSchoolDisplayName(s)}</div>
                     </td>
                     <td className="px-4 py-3">

@@ -14,7 +14,7 @@ import {
   updateUser,
 } from "../../shared/admin/client";
 import { getUser, type Role } from "../../shared/auth";
-import { normalizeSchoolName } from "../../shared/fni/schools";
+import { normalizeSchoolCode, normalizeSchoolName } from "../../shared/fni/schools";
 
 // Gestion de usuarios admin: alta, edicion, roles, estado y reseteo de contrasena.
 type UserFormState = {
@@ -684,7 +684,7 @@ export default function AdminUsers() {
                     <option value="">{requiresSchool ? "Selecciona colegio" : "No aplica"}</option>
                     {schoolOptions.map((school) => (
                       <option key={school.id} value={school.id}>
-                        {school.code} - {normalizeSchoolName(school.code, school.name)}
+                        {normalizeSchoolCode(school.code)} - {normalizeSchoolName(normalizeSchoolCode(school.code), school.name)}
                       </option>
                     ))}
                   </select>

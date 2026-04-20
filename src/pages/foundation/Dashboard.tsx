@@ -13,7 +13,7 @@ import {
   updateManagementCycle,
 } from "../../shared/management/client";
 import { useResolvedAuthUser } from "../../shared/useResolvedAuthUser";
-import { normalizeSchoolName } from "../../shared/fni/schools";
+import { normalizeSchoolCode, normalizeSchoolName } from "../../shared/fni/schools";
 import type {
   ManagementDashboardDto,
   ManagementDashboardIssueDto,
@@ -873,7 +873,8 @@ export function ManagementDashboard({ mode }: { mode: ManagementDashboardMode })
 
               <div className="mt-4 space-y-3">
                 {attentionSchools.map((school) => {
-                  const displayName = normalizeSchoolName(school.code, school.name);
+                  const schoolCode = normalizeSchoolCode(school.code);
+                  const displayName = normalizeSchoolName(schoolCode, school.name);
 
                   return (
                     <div key={school.id} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
@@ -977,9 +978,9 @@ export function ManagementDashboard({ mode }: { mode: ManagementDashboardMode })
                           <tr key={`${issue.schoolId}-${issue.indicatorId}`} className="text-sm text-slate-700">
                             <td className="px-4 py-3">
                               <div className="font-medium text-slate-900">
-                                {normalizeSchoolName(issue.schoolCode, issue.schoolName)}
+                                {normalizeSchoolName(normalizeSchoolCode(issue.schoolCode), issue.schoolName)}
                               </div>
-                              <div className="text-xs text-slate-500">{issue.schoolCode}</div>
+                              <div className="text-xs text-slate-500">{normalizeSchoolCode(issue.schoolCode)}</div>
                             </td>
 
                             <td className="px-4 py-3">
@@ -1035,7 +1036,8 @@ export function ManagementDashboard({ mode }: { mode: ManagementDashboardMode })
               {[...schools]
                 .sort((left, right) => left.completionPct - right.completionPct)
                 .map((school) => {
-                  const displayName = normalizeSchoolName(school.code, school.name);
+                  const schoolCode = normalizeSchoolCode(school.code);
+                  const displayName = normalizeSchoolName(schoolCode, school.name);
 
                   return (
                     <div key={school.id} className="rounded-xl border border-slate-200 p-4">
@@ -1043,7 +1045,7 @@ export function ManagementDashboard({ mode }: { mode: ManagementDashboardMode })
                         <div>
                           <div className="text-sm font-semibold text-slate-900">{displayName}</div>
                           <div className="mt-1 text-xs text-slate-500">
-                            {school.code} / Última actividad {formatRelative(school.lastActivityAt)}
+                            {schoolCode} / Última actividad {formatRelative(school.lastActivityAt)}
                           </div>
                         </div>
 

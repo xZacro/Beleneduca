@@ -18,7 +18,7 @@ import {
   updateManagementCycle,
 } from "../../shared/management/client";
 import type { ManagementDashboardDto } from "../../shared/management/apiContracts";
-import { normalizeSchoolName } from "../../shared/fni/schools";
+import { normalizeSchoolCode, normalizeSchoolName } from "../../shared/fni/schools";
 import { useCycleOptions } from "../../shared/useCycleOptions";
 
 // Centro de control administrativo: usuarios, sesiones, auditoria y salud del ciclo.
@@ -1088,9 +1088,9 @@ export default function AdminDashboard() {
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <div className="text-sm font-semibold text-slate-900">{school.code}</div>
+                        <div className="text-sm font-semibold text-slate-900">{normalizeSchoolCode(school.code)}</div>
                         <div className="mt-1 text-sm text-slate-700">
-                          {normalizeSchoolName(school.code, school.name)}
+                          {normalizeSchoolName(normalizeSchoolCode(school.code), school.name)}
                         </div>
                       </div>
 
@@ -1109,7 +1109,7 @@ export default function AdminDashboard() {
                           school.id
                         )}/documents?cycleId=${encodeURIComponent(
                           cycleId
-                        )}&schoolLabel=${encodeURIComponent(`${school.code} - ${normalizeSchoolName(school.code, school.name)}`)}`}
+                        )}&schoolLabel=${encodeURIComponent(`${normalizeSchoolCode(school.code)} - ${normalizeSchoolName(normalizeSchoolCode(school.code), school.name)}`)}`}
                         className="fni-toolbar-button"
                       >
                         Ver documentos
@@ -1119,7 +1119,7 @@ export default function AdminDashboard() {
                           school.id
                         )}/review?cycleId=${encodeURIComponent(
                           cycleId
-                        )}&schoolLabel=${encodeURIComponent(`${school.code} - ${normalizeSchoolName(school.code, school.name)}`)}`}
+                        )}&schoolLabel=${encodeURIComponent(`${normalizeSchoolCode(school.code)} - ${normalizeSchoolName(normalizeSchoolCode(school.code), school.name)}`)}`}
                         className="fni-toolbar-button"
                       >
                         Ir a revisión

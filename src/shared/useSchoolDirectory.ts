@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { SchoolSummaryDto } from "./admin/apiContracts";
 import { listSchools } from "./admin/client";
 import { getFniRepository } from "./fni/repository";
-import { normalizeSchoolName } from "./fni/schools";
+import { normalizeSchoolCode, normalizeSchoolName } from "./fni/schools";
 
 export type SchoolDirectoryEntry = Pick<
   SchoolSummaryDto,
@@ -55,7 +55,8 @@ async function loadSchoolDirectory() {
 }
 
 export function formatSchoolDisplayName(school: Pick<SchoolDirectoryEntry, "code" | "name">) {
-  return `${school.code} - ${normalizeSchoolName(school.code, school.name)}`;
+  const code = normalizeSchoolCode(school.code);
+  return `${code} - ${normalizeSchoolName(code, school.name)}`;
 }
 
 export function resolveSchoolDirectoryEntry(
@@ -161,7 +162,7 @@ export function useFoundationSchoolDisplayName(
         const schools = await repository.listFoundationSchools(resolvedCycleId);
         const normalizedEntries: SchoolDirectoryEntry[] = schools.map((school) => ({
           id: school.id,
-          code: school.code,
+          code: normalizeSchoolCode(school.code),
           name: normalizeSchoolName(school.code, school.name),
           managerName: school.managerName ?? null,
           managerEmail: school.managerEmail ?? null,

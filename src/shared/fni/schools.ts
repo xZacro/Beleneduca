@@ -37,7 +37,17 @@ const CANONICAL_SCHOOL_NAMES: Record<string, string> = {
   CSFA: "Colegio San Francisco de Asís de Molokai",
 };
 
+const LEGACY_SCHOOL_CODES: Record<string, string> = {
+  CLSM: "CLS",
+  CPDM: "CPD",
+};
+
+export function normalizeSchoolCode(code: string) {
+  const trimmed = typeof code === "string" ? code.trim().toUpperCase() : "";
+  return LEGACY_SCHOOL_CODES[trimmed] ?? trimmed;
+}
+
 export function normalizeSchoolName(code: string, name: string) {
-  const canonical = CANONICAL_SCHOOL_NAMES[code];
+  const canonical = CANONICAL_SCHOOL_NAMES[normalizeSchoolCode(code)];
   return canonical ?? name;
 }
