@@ -123,33 +123,57 @@ function FeatureIcon({ kind }: { kind: (typeof features)[number]["icon"] }) {
 
 function Illustration() {
   return (
-    <div className="relative mx-auto flex min-h-[360px] w-full max-w-[500px] items-center justify-center">
-      <div className="absolute left-4 top-12 h-24 w-24 rounded-full bg-sky-100/60 blur-2xl" />
-      <div className="absolute right-8 top-20 h-28 w-28 rounded-full bg-amber-100/60 blur-2xl" />
-      <div className="absolute bottom-8 left-8 h-24 w-24 rounded-full bg-violet-100/60 blur-2xl" />
+    <div className="relative mx-auto flex min-h-[420px] w-full max-w-[560px] items-center justify-center px-2">
+      <div className="absolute left-0 top-8 h-28 w-28 rounded-full bg-sky-100/70 blur-3xl" />
+      <div className="absolute right-4 top-20 h-32 w-32 rounded-full bg-amber-100/70 blur-3xl" />
+      <div className="absolute bottom-12 left-10 h-24 w-24 rounded-full bg-violet-100/60 blur-3xl" />
+      <div className="absolute right-12 bottom-10 h-24 w-24 rounded-full bg-rose-100/50 blur-3xl" />
 
-      <div className="relative grid h-[290px] w-[290px] place-items-center">
-        <div className="absolute inset-0 rounded-[2rem] border border-dashed border-slate-200 bg-white/30" />
-        <div className="absolute left-2 top-8 h-28 w-28 rounded-2xl border border-slate-100 bg-white shadow-[0_10px_30px_rgba(15,23,42,0.06)]">
-          <div className="mt-4 flex items-center justify-center text-sky-500">
-            <IconEnvelope />
+      <div
+        className="absolute inset-x-10 top-14 h-[300px] rounded-[2rem] border border-dashed border-slate-200/80"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle, rgba(148,163,184,0.20) 1.4px, transparent 1.4px), radial-gradient(circle, rgba(148,163,184,0.12) 1.2px, transparent 1.2px)",
+          backgroundPosition: "0 0, 12px 12px",
+          backgroundSize: "24px 24px, 24px 24px",
+        }}
+      />
+
+      <div className="relative h-[360px] w-[360px]">
+        <div className="absolute left-2 top-8 h-[190px] w-[168px] rounded-[2rem] border border-slate-100 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
+          <div className="px-8 pt-8">
+            <div className="h-3 w-24 rounded-full bg-sky-100" />
+            <div className="mt-4 h-3 w-16 rounded-full bg-sky-100" />
           </div>
-          <div className="mt-4 space-y-2 px-4">
-            <div className="h-2 w-16 rounded-full bg-slate-100" />
-            <div className="h-2 w-10 rounded-full bg-slate-100" />
+          <div className="absolute left-1/2 top-[86px] grid h-16 w-16 -translate-x-1/2 place-items-center rounded-full bg-sky-500 text-white shadow-[0_12px_24px_rgba(37,99,235,0.24)]">
+            <span className="text-2xl font-semibold leading-none">✓</span>
           </div>
         </div>
 
-        <div className="absolute bottom-6 left-10 h-24 w-24 rounded-2xl border border-slate-100 bg-white shadow-[0_10px_30px_rgba(15,23,42,0.06)]">
-          <div className="mt-4 px-4">
-            <div className="h-2 w-12 rounded-full bg-slate-100" />
-            <div className="mt-2 h-16 rounded-lg bg-sky-50" />
+        <div className="absolute left-8 top-[188px] h-[158px] w-[160px] rounded-[2rem] border border-slate-100 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
+          <div className="px-6 pt-6">
+            <div className="h-3 w-16 rounded-full bg-slate-100" />
+            <div className="mt-4 flex items-end gap-2">
+              <div className="h-10 w-7 rounded-t-lg bg-sky-100" />
+              <div className="h-16 w-7 rounded-t-lg bg-sky-200" />
+              <div className="h-8 w-7 rounded-t-lg bg-sky-100" />
+              <div className="h-20 w-7 rounded-t-lg bg-sky-300" />
+            </div>
           </div>
         </div>
 
-        <div className="absolute right-10 top-24 h-24 w-24 rounded-2xl border border-slate-100 bg-amber-100/80 shadow-[0_10px_30px_rgba(15,23,42,0.06)]" />
-        <div className="absolute right-4 bottom-12 h-16 w-16 rounded-full border border-sky-100 bg-sky-500 text-white shadow-[0_10px_24px_rgba(37,99,235,0.20)]">
-          <div className="grid h-full place-items-center text-xl font-bold">✓</div>
+        <div className="absolute left-[148px] top-[144px] h-[88px] w-[88px] rounded-[1.5rem] bg-gradient-to-b from-amber-200 to-amber-400 shadow-[0_18px_40px_rgba(245,158,11,0.18)]" />
+
+        <div className="absolute right-8 top-[168px] h-16 w-16 rounded-full border border-sky-100 bg-sky-500 text-white shadow-[0_14px_30px_rgba(37,99,235,0.24)]">
+          <div className="grid h-full place-items-center text-2xl font-semibold leading-none">✓</div>
+        </div>
+
+        <div className="absolute right-4 top-[114px] h-[134px] w-[134px] rounded-[2rem] border border-slate-100 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
+          <div className="px-6 pt-6">
+            <div className="h-2.5 w-12 rounded-full bg-slate-100" />
+            <div className="mt-3 h-2.5 w-8 rounded-full bg-slate-100" />
+            <div className="mt-4 h-16 rounded-2xl bg-gradient-to-br from-sky-50 via-sky-100 to-transparent" />
+          </div>
         </div>
       </div>
     </div>
@@ -216,7 +240,7 @@ export default function Login() {
                 </div>
               </div>
 
-              <div className="mt-8 flex flex-1 items-center justify-center">
+              <div className="mt-10 flex flex-1 items-center justify-center lg:mt-12">
                 <Illustration />
               </div>
 
@@ -241,9 +265,15 @@ export default function Login() {
                   Plataforma segura y confiable
                 </div>
                 <span className="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sky-700">Colegio</span>
-                <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-700">Fundación</span>
-                <span className="rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-indigo-700">Administración</span>
-                <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-amber-700">PDF y auditoría</span>
+                <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-700">
+                  Fundación
+                </span>
+                <span className="rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-indigo-700">
+                  Administración
+                </span>
+                <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-amber-700">
+                  PDF y auditoría
+                </span>
               </div>
             </div>
           </section>
