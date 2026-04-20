@@ -8,7 +8,7 @@ import { login } from "../shared/auth";
 const features = [
   {
     title: "Acceso por perfil",
-    description: "Administracion, fundacion y colegio en un mismo espacio.",
+    description: "Administración, fundación y colegio en un mismo espacio.",
     accent: "bg-sky-50 text-sky-700",
     icon: "shield",
   },
@@ -20,7 +20,7 @@ const features = [
   },
   {
     title: "Una sola plataforma",
-    description: "Ciclos, evidencias y revision operando de manera integrada.",
+    description: "Ciclos, evidencias y revisión operando de manera integrada.",
     accent: "bg-violet-50 text-violet-700",
     icon: "folder",
   },
@@ -99,13 +99,13 @@ function FeatureIcon({ kind }: { kind: (typeof features)[number]["icon"] }) {
 
 function Illustration() {
   return (
-    <div className="relative mx-auto flex min-h-[290px] w-full max-w-[360px] items-center justify-start px-1">
-      <div className="absolute left-0 top-6 h-20 w-20 rounded-full bg-sky-100/70 blur-3xl" />
-      <div className="absolute right-0 top-14 h-24 w-24 rounded-full bg-amber-100/60 blur-3xl" />
-      <div className="absolute left-6 bottom-6 h-16 w-16 rounded-full bg-violet-100/55 blur-3xl" />
+    <div className="relative mx-auto flex min-h-[230px] w-full max-w-[300px] items-center justify-start px-1">
+      <div className="absolute left-0 top-4 h-16 w-16 rounded-full bg-sky-100/70 blur-3xl" />
+      <div className="absolute right-0 top-10 h-18 w-18 rounded-full bg-amber-100/60 blur-3xl" />
+      <div className="absolute left-4 bottom-4 h-12 w-12 rounded-full bg-violet-100/55 blur-3xl" />
 
       <div
-        className="absolute left-0 top-12 h-[210px] w-[290px] rounded-[2rem] border border-dashed border-slate-200/80"
+        className="absolute left-0 top-8 h-[176px] w-[242px] rounded-[2rem] border border-dashed border-slate-200/80"
         style={{
           backgroundImage:
             "radial-gradient(circle, rgba(148,163,184,0.20) 1.3px, transparent 1.3px), radial-gradient(circle, rgba(148,163,184,0.12) 1.1px, transparent 1.1px)",
@@ -114,36 +114,36 @@ function Illustration() {
         }}
       />
 
-      <div className="relative h-[250px] w-[305px]">
-        <div className="absolute left-4 top-10 h-[142px] w-[116px] rounded-[1.8rem] border border-slate-100 bg-white shadow-[0_16px_32px_rgba(15,23,42,0.08)]">
-          <div className="px-5 pt-5">
-            <div className="h-2.5 w-16 rounded-full bg-sky-100" />
-            <div className="mt-3 h-2.5 w-10 rounded-full bg-sky-100" />
+      <div className="relative h-[204px] w-[248px]">
+        <div className="absolute left-3 top-8 h-[112px] w-[92px] rounded-[1.6rem] border border-slate-100 bg-white shadow-[0_14px_28px_rgba(15,23,42,0.08)]">
+          <div className="px-4 pt-4">
+            <div className="h-2 w-14 rounded-full bg-sky-100" />
+            <div className="mt-2.5 h-2 w-8 rounded-full bg-sky-100" />
           </div>
-          <div className="absolute left-1/2 top-[64px] grid h-12 w-12 -translate-x-1/2 place-items-center rounded-full bg-sky-500 text-white shadow-[0_12px_24px_rgba(37,99,235,0.24)]">
-            <span className="text-lg font-semibold leading-none">✓</span>
+          <div className="absolute left-1/2 top-[50px] grid h-10 w-10 -translate-x-1/2 place-items-center rounded-full bg-sky-500 text-white shadow-[0_10px_20px_rgba(37,99,235,0.24)]">
+            <span className="text-base font-semibold leading-none">✓</span>
           </div>
         </div>
 
-        <div className="absolute left-5 top-[154px] h-[116px] w-[118px] rounded-[1.8rem] border border-slate-100 bg-white shadow-[0_16px_32px_rgba(15,23,42,0.08)]">
-          <div className="px-4 pt-4">
-            <div className="h-2.5 w-12 rounded-full bg-slate-100" />
-            <div className="mt-3 flex items-end gap-2">
-              <div className="h-7 w-5 rounded-t-lg bg-sky-100" />
-              <div className="h-11 w-5 rounded-t-lg bg-sky-200" />
-              <div className="h-6 w-5 rounded-t-lg bg-sky-100" />
-              <div className="h-[58px] w-5 rounded-t-lg bg-sky-300" />
+        <div className="absolute left-4 top-[132px] h-[88px] w-[92px] rounded-[1.6rem] border border-slate-100 bg-white shadow-[0_14px_28px_rgba(15,23,42,0.08)]">
+          <div className="px-3 pt-3">
+            <div className="h-2 w-10 rounded-full bg-slate-100" />
+            <div className="mt-2 flex items-end gap-1.5">
+              <div className="h-6 w-4 rounded-t-lg bg-sky-100" />
+              <div className="h-9 w-4 rounded-t-lg bg-sky-200" />
+              <div className="h-5 w-4 rounded-t-lg bg-sky-100" />
+              <div className="h-[44px] w-4 rounded-t-lg bg-sky-300" />
             </div>
           </div>
         </div>
 
-        <div className="absolute left-[114px] top-[100px] h-[58px] w-[58px] rounded-[1.25rem] bg-gradient-to-b from-amber-200 to-amber-400 shadow-[0_18px_40px_rgba(245,158,11,0.18)]" />
+        <div className="absolute left-[98px] top-[88px] h-[48px] w-[48px] rounded-[1rem] bg-gradient-to-b from-amber-200 to-amber-400 shadow-[0_14px_28px_rgba(245,158,11,0.18)]" />
 
-        <div className="absolute left-[164px] top-[124px] h-[100px] w-[104px] rounded-[1.8rem] border border-slate-100 bg-white shadow-[0_16px_32px_rgba(15,23,42,0.08)]">
-          <div className="px-4 pt-4">
-            <div className="h-2.5 w-8 rounded-full bg-slate-100" />
-            <div className="mt-3 h-2.5 w-5 rounded-full bg-slate-100" />
-            <div className="mt-3 h-11 rounded-2xl bg-gradient-to-br from-sky-50 via-sky-100 to-transparent" />
+        <div className="absolute left-[136px] top-[112px] h-[84px] w-[88px] rounded-[1.6rem] border border-slate-100 bg-white shadow-[0_14px_28px_rgba(15,23,42,0.08)]">
+          <div className="px-3.5 pt-3.5">
+            <div className="h-2 w-6 rounded-full bg-slate-100" />
+            <div className="mt-2.5 h-2 w-4 rounded-full bg-slate-100" />
+            <div className="mt-2.5 h-9 rounded-2xl bg-gradient-to-br from-sky-50 via-sky-100 to-transparent" />
           </div>
         </div>
       </div>
@@ -191,16 +191,16 @@ export default function Login() {
 
             <div className="relative flex h-full flex-col">
               <div className="grid gap-6 lg:grid-cols-[0.42fr_0.58fr] lg:items-start lg:gap-8">
-                <div className="space-y-5">
+                <div className="space-y-3">
                   <div className="flex justify-start lg:pt-1">
-                    <img src={belenLogo} alt="Fundacion Belen Educa" className="h-14 w-auto max-w-[240px] object-contain" />
+                    <img src={belenLogo} alt="Fundación Belén Educa" className="h-14 w-auto max-w-[240px] object-contain" />
                   </div>
                   <Illustration />
                 </div>
 
                 <div className="lg:pt-3">
                   <div className="text-[0.74rem] font-semibold uppercase tracking-[0.32em] text-blue-700">
-                    Fundacion Belen Educa
+                    Fundación Belén Educa
                   </div>
                   <h1 className="mt-3 text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
                     Gestor
@@ -208,7 +208,7 @@ export default function Login() {
                     Documental
                   </h1>
                   <p className="mt-4 max-w-xl text-base leading-7 text-slate-600">
-                    Acceso institucional para administrar ciclos, formularios, documentos y revision por perfil.
+                    Acceso institucional para administrar ciclos, formularios, documentos y revisión por perfil.
                   </p>
                 </div>
               </div>
@@ -235,13 +235,13 @@ export default function Login() {
                 </div>
                 <span className="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sky-700">Colegio</span>
                 <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-700">
-                  Fundacion
+                  Fundación
                 </span>
                 <span className="rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-indigo-700">
-                  Administracion
+                  Administración
                 </span>
                 <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-amber-700">
-                  PDF y auditoria
+                  PDF y auditoría
                 </span>
               </div>
             </div>
@@ -250,14 +250,14 @@ export default function Login() {
           <section className="flex items-stretch justify-center">
             <div className="flex w-full max-w-[500px] flex-col rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_22px_60px_rgba(15,23,42,0.10)] sm:p-7">
               <div className="flex justify-center">
-                <img src={belenLogo} alt="Fundacion Belen Educa" className="h-16 w-auto max-w-[300px] object-contain" />
+                <img src={belenLogo} alt="Fundación Belén Educa" className="h-16 w-auto max-w-[300px] object-contain" />
               </div>
 
               <div className="mt-6">
                 <div className="text-[0.74rem] font-semibold uppercase tracking-[0.28em] text-blue-700">Acceso de usuarios</div>
                 <div className="mt-2 text-3xl font-semibold tracking-tight text-slate-900">Ingresa a la plataforma</div>
                 <p className="mt-3 max-w-md text-sm leading-6 text-slate-600">
-                  Usa tu correo institucional para entrar segun tu perfil y continuar el trabajo del ciclo.
+                  Usa tu correo institucional para entrar según tu perfil y continuar el trabajo del ciclo.
                 </p>
               </div>
 
@@ -334,7 +334,7 @@ export default function Login() {
                 </button>
 
                 <div className="rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-3 text-xs leading-5 text-slate-500">
-                  El acceso se valida contra el servidor y tus datos se cargan segun tu perfil.
+                  El acceso se valida contra el servidor y tus datos se cargan según tu perfil.
                 </div>
               </form>
             </div>
