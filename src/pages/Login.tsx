@@ -99,13 +99,13 @@ function FeatureIcon({ kind }: { kind: (typeof features)[number]["icon"] }) {
 
 function Illustration() {
   return (
-    <div className="relative mx-auto flex min-h-[230px] w-full max-w-[300px] items-center justify-start px-1">
-      <div className="absolute left-0 top-4 h-16 w-16 rounded-full bg-sky-100/70 blur-3xl" />
-      <div className="absolute right-0 top-10 h-18 w-18 rounded-full bg-amber-100/60 blur-3xl" />
+    <div className="relative mx-auto flex min-h-[210px] w-full max-w-[280px] items-center justify-start px-1">
+      <div className="absolute left-0 top-3 h-14 w-14 rounded-full bg-sky-100/70 blur-3xl" />
+      <div className="absolute right-0 top-8 h-16 w-16 rounded-full bg-amber-100/60 blur-3xl" />
       <div className="absolute left-4 bottom-4 h-12 w-12 rounded-full bg-violet-100/55 blur-3xl" />
 
       <div
-        className="absolute left-0 top-8 h-[176px] w-[242px] rounded-[2rem] border border-dashed border-slate-200/80"
+        className="absolute left-0 top-7 h-[160px] w-[224px] rounded-[2rem] border border-dashed border-slate-200/80"
         style={{
           backgroundImage:
             "radial-gradient(circle, rgba(148,163,184,0.20) 1.3px, transparent 1.3px), radial-gradient(circle, rgba(148,163,184,0.12) 1.1px, transparent 1.1px)",
@@ -114,36 +114,36 @@ function Illustration() {
         }}
       />
 
-      <div className="relative h-[204px] w-[248px]">
-        <div className="absolute left-3 top-8 h-[112px] w-[92px] rounded-[1.6rem] border border-slate-100 bg-white shadow-[0_14px_28px_rgba(15,23,42,0.08)]">
+      <div className="relative h-[190px] w-[228px]">
+        <div className="absolute left-3 top-6 h-[100px] w-[82px] rounded-[1.6rem] border border-slate-100 bg-white shadow-[0_14px_28px_rgba(15,23,42,0.08)]">
           <div className="px-4 pt-4">
-            <div className="h-2 w-14 rounded-full bg-sky-100" />
-            <div className="mt-2.5 h-2 w-8 rounded-full bg-sky-100" />
+            <div className="h-2 w-12 rounded-full bg-sky-100" />
+            <div className="mt-2 h-2 w-7 rounded-full bg-sky-100" />
           </div>
-          <div className="absolute left-1/2 top-[50px] grid h-10 w-10 -translate-x-1/2 place-items-center rounded-full bg-sky-500 text-white shadow-[0_10px_20px_rgba(37,99,235,0.24)]">
+          <div className="absolute left-1/2 top-[46px] grid h-9 w-9 -translate-x-1/2 place-items-center rounded-full bg-sky-500 text-white shadow-[0_10px_20px_rgba(37,99,235,0.24)]">
             <span className="text-base font-semibold leading-none">✓</span>
           </div>
         </div>
 
-        <div className="absolute left-4 top-[132px] h-[88px] w-[92px] rounded-[1.6rem] border border-slate-100 bg-white shadow-[0_14px_28px_rgba(15,23,42,0.08)]">
-          <div className="px-3 pt-3">
+        <div className="absolute left-4 top-[118px] h-[78px] w-[82px] rounded-[1.6rem] border border-slate-100 bg-white shadow-[0_14px_28px_rgba(15,23,42,0.08)]">
+          <div className="px-2.5 pt-2.5">
             <div className="h-2 w-10 rounded-full bg-slate-100" />
             <div className="mt-2 flex items-end gap-1.5">
-              <div className="h-6 w-4 rounded-t-lg bg-sky-100" />
-              <div className="h-9 w-4 rounded-t-lg bg-sky-200" />
-              <div className="h-5 w-4 rounded-t-lg bg-sky-100" />
-              <div className="h-[44px] w-4 rounded-t-lg bg-sky-300" />
+              <div className="h-5 w-3.5 rounded-t-lg bg-sky-100" />
+              <div className="h-8 w-3.5 rounded-t-lg bg-sky-200" />
+              <div className="h-4 w-3.5 rounded-t-lg bg-sky-100" />
+              <div className="h-[38px] w-3.5 rounded-t-lg bg-sky-300" />
             </div>
           </div>
         </div>
 
-        <div className="absolute left-[98px] top-[88px] h-[48px] w-[48px] rounded-[1rem] bg-gradient-to-b from-amber-200 to-amber-400 shadow-[0_14px_28px_rgba(245,158,11,0.18)]" />
+        <div className="absolute left-[88px] top-[78px] h-[42px] w-[42px] rounded-[1rem] bg-gradient-to-b from-amber-200 to-amber-400 shadow-[0_14px_28px_rgba(245,158,11,0.18)]" />
 
-        <div className="absolute left-[136px] top-[112px] h-[84px] w-[88px] rounded-[1.6rem] border border-slate-100 bg-white shadow-[0_14px_28px_rgba(15,23,42,0.08)]">
-          <div className="px-3.5 pt-3.5">
-            <div className="h-2 w-6 rounded-full bg-slate-100" />
-            <div className="mt-2.5 h-2 w-4 rounded-full bg-slate-100" />
-            <div className="mt-2.5 h-9 rounded-2xl bg-gradient-to-br from-sky-50 via-sky-100 to-transparent" />
+        <div className="absolute left-[122px] top-[100px] h-[76px] w-[82px] rounded-[1.6rem] border border-slate-100 bg-white shadow-[0_14px_28px_rgba(15,23,42,0.08)]">
+          <div className="px-3 pt-3">
+            <div className="h-2 w-5 rounded-full bg-slate-100" />
+            <div className="mt-2 h-2 w-3.5 rounded-full bg-slate-100" />
+            <div className="mt-2 h-8 rounded-2xl bg-gradient-to-br from-sky-50 via-sky-100 to-transparent" />
           </div>
         </div>
       </div>
