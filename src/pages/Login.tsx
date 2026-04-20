@@ -29,18 +29,8 @@ const features = [
 function IconEnvelope() {
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-4 w-4">
-      <path
-        d="M4 6h16v12H4V6Z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-      />
-      <path
-        d="m4.5 7 7.5 6 7.5-6"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-      />
+      <path d="M4 6h16v12H4V6Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+      <path d="m4.5 7 7.5 6 7.5-6" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -48,18 +38,8 @@ function IconEnvelope() {
 function IconLock() {
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-4 w-4">
-      <path
-        d="M7.5 11V8.5a4.5 4.5 0 0 1 9 0V11"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
-      <path
-        d="M6 11h12v8H6v-8Z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-      />
+      <path d="M7.5 11V8.5a4.5 4.5 0 0 1 9 0V11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M6 11h12v8H6v-8Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -73,11 +53,7 @@ function IconEye({ hidden }: { hidden: boolean }) {
         strokeWidth="1.8"
         strokeLinejoin="round"
       />
-      <path
-        d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
+      <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" stroke="currentColor" strokeWidth="1.8" />
       {hidden && <path d="M4 20 20 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />}
     </svg>
   );
@@ -123,56 +99,51 @@ function FeatureIcon({ kind }: { kind: (typeof features)[number]["icon"] }) {
 
 function Illustration() {
   return (
-    <div className="relative mx-auto flex min-h-[420px] w-full max-w-[560px] items-center justify-center px-2">
+    <div className="relative mx-auto flex min-h-[380px] w-full max-w-[500px] items-center justify-start px-2">
       <div className="absolute left-0 top-8 h-28 w-28 rounded-full bg-sky-100/70 blur-3xl" />
-      <div className="absolute right-4 top-20 h-32 w-32 rounded-full bg-amber-100/70 blur-3xl" />
-      <div className="absolute bottom-12 left-10 h-24 w-24 rounded-full bg-violet-100/60 blur-3xl" />
-      <div className="absolute right-12 bottom-10 h-24 w-24 rounded-full bg-rose-100/50 blur-3xl" />
+      <div className="absolute right-0 top-20 h-32 w-32 rounded-full bg-amber-100/60 blur-3xl" />
+      <div className="absolute left-10 bottom-8 h-24 w-24 rounded-full bg-violet-100/55 blur-3xl" />
 
       <div
-        className="absolute inset-x-10 top-14 h-[300px] rounded-[2rem] border border-dashed border-slate-200/80"
+        className="absolute left-0 top-16 h-[265px] w-[360px] rounded-[2rem] border border-dashed border-slate-200/80"
         style={{
           backgroundImage:
-            "radial-gradient(circle, rgba(148,163,184,0.20) 1.4px, transparent 1.4px), radial-gradient(circle, rgba(148,163,184,0.12) 1.2px, transparent 1.2px)",
+            "radial-gradient(circle, rgba(148,163,184,0.20) 1.3px, transparent 1.3px), radial-gradient(circle, rgba(148,163,184,0.12) 1.1px, transparent 1.1px)",
           backgroundPosition: "0 0, 12px 12px",
           backgroundSize: "24px 24px, 24px 24px",
         }}
       />
 
-      <div className="relative h-[360px] w-[360px]">
-        <div className="absolute left-2 top-8 h-[190px] w-[168px] rounded-[2rem] border border-slate-100 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
-          <div className="px-8 pt-8">
-            <div className="h-3 w-24 rounded-full bg-sky-100" />
-            <div className="mt-4 h-3 w-16 rounded-full bg-sky-100" />
+      <div className="relative h-[340px] w-[420px]">
+        <div className="absolute left-8 top-12 h-[188px] w-[150px] rounded-[2rem] border border-slate-100 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
+          <div className="px-7 pt-7">
+            <div className="h-3 w-20 rounded-full bg-sky-100" />
+            <div className="mt-4 h-3 w-12 rounded-full bg-sky-100" />
           </div>
-          <div className="absolute left-1/2 top-[86px] grid h-16 w-16 -translate-x-1/2 place-items-center rounded-full bg-sky-500 text-white shadow-[0_12px_24px_rgba(37,99,235,0.24)]">
-            <span className="text-2xl font-semibold leading-none">✓</span>
+          <div className="absolute left-1/2 top-[82px] grid h-14 w-14 -translate-x-1/2 place-items-center rounded-full bg-sky-500 text-white shadow-[0_12px_24px_rgba(37,99,235,0.24)]">
+            <span className="text-xl font-semibold leading-none">✓</span>
           </div>
         </div>
 
-        <div className="absolute left-8 top-[188px] h-[158px] w-[160px] rounded-[2rem] border border-slate-100 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
-          <div className="px-6 pt-6">
-            <div className="h-3 w-16 rounded-full bg-slate-100" />
+        <div className="absolute left-[54px] top-[170px] h-[142px] w-[150px] rounded-[2rem] border border-slate-100 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
+          <div className="px-5 pt-5">
+            <div className="h-3 w-14 rounded-full bg-slate-100" />
             <div className="mt-4 flex items-end gap-2">
-              <div className="h-10 w-7 rounded-t-lg bg-sky-100" />
-              <div className="h-16 w-7 rounded-t-lg bg-sky-200" />
-              <div className="h-8 w-7 rounded-t-lg bg-sky-100" />
-              <div className="h-20 w-7 rounded-t-lg bg-sky-300" />
+              <div className="h-10 w-6 rounded-t-lg bg-sky-100" />
+              <div className="h-16 w-6 rounded-t-lg bg-sky-200" />
+              <div className="h-8 w-6 rounded-t-lg bg-sky-100" />
+              <div className="h-[72px] w-6 rounded-t-lg bg-sky-300" />
             </div>
           </div>
         </div>
 
-        <div className="absolute left-[148px] top-[144px] h-[88px] w-[88px] rounded-[1.5rem] bg-gradient-to-b from-amber-200 to-amber-400 shadow-[0_18px_40px_rgba(245,158,11,0.18)]" />
+        <div className="absolute left-[144px] top-[132px] h-[78px] w-[78px] rounded-[1.5rem] bg-gradient-to-b from-amber-200 to-amber-400 shadow-[0_18px_40px_rgba(245,158,11,0.18)]" />
 
-        <div className="absolute right-8 top-[168px] h-16 w-16 rounded-full border border-sky-100 bg-sky-500 text-white shadow-[0_14px_30px_rgba(37,99,235,0.24)]">
-          <div className="grid h-full place-items-center text-2xl font-semibold leading-none">✓</div>
-        </div>
-
-        <div className="absolute right-4 top-[114px] h-[134px] w-[134px] rounded-[2rem] border border-slate-100 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
-          <div className="px-6 pt-6">
-            <div className="h-2.5 w-12 rounded-full bg-slate-100" />
-            <div className="mt-3 h-2.5 w-8 rounded-full bg-slate-100" />
-            <div className="mt-4 h-16 rounded-2xl bg-gradient-to-br from-sky-50 via-sky-100 to-transparent" />
+        <div className="absolute left-[206px] top-[158px] h-[126px] w-[128px] rounded-[2rem] border border-slate-100 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
+          <div className="px-5 pt-5">
+            <div className="h-2.5 w-10 rounded-full bg-slate-100" />
+            <div className="mt-3 h-2.5 w-6 rounded-full bg-slate-100" />
+            <div className="mt-4 h-14 rounded-2xl bg-gradient-to-br from-sky-50 via-sky-100 to-transparent" />
           </div>
         </div>
       </div>
@@ -213,34 +184,32 @@ export default function Login() {
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.95),rgba(241,245,249,1)_44%,rgba(226,232,240,0.92)_100%)]">
       <div className="fni-brand-ribbon h-4 w-full" />
 
-      <div className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
-        <div className="grid gap-6 lg:min-h-[calc(100vh-5rem)] lg:grid-cols-[1.15fr_0.85fr] lg:items-stretch">
+      <div className="mx-auto max-w-6xl px-4 py-8 lg:px-8">
+        <div className="grid gap-6 lg:min-h-[calc(100vh-5rem)] lg:grid-cols-[1fr_0.86fr] lg:items-stretch">
           <section className="relative overflow-hidden rounded-[2rem] border border-white/70 bg-white/80 p-6 shadow-[0_22px_60px_rgba(15,23,42,0.08)] backdrop-blur sm:p-8 lg:p-10">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(37,99,235,0.08),transparent_26%),radial-gradient(circle_at_bottom_left,rgba(245,158,11,0.08),transparent_24%)]" />
 
             <div className="relative flex h-full flex-col">
-              <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="fni-logo-shell fni-logo-shell-header">
-                    <img src={belenLogo} alt="Fundación Belén Educa" className="h-14 w-auto max-w-[280px] object-contain" />
+              <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[0.58fr_1fr] lg:items-start lg:gap-8">
+                <div className="flex justify-start lg:pt-1">
+                  <img src={belenLogo} alt="Fundación Belén Educa" className="h-14 w-auto max-w-[240px] object-contain" />
+                </div>
+                <div>
+                  <div className="text-[0.74rem] font-semibold uppercase tracking-[0.32em] text-blue-700">
+                    Fundación Belén Educa
                   </div>
-                  <div>
-                    <div className="text-[0.74rem] font-semibold uppercase tracking-[0.32em] text-blue-700">
-                      Fundación Belén Educa
-                    </div>
-                    <h1 className="mt-3 text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
-                      Gestor
-                      <br />
-                      Documental
-                    </h1>
-                    <p className="mt-4 max-w-xl text-base leading-7 text-slate-600">
-                      Acceso institucional para administrar ciclos, formularios, documentos y revisión por perfil.
-                    </p>
-                  </div>
+                  <h1 className="mt-3 text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
+                    Gestor
+                    <br />
+                    Documental
+                  </h1>
+                  <p className="mt-4 max-w-xl text-base leading-7 text-slate-600">
+                    Acceso institucional para administrar ciclos, formularios, documentos y revisión por perfil.
+                  </p>
                 </div>
               </div>
 
-              <div className="mt-10 flex flex-1 items-center justify-center lg:mt-12">
+              <div className="mt-10 flex flex-1 items-center justify-start lg:mt-12">
                 <Illustration />
               </div>
 
@@ -279,11 +248,9 @@ export default function Login() {
           </section>
 
           <section className="flex items-stretch justify-center">
-            <div className="flex w-full max-w-[520px] flex-col rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_22px_60px_rgba(15,23,42,0.10)] sm:p-7">
+            <div className="flex w-full max-w-[500px] flex-col rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_22px_60px_rgba(15,23,42,0.10)] sm:p-7">
               <div className="flex justify-center">
-                <div className="fni-logo-shell fni-logo-shell-login w-full max-w-[380px]">
-                  <img src={belenLogo} alt="Fundación Belén Educa" className="h-16 w-auto max-w-[360px] object-contain" />
-                </div>
+                <img src={belenLogo} alt="Fundación Belén Educa" className="h-16 w-auto max-w-[300px] object-contain" />
               </div>
 
               <div className="mt-6">
