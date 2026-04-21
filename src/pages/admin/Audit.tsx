@@ -135,7 +135,7 @@ export default function AdminAudit() {
         <div>
           <h1 className="fni-page-title">Auditoría</h1>
           <p className="fni-page-subtitle">
-            Eventos de login, logout y cambios operativos registrados en la API.
+            Eventos de login, logout y cambios operativos registrados por el sistema.
           </p>
         </div>
 

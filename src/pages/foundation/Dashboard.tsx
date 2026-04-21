@@ -858,7 +858,7 @@ export function ManagementDashboard({ mode }: { mode: ManagementDashboardMode })
             <ConsolidatedResultsTable schools={schools} cycleLabel={cycle.name} />
           ) : (
             <div className="fni-empty-state-panel bg-slate-50">
-              Los resultados consolidados aparecerán aquí cuando el ciclo se cierre desde la API.
+              Los resultados consolidados aparecerán aquí cuando el ciclo se cierre.
             </div>
           )}
 
