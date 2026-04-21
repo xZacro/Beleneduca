@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import belenLogo from "../../assets/belen-logo.png";
 import { hasRole, logout, roleLabel } from "../../shared/auth";
@@ -29,6 +29,7 @@ export default function AppLayout() {
   useHeartbeat();
 
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, loading, setUser } = useResolvedAuthUser({ validateOnMount: true });
 
   useEffect(() => {
@@ -177,7 +178,10 @@ export default function AppLayout() {
           </nav>
         </aside>
 
-        <section className="min-h-[560px] min-w-0 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <section
+          key={location.pathname}
+          className="fni-route-panel-enter min-h-[560px] min-w-0 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
+        >
           <Outlet />
         </section>
       </main>
