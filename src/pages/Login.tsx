@@ -190,7 +190,7 @@ export default function Login() {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(37,99,235,0.08),transparent_26%),radial-gradient(circle_at_bottom_left,rgba(245,158,11,0.08),transparent_24%)]" />
 
             <div className="relative flex h-full flex-col">
-              <div className="grid gap-6 lg:grid-cols-[0.32fr_0.68fr] lg:items-start lg:gap-7">
+              <div className="grid gap-6 lg:grid-cols-[0.28fr_0.72fr] lg:items-start lg:gap-7">
                 <div className="space-y-2.5">
                   <div className="flex justify-start lg:pt-1">
                     <img src={belenLogo} alt="Fundación Belén Educa" className="h-14 w-auto max-w-[220px] object-contain" />
@@ -202,7 +202,7 @@ export default function Login() {
                   <div className="text-[0.74rem] font-semibold uppercase tracking-[0.32em] text-blue-700">
                     Fundación Belén Educa
                   </div>
-                  <h1 className="mt-3 max-w-[9ch] text-[2.9rem] font-semibold leading-[0.95] tracking-tight text-slate-900 sm:text-[4rem]">
+                  <h1 className="mt-3 max-w-[10ch] text-[2.75rem] font-semibold leading-[0.95] tracking-tight text-slate-900 sm:text-[3.75rem]">
                     Gestor
                     <br />
                     Documental
@@ -213,7 +213,7 @@ export default function Login() {
                 </div>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-3">
+              <div className="mt-12 grid gap-4 sm:grid-cols-3 lg:mt-16">
                 {features.map((feature) => (
                   <div
                     key={feature.title}
@@ -228,7 +228,7 @@ export default function Login() {
                 ))}
               </div>
 
-              <div className="mt-8 flex flex-wrap items-center gap-3 border-t border-slate-200 pt-6 text-xs text-slate-500">
+              <div className="mt-10 flex flex-wrap items-center gap-3 border-t border-slate-200 pt-6 text-xs text-slate-500">
                 <div className="inline-flex items-center gap-2">
                   <span className="text-slate-400">◌</span>
                   Plataforma segura y confiable
