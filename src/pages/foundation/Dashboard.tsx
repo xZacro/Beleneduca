@@ -941,38 +941,36 @@ export function ManagementDashboard({ mode }: { mode: ManagementDashboardMode })
             <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm xl:col-span-7">
               <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div>
-                  <h2 className="text-lg font-semibold text-slate-900">Bloqueantes y observaciones recientes</h2>
+                  <h2 className="text-lg font-semibold text-slate-900">Observaciones y bloqueos recientes</h2>
                   <p className="mt-1 text-sm text-slate-600">
-                    Issues reales detectados a partir de las revisiones guardadas.
+                    Registros detectados a partir de las revisiones guardadas.
                   </p>
                 </div>
 
                 <MiniBadge tone="slate">{`${issues.length} issues abiertas`}</MiniBadge>
               </div>
 
-              <div className="mt-4 fni-data-table-shell">
-                <div className="fni-data-table-scroll">
-                  <table className="fni-data-table">
-                    <thead className="bg-slate-50">
-                      <tr className="text-left text-sm text-slate-600">
-                        <th className="px-4 py-3 font-medium">Colegio</th>
-                        <th className="px-4 py-3 font-medium">Indicador</th>
-                        <th className="px-4 py-3 font-medium">Estado</th>
-                        <th className="px-4 py-3 font-medium">Detalle</th>
-                        <th className="px-4 py-3 font-medium">Actualizado</th>
-                        <th className="px-4 py-3 font-medium">Acción</th>
-                      </tr>
-                    </thead>
-
-                    <tbody className="divide-y divide-slate-200 bg-white">
-                      {issues.length === 0 ? (
-                        <tr>
-                          <td colSpan={6} className="px-4 py-8 text-center text-sm text-slate-600">
-                            No hay observaciones ni bloqueos abiertos para este ciclo.
-                          </td>
+              {issues.length === 0 ? (
+                <div className="fni-empty-state-panel mt-4 min-h-[260px]">
+                  No hay observaciones ni bloqueos abiertos para este ciclo.
+                </div>
+              ) : (
+                <div className="mt-4 fni-data-table-shell">
+                  <div className="fni-data-table-scroll">
+                    <table className="fni-data-table">
+                      <thead className="bg-slate-50">
+                        <tr className="text-left text-sm text-slate-600">
+                          <th className="px-4 py-3 font-medium">Colegio</th>
+                          <th className="px-4 py-3 font-medium">Indicador</th>
+                          <th className="px-4 py-3 font-medium">Estado</th>
+                          <th className="px-4 py-3 font-medium">Detalle</th>
+                          <th className="px-4 py-3 font-medium">Actualizado</th>
+                          <th className="px-4 py-3 font-medium">Acción</th>
                         </tr>
-                      ) : (
-                        issues.map((issue) => (
+                      </thead>
+
+                      <tbody className="divide-y divide-slate-200 bg-white">
+                        {issues.map((issue) => (
                           <tr key={`${issue.schoolId}-${issue.indicatorId}`} className="text-sm text-slate-700">
                             <td className="px-4 py-3">
                               <div className="font-medium text-slate-900">
@@ -992,7 +990,7 @@ export function ManagementDashboard({ mode }: { mode: ManagementDashboardMode })
                               </MiniBadge>
                             </td>
 
-                            <td className="px-4 py-3">{issue.detail}</td>
+                            <td className="px-4 py-3 break-words">{issue.detail}</td>
                             <td className="px-4 py-3 text-slate-500">{formatRelative(issue.reviewedAt)}</td>
 
                             <td className="px-4 py-3">
@@ -1004,12 +1002,12 @@ export function ManagementDashboard({ mode }: { mode: ManagementDashboardMode })
                               </Link>
                             </td>
                           </tr>
-                        ))
-                      )}
-                    </tbody>
-                  </table>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
 
