@@ -19,6 +19,15 @@ type ChangePasswordRequest = {
   newPassword: string;
 };
 
+type PasswordRecoveryRequest = {
+  email: string;
+  message?: string;
+};
+
+type PasswordRecoveryResponse = {
+  ok: true;
+};
+
 const STORAGE_KEY = "fni_user";
 const AUTH_CHANGE_EVENT = "fni-auth-changed";
 
@@ -90,6 +99,13 @@ export async function changeOwnPassword(currentPassword: string, newPassword: st
 
     throw error;
   }
+}
+
+export async function requestPasswordRecovery(email: string, message?: string) {
+  await apiPost<PasswordRecoveryResponse, PasswordRecoveryRequest>("/auth/password-recovery", {
+    email,
+    message,
+  });
 }
 
 export function getUser(): User | null {

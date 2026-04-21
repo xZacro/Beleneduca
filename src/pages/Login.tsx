@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import belenLogo from "../assets/belen-logo.png";
 import { getHomeForUser } from "../app/routes/home";
-import { login } from "../shared/auth";
+import { login, requestPasswordRecovery } from "../shared/auth";
 
 const features = [
   {
@@ -159,6 +159,8 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
   const [helpMessage, setHelpMessage] = useState("");
+  const [helpStatus, setHelpStatus] = useState<string | null>(null);
+  const [helpSending, setHelpSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -184,23 +186,25 @@ export default function Login() {
 
   const openRecoveryRequest = () => {
     setHelpMessage("");
+    setHelpStatus(null);
     setHelpOpen(true);
   };
 
-  const sendRecoveryRequest = () => {
-    const subject = encodeURIComponent("Solicitud de recuperacion de acceso FNI");
-    const body = encodeURIComponent(
-      [
-        "Hola, necesito apoyo con el acceso a la plataforma FNI.",
-        "",
-        `Correo de acceso: ${email}`,
-        `Mensaje: ${helpMessage || "No se agrego un detalle adicional."}`,
-        "",
-        "Por favor, ayudenme a coordinar el cambio o recuperacion de contraseña.",
-      ].join("\n"),
-    );
+  const sendRecoveryRequest = async () => {
+    setHelpSending(true);
+    setHelpStatus(null);
 
-    window.location.href = `mailto:ebravo@outlook.cl?subject=${subject}&body=${body}`;
+    try {
+      await requestPasswordRecovery(email, helpMessage);
+      setHelpStatus("Solicitud enviada a administracion. Te contactaremos por el correo institucional.");
+      setHelpMessage("");
+    } catch (sendError) {
+      setHelpStatus(
+        sendError instanceof Error ? sendError.message : "No se pudo enviar la solicitud de recuperacion.",
+      );
+    } finally {
+      setHelpSending(false);
+    }
   };
 
   return (
@@ -372,8 +376,8 @@ export default function Login() {
                       Solicitar recuperación de contraseña
                     </h2>
                     <p className="mt-3 text-sm leading-6 text-slate-600">
-                      La recuperación la gestiona el equipo de administración. Describe brevemente el problema y te dejamos
-                      listo el correo para enviarlo.
+                      La recuperación la gestiona el equipo de administración. Describe brevemente el problema y enviaremos
+                      la solicitud automaticamente.
                     </p>
 
                     <div className="mt-5 space-y-4">
@@ -405,12 +409,24 @@ export default function Login() {
                       </button>
                       <button
                         type="button"
-                        onClick={sendRecoveryRequest}
-                        className="rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                        onClick={() => void sendRecoveryRequest()}
+                        disabled={helpSending}
+                        className="rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
                       >
-                        Preparar correo
+                        {helpSending ? "Enviando..." : "Enviar"}
                       </button>
                     </div>
+                    {helpStatus && (
+                      <div
+                        className={`mt-4 rounded-2xl border px-4 py-3 text-sm ${
+                          helpStatus.toLowerCase().includes("enviada")
+                            ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                            : "border-amber-200 bg-amber-50 text-amber-700"
+                        }`}
+                      >
+                        {helpStatus}
+                      </div>
+                    )}
                   </div>
                 </div>
               )}

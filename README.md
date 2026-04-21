@@ -42,6 +42,13 @@ Variables operativas disponibles en `.env`:
 - `FNI_REQUEST_LOG`
 - `FNI_SERVE_STATIC`
 - `FNI_STATIC_DIR`
+- `FNI_RECOVERY_EMAIL_TO`
+- `FNI_RECOVERY_EMAIL_FROM`
+- `FNI_SMTP_HOST`
+- `FNI_SMTP_PORT`
+- `FNI_SMTP_SECURE`
+- `FNI_SMTP_USER`
+- `FNI_SMTP_PASSWORD`
 
 Ejemplos por ambiente:
 
@@ -79,6 +86,7 @@ El seed deja el ciclo 2026 vacio para que los usuarios finales comiencen a compl
 - `POST /api/auth/heartbeat`
 - `POST /api/auth/logout`
 - `POST /api/auth/change-password`
+- `POST /api/auth/password-recovery`
 - `GET /api/me`
 - `GET /api/schools`
 - `GET /api/cycles`

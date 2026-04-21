@@ -28,6 +28,13 @@ Variables clave:
 - `FNI_REQUEST_LOG`: `true` para log por request, recomendado en staging
 - `FNI_SERVE_STATIC`: sirve `dist/` desde la API cuando vale `true`
 - `FNI_STATIC_DIR`: carpeta a servir, por defecto `dist`
+- `FNI_RECOVERY_EMAIL_TO`: correo que recibe las solicitudes de recuperacion
+- `FNI_RECOVERY_EMAIL_FROM`: remitente visible del correo automatico
+- `FNI_SMTP_HOST`: servidor SMTP
+- `FNI_SMTP_PORT`: puerto SMTP
+- `FNI_SMTP_SECURE`: `true` si el SMTP usa TLS directo
+- `FNI_SMTP_USER`: usuario SMTP
+- `FNI_SMTP_PASSWORD`: clave o app password SMTP
 
 ## Checklist de staging
 
