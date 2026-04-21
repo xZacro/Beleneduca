@@ -202,7 +202,7 @@ export default function Login() {
                   <div className="text-[0.74rem] font-semibold uppercase tracking-[0.32em] text-blue-700">
                     Fundación Belén Educa
                   </div>
-                  <h1 className="mt-3 max-w-[10ch] text-[2.75rem] font-semibold leading-[0.95] tracking-tight text-slate-900 sm:text-[3.75rem]">
+                  <h1 className="mt-3 max-w-[10ch] text-[2.5rem] font-semibold leading-[0.95] tracking-tight text-slate-900 sm:text-[3.35rem]">
                     Gestor
                     <br />
                     Documental
