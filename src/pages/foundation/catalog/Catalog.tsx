@@ -83,7 +83,7 @@ export default function CatalogPage() {
           <div className="text-sm font-medium text-slate-600">Acceso actual</div>
           <div className="mt-2 text-3xl font-bold tracking-tight text-slate-900">{contextLabel}</div>
           <div className="mt-1 text-sm text-slate-600">
-            {user?.email ? `Sesión activa: ${user.email}` : "Sesión activa en el catálogo."}
+            {user?.email ? `Acceso activo: ${user.email}` : "Acceso activo en el catálogo."}
           </div>
         </div>
 

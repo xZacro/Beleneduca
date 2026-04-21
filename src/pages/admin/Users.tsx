@@ -175,7 +175,7 @@ export default function AdminUsers() {
       setMode("create");
       setForm(emptyForm());
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : "No se pudo cargar administración.");
+      setError(loadError instanceof Error ? loadError.message : "No se pudieron cargar los usuarios.");
     } finally {
       setLoading(false);
     }

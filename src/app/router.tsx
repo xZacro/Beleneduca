@@ -40,7 +40,7 @@ const rel = (abs: string) => abs.replace(/^\//, "");
 
 const routePendingElement = (
   <div className="min-h-[220px] rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-600 shadow-sm">
-    Cargando seccion...
+    Cargando vista...
   </div>
 );
 

@@ -677,8 +677,8 @@ function SchoolFormWorkspace({
 
             {cycleLocked && (
               <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
-                {selectedCycle?.name ?? `Ciclo ${cycleId}`} está cerrado. El formulario queda disponible solo en
-                modo lectura.
+                {selectedCycle?.name ?? `Ciclo ${cycleId}`} está cerrado. El formulario queda disponible solo para
+                consulta.
               </div>
             )}
 

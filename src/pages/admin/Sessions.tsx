@@ -70,7 +70,7 @@ export default function AdminSessions() {
       const rows = await listSessions();
       setSessions(rows);
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : "No se pudieron cargar las sesiones.");
+      setError(loadError instanceof Error ? loadError.message : "No se pudieron cargar los accesos.");
     } finally {
       setLoading(false);
     }

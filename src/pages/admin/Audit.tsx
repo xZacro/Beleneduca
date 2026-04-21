@@ -88,7 +88,7 @@ export default function AdminAudit() {
       const rows = await listAuditEvents();
       setEvents(rows);
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : "No se pudo cargar la auditoría.");
+      setError(loadError instanceof Error ? loadError.message : "No se pudo cargar la actividad.");
     } finally {
       setLoading(false);
     }
@@ -215,7 +215,7 @@ export default function AdminAudit() {
               {loading ? (
                 <tr>
                   <td colSpan={5} className="px-4 py-8 text-center text-sm text-slate-600">
-                    Cargando auditoría...
+                    Cargando actividad...
                   </td>
                 </tr>
               ) : filteredEvents.length === 0 ? (

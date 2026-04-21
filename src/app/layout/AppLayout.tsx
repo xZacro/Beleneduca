@@ -53,7 +53,7 @@ export default function AppLayout() {
         key: "foundation",
         label: "FNI",
         items: [
-          { to: ROUTES.foundation.dashboard, label: isAdmin ? "Operacion ciclo" : "Dashboard" },
+          { to: ROUTES.foundation.dashboard, label: isAdmin ? "Panel del ciclo" : "Dashboard" },
           { to: ROUTES.foundation.schools, label: "Colegios" },
           { to: ROUTES.foundation.catalog, label: "Catálogo FNI" },
         ],

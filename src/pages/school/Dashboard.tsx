@@ -317,7 +317,7 @@ export default function Dashboard() {
 
       {loading && !workspace && (
         <div className="fni-data-panel p-6 text-sm text-slate-600">
-          Cargando dashboard...
+          Cargando panel...
         </div>
       )}
 

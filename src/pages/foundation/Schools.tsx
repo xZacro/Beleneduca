@@ -157,7 +157,7 @@ export default function FoundationSchoolsPage() {
       const data = await repository.listFoundationSchools(cycleId);
       setItems(data);
     } catch (error) {
-      setErr(error instanceof Error ? error.message : "Error cargando colegios");
+      setErr(error instanceof Error ? error.message : "No se pudieron cargar los colegios.");
       setItems([]);
     } finally {
       setLoading(false);

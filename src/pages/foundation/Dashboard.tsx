@@ -362,7 +362,7 @@ export function ManagementDashboard({ mode }: { mode: ManagementDashboardMode })
       } catch (loadError) {
         if (!cancelled) {
           setDashboard(null);
-          setError(loadError instanceof Error ? loadError.message : "No se pudo cargar el dashboard.");
+          setError(loadError instanceof Error ? loadError.message : "No se pudo cargar esta vista.");
         }
       } finally {
         if (!cancelled) {
@@ -432,7 +432,7 @@ export function ManagementDashboard({ mode }: { mode: ManagementDashboardMode })
     });
   }, [schools]);
 
-  const dashboardTitle = mode === "admin" ? "Operación del ciclo" : "Dashboard Fundación";
+  const dashboardTitle = mode === "admin" ? "Panel del ciclo" : "Panel de Fundación";
   const dashboardSection = mode === "admin" ? "Operación" : "Fundación";
   const dashboardDescription =
     mode === "admin"
@@ -625,9 +625,7 @@ export function ManagementDashboard({ mode }: { mode: ManagementDashboardMode })
       </div>
 
       {loading && (
-        <div className="fni-data-panel p-6 text-sm text-slate-600">
-          Cargando dashboard...
-        </div>
+        <div className="fni-data-panel p-6 text-sm text-slate-600">Cargando vista...</div>
       )}
 
       {error && (

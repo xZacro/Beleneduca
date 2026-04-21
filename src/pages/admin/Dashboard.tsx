@@ -428,7 +428,7 @@ export default function AdminDashboard() {
       {
         key: "issues",
         title: `${cycleIssues.length} temas del ciclo requieren seguimiento`,
-        description: "Observaciones y bloqueos abiertos que deben destrabarse desde la operación.",
+        description: "Observaciones y bloqueos abiertos que deben revisarse desde el panel.",
         href: `${ROUTES.foundation.dashboard}?cycleId=${encodeURIComponent(cycleId)}`,
         action: "Abrir dashboard",
         tone: cycleIssues.length > 0 ? ("amber" as const) : ("slate" as const),
@@ -742,7 +742,7 @@ export default function AdminDashboard() {
       </div>
 
       {loading && (
-        <div className="fni-data-panel p-6 text-sm text-slate-600">Cargando centro de control...</div>
+        <div className="fni-data-panel p-6 text-sm text-slate-600">Cargando panel administrativo...</div>
       )}
 
       {error && (
