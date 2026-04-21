@@ -698,9 +698,7 @@ export default function AdminDashboard() {
             Administración <span className="mx-2">/</span> Panel administrativo
           </div>
           <h1 className="fni-page-title">Panel administrativo</h1>
-          <p className="fni-page-subtitle">
-            Gestión del sistema, alertas y accesos rápidos sin duplicar información.
-          </p>
+          <p className="fni-page-subtitle">Vista general para administrar usuarios, ciclos y accesos.</p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
@@ -795,9 +793,7 @@ export default function AdminDashboard() {
               <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div>
                   <h2 className="text-lg font-semibold text-slate-900">Cola administrativa</h2>
-                  <p className="mt-1 text-sm text-slate-600">
-                    Pendientes del sistema que no viven en una sola pantalla.
-                  </p>
+                  <p className="mt-1 text-sm text-slate-600">Pendientes que requieren atención.</p>
                 </div>
 
                 <span
