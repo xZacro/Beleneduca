@@ -50,7 +50,7 @@ export default function AppLayout() {
     if (isFoundation) {
       sections.push({
         key: "foundation",
-        label: "Gestor Documental",
+        label: "FNI",
         items: [
           { to: ROUTES.foundation.dashboard, label: isAdmin ? "Operacion ciclo" : "Dashboard" },
           { to: ROUTES.foundation.schools, label: "Colegios" },
@@ -121,7 +121,7 @@ export default function AppLayout() {
             </div>
 
             <div className="leading-tight">
-              <div className="text-xl font-bold tracking-tight text-slate-900">Gestor Documental</div>
+              <div className="text-xl font-bold tracking-tight text-slate-900">FNI</div>
               <div className="text-base font-semibold text-slate-600">Belen Educa</div>
             </div>
 
@@ -160,6 +160,7 @@ export default function AppLayout() {
                       <NavLink
                         key={item.to}
                         to={item.to}
+                        end
                         className={({ isActive }) =>
                           `block rounded-xl border border-transparent px-3 py-2 text-sm font-medium ${navItemClass(
                             isActive

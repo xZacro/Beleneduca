@@ -227,12 +227,10 @@ export default function Login() {
 
                 <div className="lg:pt-2">
                   <div className="text-[0.74rem] font-semibold uppercase tracking-[0.32em] text-blue-700">
-                    Fundación Belén Educa
+                    Fortalecimiento Normativo Institucional
                   </div>
                   <h1 className="mt-3 max-w-[10ch] text-[2.5rem] font-semibold leading-[0.95] tracking-tight text-slate-900 sm:text-[3.35rem]">
-                    Gestor
-                    <br />
-                    Documental
+                    FNI
                   </h1>
                   <p className="mt-4 max-w-lg text-base leading-7 text-slate-600">
                     Acceso institucional para administrar ciclos, formularios, documentos y revisión por perfil.
