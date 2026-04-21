@@ -410,18 +410,18 @@ export default function FoundationSchoolsPage() {
                 {(s.pendingCount ?? 0) > 0 && <Chip>Pendientes: {s.pendingCount}</Chip>}
               </div>
 
-              <div className="mt-5 flex flex-wrap gap-2">
+              <div className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                <Link
+                  to={`/foundation/schools/${encodeURIComponent(s.id)}/documents${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
+                  className="fni-toolbar-button justify-center"
+                >
+                  Documentos
+                </Link>
                 <Link
                   to={`/foundation/schools/${encodeURIComponent(s.id)}/review${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
                   className="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
                 >
                   Revisión
-                </Link>
-                <Link
-                  to={`/foundation/schools/${encodeURIComponent(s.id)}/documents${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
-                  className="fni-toolbar-button"
-                >
-                  Documentos
                 </Link>
               </div>
 
@@ -482,18 +482,18 @@ export default function FoundationSchoolsPage() {
                     </td>
                     <td className="px-4 py-3 text-slate-600">{fmtAgo(s.lastActivityAt)}</td>
                     <td className="px-4 py-3 text-right">
-                      <div className="flex justify-end gap-2">
-                        <Link
-                          to={`/foundation/schools/${encodeURIComponent(s.id)}/review${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
-                          className="rounded-lg bg-slate-900 px-3 py-2 text-xs text-white"
-                        >
-                          Revisión
-                        </Link>
+                      <div className="grid grid-cols-2 gap-2">
                         <Link
                           to={`/foundation/schools/${encodeURIComponent(s.id)}/documents${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
                           className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 hover:bg-slate-50"
                         >
                           Documentos
+                        </Link>
+                        <Link
+                          to={`/foundation/schools/${encodeURIComponent(s.id)}/review${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
+                          className="rounded-lg bg-slate-900 px-3 py-2 text-xs text-white"
+                        >
+                          Revisión
                         </Link>
                       </div>
                     </td>
