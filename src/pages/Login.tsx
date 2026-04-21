@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+﻿import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 import belenLogo from "../assets/belen-logo.png";
@@ -8,7 +8,7 @@ import { login } from "../shared/auth";
 const features = [
   {
     title: "Acceso por perfil",
-    description: "Administración, fundación y colegio en un mismo espacio.",
+    description: "AdministraciÃ³n, fundaciÃ³n y colegio en un mismo espacio.",
     accent: "bg-sky-50 text-sky-700",
     icon: "shield",
   },
@@ -20,7 +20,7 @@ const features = [
   },
   {
     title: "Una sola plataforma",
-    description: "Ciclos, evidencias y revisión operando de manera integrada.",
+    description: "Ciclos, evidencias y revisiÃ³n operando de manera integrada.",
     accent: "bg-violet-50 text-violet-700",
     icon: "folder",
   },
@@ -121,7 +121,7 @@ function Illustration() {
             <div className="mt-2 h-2 w-7 rounded-full bg-sky-100" />
           </div>
           <div className="absolute left-1/2 top-[42px] grid h-9 w-9 -translate-x-1/2 place-items-center rounded-full bg-sky-500 text-white shadow-[0_10px_20px_rgba(37,99,235,0.24)]">
-            <span className="text-base font-semibold leading-none">✓</span>
+            <span className="text-base font-semibold leading-none">âœ“</span>
           </div>
         </div>
 
@@ -157,6 +157,8 @@ export default function Login() {
   const [password, setPassword] = useState("demo");
   const [rememberSession, setRememberSession] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
+  const [helpMessage, setHelpMessage] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -168,16 +170,37 @@ export default function Login() {
     try {
       const user = await login(email, password);
       if (!user) {
-        setError("Credenciales inválidas o sesión no disponible.");
+        setError("Credenciales invÃ¡lidas o sesiÃ³n no disponible.");
         return;
       }
 
       navigate(getHomeForUser(user), { replace: true });
     } catch (submitError) {
-      setError(submitError instanceof Error ? submitError.message : "No se pudo iniciar sesión.");
+      setError(submitError instanceof Error ? submitError.message : "No se pudo iniciar sesiÃ³n.");
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const openRecoveryRequest = () => {
+    setHelpMessage("");
+    setHelpOpen(true);
+  };
+
+  const sendRecoveryRequest = () => {
+    const subject = encodeURIComponent("Solicitud de recuperacion de acceso FNI");
+    const body = encodeURIComponent(
+      [
+        "Hola, necesito apoyo con el acceso a la plataforma FNI.",
+        "",
+        `Correo de acceso: ${email}`,
+        `Mensaje: ${helpMessage || "No se agrego un detalle adicional."}`,
+        "",
+        "Por favor, ayudenme a coordinar el cambio o recuperacion de contraseÃ±a.",
+      ].join("\n"),
+    );
+
+    window.location.href = `mailto:ebravo@outlook.cl?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -193,14 +216,14 @@ export default function Login() {
               <div className="grid gap-6 lg:grid-cols-[0.28fr_0.72fr] lg:items-start lg:gap-7">
                 <div className="space-y-2.5">
                   <div className="flex justify-start lg:pt-1">
-                    <img src={belenLogo} alt="Fundación Belén Educa" className="h-14 w-auto max-w-[220px] object-contain" />
+                    <img src={belenLogo} alt="FundaciÃ³n BelÃ©n Educa" className="h-14 w-auto max-w-[220px] object-contain" />
                   </div>
                   <Illustration />
                 </div>
 
                 <div className="lg:pt-2">
                   <div className="text-[0.74rem] font-semibold uppercase tracking-[0.32em] text-blue-700">
-                    Fundación Belén Educa
+                    FundaciÃ³n BelÃ©n Educa
                   </div>
                   <h1 className="mt-3 max-w-[10ch] text-[2.5rem] font-semibold leading-[0.95] tracking-tight text-slate-900 sm:text-[3.35rem]">
                     Gestor
@@ -208,7 +231,7 @@ export default function Login() {
                     Documental
                   </h1>
                   <p className="mt-4 max-w-lg text-base leading-7 text-slate-600">
-                    Acceso institucional para administrar ciclos, formularios, documentos y revisión por perfil.
+                    Acceso institucional para administrar ciclos, formularios, documentos y revisiÃ³n por perfil.
                   </p>
                 </div>
               </div>
@@ -230,18 +253,18 @@ export default function Login() {
 
               <div className="mt-10 flex flex-wrap items-center gap-3 border-t border-slate-200 pt-6 text-xs text-slate-500">
                 <div className="inline-flex items-center gap-2">
-                  <span className="text-slate-400">◌</span>
+                  <span className="text-slate-400">â—Œ</span>
                   Plataforma segura y confiable
                 </div>
                 <span className="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sky-700">Colegio</span>
                 <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-700">
-                  Fundación
+                  FundaciÃ³n
                 </span>
                 <span className="rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-indigo-700">
-                  Administración
+                  AdministraciÃ³n
                 </span>
                 <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-amber-700">
-                  PDF y auditoría
+                  PDF y auditorÃ­a
                 </span>
               </div>
             </div>
@@ -250,14 +273,14 @@ export default function Login() {
           <section className="flex items-stretch justify-center">
             <div className="flex w-full max-w-[500px] flex-col rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_22px_60px_rgba(15,23,42,0.10)] sm:p-7">
               <div className="flex justify-center">
-                <img src={belenLogo} alt="Fundación Belén Educa" className="h-16 w-auto max-w-[300px] object-contain" />
+                <img src={belenLogo} alt="FundaciÃ³n BelÃ©n Educa" className="h-16 w-auto max-w-[300px] object-contain" />
               </div>
 
               <div className="mt-6">
                 <div className="text-[0.74rem] font-semibold uppercase tracking-[0.28em] text-blue-700">Acceso de usuarios</div>
                 <div className="mt-2 text-3xl font-semibold tracking-tight text-slate-900">Ingresa a la plataforma</div>
                 <p className="mt-3 max-w-md text-sm leading-6 text-slate-600">
-                  Usa tu correo institucional para entrar según tu perfil y continuar el trabajo del ciclo.
+                  Usa tu correo institucional para entrar segÃºn tu perfil y continuar el trabajo del ciclo.
                 </p>
               </div>
 
@@ -278,7 +301,7 @@ export default function Login() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold text-slate-700">Contraseña</label>
+                  <label className="text-sm font-semibold text-slate-700">ContraseÃ±a</label>
                   <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 transition focus-within:border-blue-200 focus-within:ring-4 focus-within:ring-blue-100">
                     <span className="text-slate-400">
                       <IconLock />
@@ -288,13 +311,13 @@ export default function Login() {
                       className="w-full bg-transparent outline-none placeholder:text-slate-400"
                       value={password}
                       onChange={(event) => setPassword(event.target.value)}
-                      placeholder="••••••••"
+                      placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword((current) => !current)}
                       className="rounded-full p-1.5 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
-                      aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                      aria-label={showPassword ? "Ocultar contraseÃ±a" : "Mostrar contraseÃ±a"}
                     >
                       <IconEye hidden={!showPassword} />
                     </button>
@@ -309,15 +332,16 @@ export default function Login() {
                       onChange={(event) => setRememberSession(event.target.checked)}
                       className="h-4 w-4 rounded border-slate-300 text-slate-900 focus:ring-slate-400"
                     />
-                    Recordar mi sesión
+                    Recordar mi sesiÃ³n
                   </label>
 
-                  <a
-                    href="mailto:ebravo@outlook.cl?subject=Recuperacion%20de%20acceso%20FNI"
+                                    <button
+                    type="button"
+                    onClick={openRecoveryRequest}
                     className="font-semibold text-blue-700 transition hover:text-blue-800"
                   >
                     ¿Olvidaste tu contraseña?
-                  </a>
+                  </button>
                 </div>
 
                 {error && (
@@ -330,13 +354,66 @@ export default function Login() {
                   className="mt-1 inline-flex items-center justify-center gap-3 rounded-2xl bg-slate-900 px-5 py-3.5 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(15,23,42,0.18)] transition hover:bg-slate-800 active:translate-y-[1px] disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   <span>{submitting ? "Ingresando..." : "Ingresar"}</span>
-                  <span className="text-lg leading-none">→</span>
+                  <span className="text-lg leading-none">â†’</span>
                 </button>
 
                 <div className="rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-3 text-xs leading-5 text-slate-500">
-                  El acceso se valida contra el servidor y tus datos se cargan según tu perfil.
+                  El acceso se valida contra el servidor y tus datos se cargan segÃºn tu perfil.
                 </div>
               </form>
+
+              {helpOpen && (
+                <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/55 px-4 py-8 backdrop-blur-sm">
+                  <div className="w-full max-w-lg rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_28px_80px_rgba(15,23,42,0.25)]">
+                    <div className="text-[0.74rem] font-semibold uppercase tracking-[0.28em] text-blue-700">
+                      Soporte de acceso
+                    </div>
+                    <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
+                      Solicitar recuperación de contraseña
+                    </h2>
+                    <p className="mt-3 text-sm leading-6 text-slate-600">
+                      La recuperación la gestiona el equipo de administración. Describe brevemente el problema y te dejamos
+                      listo el correo para enviarlo.
+                    </p>
+
+                    <div className="mt-5 space-y-4">
+                      <div className="space-y-2">
+                        <label className="text-sm font-semibold text-slate-700">Correo institucional</label>
+                        <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+                          {email || "usuario@demo.cl"}
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-sm font-semibold text-slate-700">Detalle opcional</label>
+                        <textarea
+                          className="min-h-28 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-blue-200 focus:ring-4 focus:ring-blue-100"
+                          value={helpMessage}
+                          onChange={(event) => setHelpMessage(event.target.value)}
+                          placeholder="Cuéntanos qué ocurrió o si necesitas resetear el acceso."
+                        />
+                      </div>
+                    </div>
+
+                    <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
+                      <button
+                        type="button"
+                        onClick={() => setHelpOpen(false)}
+                        className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                      >
+                        Cerrar
+                      </button>
+                      <button
+                        type="button"
+                        onClick={sendRecoveryRequest}
+                        className="rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                      >
+                        Preparar correo
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </section>
         </div>
@@ -344,3 +421,4 @@ export default function Login() {
     </div>
   );
 }
+
