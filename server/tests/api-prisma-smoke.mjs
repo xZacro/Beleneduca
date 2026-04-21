@@ -158,13 +158,13 @@ describe("API backend Prisma smoke", { concurrency: 1 }, () => {
   });
 
   test("admin puede autenticarse y ver usuarios", async () => {
-    const admin = await loginAs("admin@demo.cl");
+    const admin = await loginAs("ebravo@outlook.cl");
 
     const meResponse = await admin.request("/api/auth/me");
     assert.equal(meResponse.status, 200);
 
     const me = await readJson(meResponse);
-    assert.equal(me.email, "admin@demo.cl");
+    assert.equal(me.email, "ebravo@outlook.cl");
     assert.ok(me.roles.includes("ADMIN"));
 
     const usersResponse = await admin.request("/api/admin/users");
@@ -172,9 +172,9 @@ describe("API backend Prisma smoke", { concurrency: 1 }, () => {
 
     const users = await readJson(usersResponse);
     assert.ok(Array.isArray(users));
-    assert.ok(users.some((user) => user.email === "admin@demo.cl"));
-    assert.ok(users.some((user) => user.email === "fundacion.01@demo.cl"));
-    assert.ok(users.some((user) => user.email === "cace@demo.cl"));
+    assert.ok(users.some((user) => user.email === "ebravo@outlook.cl"));
+    assert.ok(users.some((user) => user.email === "pedro.letelier@beleneduca.cl"));
+    assert.ok(users.some((user) => user.email === "ppontillo@beleneduca.cl"));
 
     const cyclesResponse = await admin.request("/api/cycles");
     assert.equal(cyclesResponse.status, 200);
@@ -191,7 +191,7 @@ describe("API backend Prisma smoke", { concurrency: 1 }, () => {
   });
 
   test("fundacion y colegio respetan permisos en Prisma", async () => {
-    const foundation = await loginAs("fundacion.01@demo.cl");
+    const foundation = await loginAs("pedro.letelier@beleneduca.cl");
     const foundationSchoolsResponse = await foundation.request("/api/foundation/schools?cycleId=2026");
     assert.equal(foundationSchoolsResponse.status, 200);
 
@@ -199,7 +199,7 @@ describe("API backend Prisma smoke", { concurrency: 1 }, () => {
     assert.ok(Array.isArray(foundationSchools));
     assert.ok(foundationSchools.length >= 12);
 
-    const school = await loginAs("cace@demo.cl");
+    const school = await loginAs("ppontillo@beleneduca.cl");
     const ownWorkspaceResponse = await school.request("/api/fni/workspace?schoolId=sch_1&cycleId=2026");
     assert.equal(ownWorkspaceResponse.status, 200);
 
@@ -211,7 +211,7 @@ describe("API backend Prisma smoke", { concurrency: 1 }, () => {
   });
 
   test("solo admin puede editar indicadores en Prisma", async () => {
-    const foundation = await loginAs("fundacion.01@demo.cl");
+    const foundation = await loginAs("pedro.letelier@beleneduca.cl");
     const foundationUpdateResponse = await foundation.request("/api/indicators/asistencia-001", {
       method: "PUT",
       headers: {
@@ -225,7 +225,7 @@ describe("API backend Prisma smoke", { concurrency: 1 }, () => {
     });
     assert.equal(foundationUpdateResponse.status, 403);
 
-    const admin = await loginAs("admin@demo.cl");
+    const admin = await loginAs("ebravo@outlook.cl");
     const originalResponse = await admin.request("/api/indicators/asistencia-001");
     assert.equal(originalResponse.status, 200);
     const originalIndicator = await readJson(originalResponse);
@@ -265,8 +265,8 @@ describe("API backend Prisma smoke", { concurrency: 1 }, () => {
   });
 
   test("fundacion puede editar y cerrar un ciclo; solo admin puede reabrirlo en Prisma", async () => {
-    const foundation = await loginAs("fundacion.01@demo.cl");
-    const admin = await loginAs("admin@demo.cl");
+    const foundation = await loginAs("pedro.letelier@beleneduca.cl");
+    const admin = await loginAs("ebravo@outlook.cl");
     const dashboardResponse = await foundation.request("/api/management/dashboard?cycleId=2026");
     assert.equal(dashboardResponse.status, 200);
 

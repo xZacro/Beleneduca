@@ -624,7 +624,7 @@ export default function AdminUsers() {
                   value={form.email}
                   onChange={(event) => updateForm({ email: event.target.value })}
                   className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-200"
-                  placeholder="usuario@demo.cl"
+                  placeholder="usuario@beleneduca.cl"
                 />
               </div>
 

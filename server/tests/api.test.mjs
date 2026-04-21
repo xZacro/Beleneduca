@@ -166,7 +166,7 @@ describe("API backend", { concurrency: 1 }, () => {
   });
 
   test("colegio solo puede acceder a su propio workspace", async () => {
-    const school = await loginAs("cace@demo.cl");
+    const school = await loginAs("ppontillo@beleneduca.cl");
 
     const ownWorkspaceResponse = await school.request("/api/fni/workspace?schoolId=sch_1&cycleId=2026");
     assert.equal(ownWorkspaceResponse.status, 200);
@@ -179,7 +179,7 @@ describe("API backend", { concurrency: 1 }, () => {
   });
 
   test("responses y submission se persisten en workspace", async () => {
-    const school = await loginAs("cace@demo.cl");
+    const school = await loginAs("ppontillo@beleneduca.cl");
 
     const saveResponsesResponse = await school.request("/api/fni/workspace/responses?schoolId=sch_1&cycleId=2026", {
       method: "PUT",
@@ -231,7 +231,7 @@ describe("API backend", { concurrency: 1 }, () => {
   });
 
   test("documentos PDF se suben, descargan y eliminan", async () => {
-    const school = await loginAs("cace@demo.cl");
+    const school = await loginAs("ppontillo@beleneduca.cl");
     const pdfBuffer = Buffer.from("%PDF-1.4\n1 0 obj\n<< /Type /Catalog >>\nendobj\ntrailer\n<<>>\n%%EOF");
     const formData = new FormData();
 
@@ -288,7 +288,7 @@ describe("API backend", { concurrency: 1 }, () => {
   });
 
   test("colegio no puede guardar reviews y fundacion si puede", async () => {
-    const school = await loginAs("cace@demo.cl");
+    const school = await loginAs("ppontillo@beleneduca.cl");
     const schoolReviewAttempt = await school.request("/api/fni/workspace/reviews?schoolId=sch_1&cycleId=2026", {
       method: "PUT",
       headers: {
@@ -307,7 +307,7 @@ describe("API backend", { concurrency: 1 }, () => {
     });
     assert.equal(schoolReviewAttempt.status, 403);
 
-    const foundation = await loginAs("fundacion.01@demo.cl");
+    const foundation = await loginAs("pedro.letelier@beleneduca.cl");
     const foundationReviewAttempt = await foundation.request(
       "/api/fni/workspace/reviews?schoolId=sch_1&cycleId=2026",
       {
@@ -337,21 +337,21 @@ describe("API backend", { concurrency: 1 }, () => {
   });
 
   test("permisos de foundation y admin en endpoints protegidos", async () => {
-    const school = await loginAs("cace@demo.cl");
+    const school = await loginAs("ppontillo@beleneduca.cl");
     const schoolDashboardResponse = await school.request("/api/management/dashboard?cycleId=2026");
     assert.equal(schoolDashboardResponse.status, 403);
 
     const schoolFoundationListResponse = await school.request("/api/foundation/schools?cycleId=2026");
     assert.equal(schoolFoundationListResponse.status, 403);
 
-    const foundation = await loginAs("fundacion.01@demo.cl");
+    const foundation = await loginAs("pedro.letelier@beleneduca.cl");
     const foundationDashboardResponse = await foundation.request("/api/management/dashboard?cycleId=2026");
     assert.equal(foundationDashboardResponse.status, 200);
 
     const foundationAdminUsersResponse = await foundation.request("/api/admin/users");
     assert.equal(foundationAdminUsersResponse.status, 403);
 
-    const admin = await loginAs("admin@demo.cl");
+    const admin = await loginAs("ebravo@outlook.cl");
     const adminUsersResponse = await admin.request("/api/admin/users");
     assert.equal(adminUsersResponse.status, 200);
 
@@ -361,7 +361,7 @@ describe("API backend", { concurrency: 1 }, () => {
   });
 
   test("solo admin puede editar indicadores del catalogo", async () => {
-    const foundation = await loginAs("fundacion.01@demo.cl");
+    const foundation = await loginAs("pedro.letelier@beleneduca.cl");
     const foundationUpdateResponse = await foundation.request("/api/indicators/asistencia-001", {
       method: "PUT",
       headers: {
@@ -376,7 +376,7 @@ describe("API backend", { concurrency: 1 }, () => {
 
     assert.equal(foundationUpdateResponse.status, 403);
 
-    const admin = await loginAs("admin@demo.cl");
+    const admin = await loginAs("ebravo@outlook.cl");
     const originalResponse = await admin.request("/api/indicators/asistencia-001");
     assert.equal(originalResponse.status, 200);
     const originalIndicator = await readJson(originalResponse);
@@ -425,7 +425,7 @@ describe("API backend", { concurrency: 1 }, () => {
   });
 
   test("usuario autenticado puede cambiar su propia contrasena", async () => {
-    const school = await loginAs("camv@demo.cl");
+    const school = await loginAs("kimberly.orellana@beleneduca.cl");
     const changePasswordResponse = await school.request("/api/auth/change-password", {
       method: "POST",
       headers: {
@@ -445,7 +445,7 @@ describe("API backend", { concurrency: 1 }, () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: "camv@demo.cl",
+        email: "kimberly.orellana@beleneduca.cl",
         password: "demo",
       }),
     });
@@ -457,7 +457,7 @@ describe("API backend", { concurrency: 1 }, () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: "camv@demo.cl",
+        email: "kimberly.orellana@beleneduca.cl",
         password: "demo123",
       }),
     });
@@ -465,7 +465,7 @@ describe("API backend", { concurrency: 1 }, () => {
   });
 
   test("admin puede consultar auditoria operativa", async () => {
-    const admin = await loginAs("admin@demo.cl");
+    const admin = await loginAs("ebravo@outlook.cl");
     const auditResponse = await admin.request("/api/admin/audit");
 
     assert.equal(auditResponse.status, 200);
@@ -485,7 +485,7 @@ describe("API backend", { concurrency: 1 }, () => {
   });
 
   test("fundacion y admin gestionan ciclos segun permisos definidos", async () => {
-    const school = await loginAs("cace@demo.cl");
+    const school = await loginAs("ppontillo@beleneduca.cl");
     const schoolCreateResponse = await school.request("/api/management/cycles", {
       method: "POST",
       headers: {
@@ -505,7 +505,7 @@ describe("API backend", { concurrency: 1 }, () => {
     });
     assert.equal(schoolCloseResponse.status, 403);
 
-    const foundation = await loginAs("fundacion.01@demo.cl");
+    const foundation = await loginAs("pedro.letelier@beleneduca.cl");
     const createResponse = await foundation.request("/api/management/cycles", {
       method: "POST",
       headers: {
@@ -677,7 +677,7 @@ describe("API backend", { concurrency: 1 }, () => {
     });
     assert.equal(blockedFoundationReopenResponse.status, 403);
 
-    const admin = await loginAs("admin@demo.cl");
+    const admin = await loginAs("ebravo@outlook.cl");
     const reopenResponse = await admin.request("/api/management/cycles/2026/reopen", {
       method: "POST",
     });

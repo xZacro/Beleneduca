@@ -68,11 +68,9 @@ Ademas, GitHub Actions ejecuta automaticamente:
 
 ## Credenciales de desarrollo para auth API
 
-- `admin@demo.cl` / `demo`
-- `fundacion.01@demo.cl` a `fundacion.06@demo.cl` / `demo`
-- `cc@demo.cl`, `cace@demo.cl`, `camv@demo.cl`, `ccoc@demo.cl`, `cjff@demo.cl` / `demo`
-- `cjlu@demo.cl`, `cjmc@demo.cl`, `cls@demo.cl`, `cpd@demo.cl` / `demo`
-- `crsh@demo.cl`, `csah@demo.cl`, `csdm@demo.cl`, `csfa@demo.cl` / `demo`
+- Admins: `pablo.munoz@beleneduca.cl`, `felipe.munoz@beleneduca.cl`, `mariajose.rojas@beleneduca.cl`, `arantza.farias@beleneduca.cl`, `ebravo@outlook.cl` / `demo`
+- Fundacion: `pedro.letelier@beleneduca.cl`, `gabriel.olate@beleneduca.cl`, `pedro.larrain@beleneduca.cl`, `jose.bustamante@beleneduca.cl`, `matias.bascur@beleneduca.cl`, `monica.luna@beleneduca.cl`, `pilar.reyes@beleneduca.cl` / `demo`
+- Colegios: `aespinoza@beleneduca.cl`, `carolina.fuentes@beleneduca.cl`, `kimberly.orellana@beleneduca.cl`, `mariapaz.carbonell@beleneduca.cl`, `ppontillo@beleneduca.cl`, `rfuentes@beleneduca.cl`, `romina.correa@beleneduca.cl`, `carolina.osses@molokai.cl`, `jgonzalez@molokai.cl`, `marjorie.espinoza@molokai.cl`, `nadia.sandoval@molokai.cl`, `cc@beleneduca.cl`, `cjlu@beleneduca.cl` / `demo`
 
 Esas mismas credenciales quedan sembradas en Prisma cuando corres `npm run db:seed`.
 El seed deja el ciclo 2026 vacio para que los usuarios finales comiencen a completarlo desde cero.

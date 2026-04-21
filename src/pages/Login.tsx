@@ -153,7 +153,7 @@ function Illustration() {
 
 export default function Login() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("fundacion.01@demo.cl");
+  const [email, setEmail] = useState("ebravo@outlook.cl");
   const [password, setPassword] = useState("demo");
   const [rememberSession, setRememberSession] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -299,7 +299,7 @@ export default function Login() {
                       className="w-full bg-transparent outline-none placeholder:text-slate-400"
                       value={email}
                       onChange={(event) => setEmail(event.target.value)}
-                      placeholder="usuario@demo.cl"
+                      placeholder="usuario@beleneduca.cl"
                     />
                   </div>
                 </div>
@@ -384,7 +384,7 @@ export default function Login() {
                       <div className="space-y-2">
                         <label className="text-sm font-semibold text-slate-700">Correo institucional</label>
                         <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
-                          {email || "usuario@demo.cl"}
+                          {email || "usuario@beleneduca.cl"}
                         </div>
                       </div>
 
