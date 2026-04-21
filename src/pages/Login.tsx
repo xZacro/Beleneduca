@@ -157,6 +157,8 @@ export default function Login() {
   const [password, setPassword] = useState("demo");
   const [rememberSession, setRememberSession] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
+  const [helpMessage, setHelpMessage] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -178,6 +180,27 @@ export default function Login() {
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const openRecoveryRequest = () => {
+    setHelpMessage("");
+    setHelpOpen(true);
+  };
+
+  const sendRecoveryRequest = () => {
+    const subject = encodeURIComponent("Solicitud de recuperacion de acceso FNI");
+    const body = encodeURIComponent(
+      [
+        "Hola, necesito apoyo con el acceso a la plataforma FNI.",
+        "",
+        `Correo de acceso: ${email}`,
+        `Mensaje: ${helpMessage || "No se agrego un detalle adicional."}`,
+        "",
+        "Por favor, ayudenme a coordinar el cambio o recuperacion de contraseña.",
+      ].join("\n"),
+    );
+
+    window.location.href = `mailto:ebravo@outlook.cl?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -312,12 +335,13 @@ export default function Login() {
                     Recordar mi sesión
                   </label>
 
-                  <a
-                    href="mailto:ebravo@outlook.cl?subject=Recuperacion%20de%20acceso%20FNI"
+                  <button
+                    type="button"
+                    onClick={openRecoveryRequest}
                     className="font-semibold text-blue-700 transition hover:text-blue-800"
                   >
                     ¿Olvidaste tu contraseña?
-                  </a>
+                  </button>
                 </div>
 
                 {error && (
@@ -337,6 +361,59 @@ export default function Login() {
                   El acceso se valida contra el servidor y tus datos se cargan según tu perfil.
                 </div>
               </form>
+
+              {helpOpen && (
+                <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/55 px-4 py-8 backdrop-blur-sm">
+                  <div className="w-full max-w-lg rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_28px_80px_rgba(15,23,42,0.25)]">
+                    <div className="text-[0.74rem] font-semibold uppercase tracking-[0.28em] text-blue-700">
+                      Soporte de acceso
+                    </div>
+                    <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
+                      Solicitar recuperación de contraseña
+                    </h2>
+                    <p className="mt-3 text-sm leading-6 text-slate-600">
+                      La recuperación la gestiona el equipo de administración. Describe brevemente el problema y te dejamos
+                      listo el correo para enviarlo.
+                    </p>
+
+                    <div className="mt-5 space-y-4">
+                      <div className="space-y-2">
+                        <label className="text-sm font-semibold text-slate-700">Correo institucional</label>
+                        <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+                          {email || "usuario@demo.cl"}
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-sm font-semibold text-slate-700">Detalle opcional</label>
+                        <textarea
+                          className="min-h-28 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-blue-200 focus:ring-4 focus:ring-blue-100"
+                          value={helpMessage}
+                          onChange={(event) => setHelpMessage(event.target.value)}
+                          placeholder="Cuéntanos qué ocurrió o si necesitas resetear el acceso."
+                        />
+                      </div>
+                    </div>
+
+                    <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
+                      <button
+                        type="button"
+                        onClick={() => setHelpOpen(false)}
+                        className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                      >
+                        Cerrar
+                      </button>
+                      <button
+                        type="button"
+                        onClick={sendRecoveryRequest}
+                        className="rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                      >
+                        Preparar correo
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </section>
         </div>
