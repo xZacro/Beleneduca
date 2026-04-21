@@ -83,10 +83,10 @@ export default function AppLayout() {
         key: "admin",
         label: "Administración",
         items: [
-          { to: ROUTES.admin.root, label: "Centro de control" },
+          { to: ROUTES.admin.root, label: "Panel administrativo" },
           { to: ROUTES.admin.users, label: "Usuarios" },
-          { to: ROUTES.admin.sessions, label: "Sesiones" },
-          { to: ROUTES.admin.audit, label: "Auditoría" },
+          { to: ROUTES.admin.sessions, label: "Accesos" },
+          { to: ROUTES.admin.audit, label: "Actividad" },
         ],
       });
     }
@@ -104,7 +104,7 @@ export default function AppLayout() {
     return (
       <div className="min-h-screen bg-slate-50 p-6">
         <div className="mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-600 shadow-sm">
-          {"Validando sesión..."}
+          {"Cargando tu acceso..."}
         </div>
       </div>
     );

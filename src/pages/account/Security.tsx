@@ -45,7 +45,7 @@ export default function AccountSecurity() {
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
-      setNotice("Contraseña actualizada correctamente. Las otras sesiones activas fueron revocadas.");
+      setNotice("Contraseña actualizada correctamente. Las demás sesiones activas se cerraron por seguridad.");
     } catch (submitError) {
       setError(
         submitError instanceof Error
@@ -63,7 +63,7 @@ export default function AccountSecurity() {
         <div>
           <h1 className="fni-page-title">Seguridad</h1>
           <p className="fni-page-subtitle">
-            Administra tu acceso y cambia tu contraseña sin depender del módulo admin.
+            Administra tu acceso y cambia tu contraseña cuando lo necesites.
           </p>
         </div>
       </div>
@@ -151,7 +151,7 @@ export default function AccountSecurity() {
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="text-lg font-semibold text-slate-900">Mi cuenta</div>
           <p className="mt-1 text-sm text-slate-600">
-            Referencia rápida de la sesión actual y del perfil con el que estás trabajando.
+            Resumen rápido de tu sesión y del perfil activo.
           </p>
 
           <div className="mt-4 space-y-3 text-sm text-slate-700">

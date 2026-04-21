@@ -181,8 +181,8 @@ export default function IndicatorDetail() {
           </div>
 
           <div className="mt-3 text-xs text-slate-500">
-            Los cambios quedan disponibles solo para administracion. La evaluacion del colegio se mantiene por
-            ahora con el schema de preguntas actual.
+            Los cambios quedan disponibles solo para administración. La evaluación del colegio se mantiene con
+            la estructura actual de preguntas.
           </div>
 
           {saveMessage && (

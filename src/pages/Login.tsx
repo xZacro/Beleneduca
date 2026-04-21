@@ -8,19 +8,19 @@ import { login, requestPasswordRecovery } from "../shared/auth";
 const features = [
   {
     title: "Acceso por perfil",
-    description: "Administración, fundación y colegio en un mismo espacio.",
+    description: "Administración, fundación y colegio en un mismo lugar.",
     accent: "bg-sky-50 text-sky-700",
     icon: "shield",
   },
   {
     title: "Seguimiento institucional",
-    description: "Trazabilidad de documentos, ciclos y observaciones.",
+    description: "Seguimiento de documentos, ciclos y observaciones.",
     accent: "bg-emerald-50 text-emerald-700",
     icon: "document",
   },
   {
     title: "Una sola plataforma",
-    description: "Ciclos, evidencias y revisión operando de manera integrada.",
+    description: "Ciclos, evidencias y revisión en un solo espacio.",
     accent: "bg-violet-50 text-violet-700",
     icon: "folder",
   },
@@ -172,13 +172,13 @@ export default function Login() {
     try {
       const user = await login(email, password);
       if (!user) {
-        setError("Credenciales inválidas o sesión no disponible.");
+        setError("Correo o contraseña incorrectos.");
         return;
       }
 
       navigate(getHomeForUser(user), { replace: true });
     } catch (submitError) {
-      setError(submitError instanceof Error ? submitError.message : "No se pudo iniciar sesión.");
+      setError(submitError instanceof Error ? submitError.message : "No pudimos iniciar sesión.");
     } finally {
       setSubmitting(false);
     }
@@ -196,11 +196,11 @@ export default function Login() {
 
     try {
       await requestPasswordRecovery(email, helpMessage);
-      setHelpStatus("Solicitud enviada a administracion. Te contactaremos por el correo institucional.");
+      setHelpStatus("Solicitud enviada a administración. Te contactaremos por el correo institucional.");
       setHelpMessage("");
     } catch (sendError) {
       setHelpStatus(
-        sendError instanceof Error ? sendError.message : "No se pudo enviar la solicitud de recuperacion.",
+        sendError instanceof Error ? sendError.message : "No se pudo enviar la solicitud. Inténtalo de nuevo.",
       );
     } finally {
       setHelpSending(false);
@@ -233,7 +233,7 @@ export default function Login() {
                     FNI
                   </h1>
                   <p className="mt-4 max-w-lg text-base leading-7 text-slate-600">
-                    Acceso institucional para administrar ciclos, formularios, documentos y revisión por perfil.
+                    Acceso institucional para gestionar ciclos, formularios, documentos y revisiones según tu perfil.
                   </p>
                 </div>
               </div>
@@ -282,7 +282,7 @@ export default function Login() {
                 <div className="text-[0.74rem] font-semibold uppercase tracking-[0.28em] text-blue-700">Acceso de usuarios</div>
                 <div className="mt-2 text-3xl font-semibold tracking-tight text-slate-900">Ingresa a la plataforma</div>
                 <p className="mt-3 max-w-md text-sm leading-6 text-slate-600">
-                  Usa tu correo institucional para entrar según tu perfil y continuar el trabajo del ciclo.
+                  Usa tu correo institucional para entrar según tu perfil y seguir con el trabajo del ciclo.
                 </p>
               </div>
 
@@ -360,7 +360,7 @@ export default function Login() {
                 </button>
 
                 <div className="rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-3 text-xs leading-5 text-slate-500">
-                  El acceso se valida contra el servidor y tus datos se cargan según tu perfil.
+                  El acceso se valida y tus datos se cargan según tu perfil.
                 </div>
               </form>
 
@@ -374,8 +374,8 @@ export default function Login() {
                       Solicitar recuperación de contraseña
                     </h2>
                     <p className="mt-3 text-sm leading-6 text-slate-600">
-                      La recuperación la gestiona el equipo de administración. Describe brevemente el problema y enviaremos
-                      la solicitud automaticamente.
+                      La recuperación la gestiona el equipo de administración. Cuéntanos brevemente qué pasó y
+                      enviaremos tu solicitud.
                     </p>
 
                     <div className="mt-5 space-y-4">

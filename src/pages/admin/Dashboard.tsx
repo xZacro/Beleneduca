@@ -455,7 +455,7 @@ export default function AdminDashboard() {
       {
         key: "manager",
         title: `${governanceSummary.schoolsWithoutManager} colegios sin encargado completo`,
-        description: "Falta nombre o correo de contacto para seguimiento operativo.",
+        description: "Falta nombre o correo de contacto para dar seguimiento.",
         href: `${ROUTES.foundation.schools}?cycleId=${encodeURIComponent(cycleId)}`,
         action: "Revisar colegios",
         tone:
@@ -464,17 +464,17 @@ export default function AdminDashboard() {
       },
       {
         key: "sessions",
-        title: `${sessionsSummary.revoked} sesiones revocadas requieren revisión`,
+        title: `${sessionsSummary.revoked} accesos revocados requieren revisión`,
         description: "Cambios de acceso o reinicios recientes pueden necesitar seguimiento.",
         href: ROUTES.admin.sessions,
-        action: "Ver sesiones",
+        action: "Ver accesos",
         tone: sessionsSummary.revoked > 0 ? ("blue" as const) : ("slate" as const),
         visible: sessionsSummary.revoked > 0,
       },
       {
         key: "mapping",
-        title: `${governanceSummary.schoolUsersWithoutSchool} usuarios colegio sin asignación`,
-        description: "Inconsistencia de datos que conviene corregir antes de operar.",
+        title: `${governanceSummary.schoolUsersWithoutSchool} usuarios de colegio sin asignar`,
+        description: "Hay usuarios de colegio que conviene corregir antes de seguir.",
         href: ROUTES.admin.users,
         action: "Corregir usuarios",
         tone:
@@ -511,10 +511,10 @@ export default function AdminDashboard() {
   const quickActions = useMemo(() => {
     return [
       {
-        title: "Dashboard del ciclo",
-        description: "Operación del ciclo, colegios críticos y revisión priorizada.",
+        title: "Panel del ciclo",
+        description: "Seguimiento del ciclo, colegios críticos y revisión priorizada.",
         href: `${ROUTES.foundation.dashboard}?cycleId=${encodeURIComponent(cycleId)}`,
-        action: "Abrir dashboard",
+        action: "Abrir panel",
       },
       {
         title: "Colegios",
@@ -524,15 +524,15 @@ export default function AdminDashboard() {
       },
       {
         title: "Usuarios",
-        description: "Altas, roles, activación de acceso y restablecimiento de contraseñas.",
+        description: "Gestión de cuentas, roles y contraseñas.",
         href: ROUTES.admin.users,
         action: "Gestionar usuarios",
       },
       {
-        title: "Auditoría",
-        description: "Rastreo de cambios sensibles, ingresos y operaciones de control.",
+        title: "Actividad",
+        description: "Registro de cambios importantes, ingresos y acciones de control.",
         href: ROUTES.admin.audit,
-        action: "Abrir auditoría",
+        action: "Abrir actividad",
       },
       {
         title: "Documentos del ciclo",
@@ -695,12 +695,11 @@ export default function AdminDashboard() {
       <div className="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
         <div>
           <div className="fni-page-kicker">
-            Administración <span className="mx-2">/</span> Centro de control
+            Administración <span className="mx-2">/</span> Panel administrativo
           </div>
-          <h1 className="fni-page-title">Centro de control administrativo</h1>
+          <h1 className="fni-page-title">Panel administrativo</h1>
           <p className="fni-page-subtitle">
-            Gobierno del sistema, riesgos operativos y accesos rápidos sin duplicar usuarios,
-            sesiones ni auditoría.
+            Gestión del sistema, alertas y accesos rápidos sin duplicar información.
           </p>
         </div>
 
@@ -762,7 +761,7 @@ export default function AdminDashboard() {
             <MetricCard
               title="Ciclos configurados"
               value={cycles.length}
-              subtitle={cycle.isClosed ? `${cycle.name} está cerrado` : `${cycle.name} sigue operativo`}
+              subtitle={cycle.isClosed ? `${cycle.name} está cerrado` : `${cycle.name} sigue abierto`}
               tone="blue"
             />
             <MetricCard
@@ -772,19 +771,19 @@ export default function AdminDashboard() {
               tone="green"
             />
             <MetricCard
-              title="Sesiones con actividad"
+              title="Accesos con actividad"
               value={sessionsSummary.online + sessionsSummary.idle}
-              subtitle={`${sessionsSummary.online} online / ${sessionsSummary.idle} inactivas`}
+              subtitle={`${sessionsSummary.online} activos / ${sessionsSummary.idle} en pausa`}
               tone="amber"
             />
             <MetricCard
-              title="Cambios sensibles hoy"
+              title="Cambios importantes hoy"
               value={auditSummary.todaySensitive}
               subtitle={`${usersSummary.admins} usuarios con rol administrador`}
               tone="rose"
             />
             <MetricCard
-              title="Evidencias faltantes"
+              title="Evidencias pendientes"
               value={governanceSummary.missingEvidenceTotal}
               subtitle={`${governanceSummary.schoolsWithMissingEvidence.length} colegios con documentos pendientes`}
               tone="amber"
@@ -797,7 +796,7 @@ export default function AdminDashboard() {
                 <div>
                   <h2 className="text-lg font-semibold text-slate-900">Cola administrativa</h2>
                   <p className="mt-1 text-sm text-slate-600">
-                    Pendientes transversales del sistema que no viven en una sola pantalla.
+                    Pendientes del sistema que no viven en una sola pantalla.
                   </p>
                 </div>
 
@@ -812,8 +811,7 @@ export default function AdminDashboard() {
 
               {adminQueue.length === 0 ? (
                 <div className="fni-empty-state-panel mt-4 min-h-[200px]">
-                  No hay alertas administrativas relevantes. El sistema está consistente para el
-                  ciclo seleccionado.
+                  No hay pendientes relevantes. El sistema está listo para el ciclo seleccionado.
                 </div>
               ) : (
                 <div className="mt-4 space-y-3">
@@ -838,9 +836,9 @@ export default function AdminDashboard() {
             <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
               <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div>
-                  <h2 className="text-lg font-semibold text-slate-900">Gestion de ciclos</h2>
+                  <h2 className="text-lg font-semibold text-slate-900">Gestión de ciclos</h2>
                   <p className="mt-1 text-sm text-slate-600">
-                    Resumen operativo y consola editable del ciclo seleccionado.
+                    Resumen del ciclo y edición de su configuración.
                   </p>
                 </div>
 
@@ -1165,20 +1163,20 @@ export default function AdminDashboard() {
             <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
               <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div>
-                  <h2 className="text-lg font-semibold text-slate-900">Actividad sensible reciente</h2>
+                  <h2 className="text-lg font-semibold text-slate-900">Actividad reciente</h2>
                   <p className="mt-1 text-sm text-slate-600">
-                    Muestra breve de cambios administrativos para decidir si profundizar en auditoría.
+                    Resumen breve de cambios importantes para revisarlos con más detalle.
                   </p>
                 </div>
 
                 <Link to={ROUTES.admin.audit} className="fni-toolbar-button">
-                  Ver auditoría
+                  Ver actividad
                 </Link>
               </div>
 
               {recentSensitiveEvents.length === 0 ? (
                 <div className="fni-empty-state-panel mt-4 min-h-[220px]">
-                  No hay cambios sensibles recientes para mostrar.
+                  No hay cambios recientes para mostrar.
                 </div>
               ) : (
                 <div className="mt-4 space-y-3">

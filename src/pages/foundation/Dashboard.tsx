@@ -259,7 +259,7 @@ function ConsolidatedResultsTable({
         <div>
           <h2 className="text-lg font-semibold text-slate-900">{`Resultados consolidados ${cycleLabel}`}</h2>
           <p className="mt-1 text-sm text-slate-600">
-            Consolidado real del ciclo cerrado, construido desde la información del backend.
+            Consolidado del ciclo cerrado, construido con la información registrada.
           </p>
         </div>
 

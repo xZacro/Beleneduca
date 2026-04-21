@@ -35,10 +35,10 @@ function formatRelative(value: string | null) {
 }
 
 function statusLabel(status: AdminSessionStatus) {
-  if (status === "ONLINE") return "Online";
-  if (status === "IDLE") return "Idle";
+  if (status === "ONLINE") return "Activo";
+  if (status === "IDLE") return "En pausa";
   if (status === "REVOKED") return "Revocada";
-  return "Offline";
+  return "Desconectado";
 }
 
 function statusTone(status: AdminSessionStatus) {
@@ -112,9 +112,9 @@ export default function AdminSessions() {
     <div className="fni-page-shell">
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="fni-page-title">Sesiones</h1>
+          <h1 className="fni-page-title">Accesos</h1>
           <p className="fni-page-subtitle">
-            Estado actual de sesiones, últimos accesos y revocaciones desde Prisma.
+            Estado actual de accesos, últimos ingresos y revocaciones.
           </p>
         </div>
 
@@ -129,11 +129,11 @@ export default function AdminSessions() {
           <div className="mt-2 text-3xl font-semibold text-slate-900">{metrics.total}</div>
         </div>
         <div className="fni-metric-card border-emerald-200 bg-emerald-50">
-          <div className="text-xs font-semibold tracking-wide text-emerald-700">Online</div>
+          <div className="text-xs font-semibold tracking-wide text-emerald-700">Activos</div>
           <div className="mt-2 text-3xl font-semibold text-emerald-900">{metrics.online}</div>
         </div>
         <div className="fni-metric-card border-amber-200 bg-amber-50">
-          <div className="text-xs font-semibold tracking-wide text-amber-700">Idle</div>
+          <div className="text-xs font-semibold tracking-wide text-amber-700">En pausa</div>
           <div className="mt-2 text-3xl font-semibold text-amber-900">{metrics.idle}</div>
         </div>
         <div className="fni-metric-card border-rose-200 bg-rose-50">
@@ -149,7 +149,7 @@ export default function AdminSessions() {
             <input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder="Usuario, email, IP o user agent"
+              placeholder="Usuario, email, IP o navegador"
               className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-200"
             />
           </div>
@@ -162,9 +162,9 @@ export default function AdminSessions() {
               className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium"
             >
               <option value="ALL">Todos</option>
-              <option value="ONLINE">Online</option>
-              <option value="IDLE">Idle</option>
-              <option value="OFFLINE">Offline</option>
+              <option value="ONLINE">Activo</option>
+              <option value="IDLE">En pausa</option>
+              <option value="OFFLINE">Desconectado</option>
               <option value="REVOKED">Revocadas</option>
             </select>
           </div>
@@ -186,23 +186,23 @@ export default function AdminSessions() {
                 <th className="px-4 py-3 text-left font-semibold">Roles</th>
                 <th className="px-4 py-3 text-left font-semibold">Estado</th>
                 <th className="px-4 py-3 text-left font-semibold">Última actividad</th>
-                <th className="px-4 py-3 text-left font-semibold">Login</th>
-                <th className="px-4 py-3 text-left font-semibold">Logout</th>
+                <th className="px-4 py-3 text-left font-semibold">Ingreso</th>
+                <th className="px-4 py-3 text-left font-semibold">Salida</th>
                 <th className="px-4 py-3 text-left font-semibold">IP</th>
-                <th className="px-4 py-3 text-left font-semibold">User agent</th>
+                <th className="px-4 py-3 text-left font-semibold">Navegador</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 bg-white">
               {loading ? (
                 <tr>
                   <td colSpan={8} className="px-4 py-8 text-center text-sm text-slate-600">
-                    Cargando sesiones...
+                    Cargando accesos...
                   </td>
                 </tr>
               ) : visibleSessions.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="px-4 py-8 text-center text-sm text-slate-600">
-                    No hay sesiones para los filtros actuales.
+                    No hay accesos para los filtros actuales.
                   </td>
                 </tr>
               ) : (

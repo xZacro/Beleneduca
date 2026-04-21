@@ -24,11 +24,11 @@ function buildRequestUrl(base: string, path: string) {
 function buildConnectionError(path: string) {
   if (import.meta.env.DEV) {
     return new Error(
-      `No se pudo conectar con la API local para ${path}. Verifica que \`npm run api\` este levantado en http://localhost:4100.`
+      `No se pudo conectar con el servidor local para ${path}. Verifica que el servicio esté en marcha en http://localhost:4100.`
     );
   }
 
-  return new Error(`No se pudo conectar con la API para ${path}.`);
+  return new Error(`No se pudo conectar con el servidor para ${path}.`);
 }
 
 // Normaliza errores HTTP para que la UI pueda distinguir estado y ruta afectada.
@@ -37,7 +37,7 @@ export class ApiError extends Error {
   path: string;
 
   constructor(path: string, status: number, message?: string) {
-    super(message ?? `Request failed for ${path} with status ${status}`);
+    super(message ?? `No se pudo completar la solicitud para ${path} (${status}).`);
     this.name = "ApiError";
     this.path = path;
     this.status = status;

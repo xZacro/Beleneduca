@@ -27,8 +27,8 @@ export default function CatalogPage() {
 
   const contextLabel = isAdmin ? "Administración" : isFoundation ? "Fundación" : "Catálogo";
   const contextSubtitle = isAdmin
-    ? "Gestión operativa del catálogo documental para administración."
-    : "Áreas e indicadores del módulo documental.";
+    ? "Gestión del catálogo documental para administración."
+    : "Áreas e indicadores disponibles en el catálogo.";
 
   return (
     <div className="fni-page-shell">
@@ -60,7 +60,7 @@ export default function CatalogPage() {
 
           {isAdmin && (
             <button type="button" onClick={onSeed} className="fni-toolbar-button">
-              Cargar seed
+              Recargar catálogo
             </button>
           )}
         </div>
@@ -74,8 +74,8 @@ export default function CatalogPage() {
           </div>
           <div className="mt-1 text-sm text-slate-600">
             {tab === "areas"
-              ? "Registros disponibles en el catálogo documental."
-              : "Indicadores cargados para revisión y gestión."}
+              ? "Registros disponibles en el catálogo."
+              : "Indicadores listos para revisión y seguimiento."}
           </div>
         </div>
 
@@ -83,17 +83,17 @@ export default function CatalogPage() {
           <div className="text-sm font-medium text-slate-600">Acceso actual</div>
           <div className="mt-2 text-3xl font-bold tracking-tight text-slate-900">{contextLabel}</div>
           <div className="mt-1 text-sm text-slate-600">
-            {user?.email ? `Sesión activa: ${user.email}` : "Sesión activa conectada al catálogo real."}
+            {user?.email ? `Sesión activa: ${user.email}` : "Sesión activa en el catálogo."}
           </div>
         </div>
 
         <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 shadow-sm">
-          <div className="text-sm font-medium text-slate-600">Estado del módulo</div>
-          <div className="mt-2 text-3xl font-bold tracking-tight text-slate-900">Operativo</div>
+          <div className="text-sm font-medium text-slate-600">Estado del catálogo</div>
+          <div className="mt-2 text-3xl font-bold tracking-tight text-slate-900">Listo</div>
           <div className="mt-1 text-sm text-slate-600">
             {isAdmin
-              ? "Admin puede recargar el catálogo con seed para entornos de prueba."
-              : "Datos servidos desde PostgreSQL y listos para consulta."}
+              ? "Administración puede recargar el catálogo cuando necesite restablecer la información."
+              : "Datos listos para consulta."}
           </div>
         </div>
       </div>

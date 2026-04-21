@@ -370,7 +370,7 @@ export default function AdminUsers() {
         <div>
           <h1 className="fni-page-title">Usuarios</h1>
           <p className="fni-page-subtitle">
-            Alta, edición y gestión de contraseñas sobre Prisma para admin, fundación y colegio.
+            Gestión de cuentas, roles y contraseñas para admin, fundación y colegio.
           </p>
         </div>
 
@@ -725,10 +725,10 @@ export default function AdminUsers() {
           </div>
 
           <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="text-lg font-semibold text-slate-900">Restablecer contraseña</div>
-            <p className="mt-1 text-sm text-slate-600">
-              Revoca sesiones activas y asigna una nueva contraseña al usuario seleccionado.
-            </p>
+          <div className="text-lg font-semibold text-slate-900">Restablecer contraseña</div>
+          <p className="mt-1 text-sm text-slate-600">
+              Cierra sesiones activas y asigna una nueva contraseña al usuario seleccionado.
+          </p>
 
             <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
               {selectedUser ? (

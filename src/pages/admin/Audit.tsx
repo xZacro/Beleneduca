@@ -17,9 +17,9 @@ function formatDate(value: string | null) {
 }
 
 function eventLabel(type: AuditEventType) {
-  if (type === "LOGIN") return "Login";
-  if (type === "LOGOUT") return "Logout";
-  if (type === "HEARTBEAT") return "Heartbeat";
+  if (type === "LOGIN") return "Ingreso";
+  if (type === "LOGOUT") return "Salida";
+  if (type === "HEARTBEAT") return "Actividad";
   if (type === "ROLE_SWITCH") return "Cambio de rol";
   return "Cambio";
 }
@@ -133,9 +133,9 @@ export default function AdminAudit() {
     <div className="fni-page-shell">
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="fni-page-title">Auditoría</h1>
+          <h1 className="fni-page-title">Actividad</h1>
           <p className="fni-page-subtitle">
-            Eventos de login, logout y cambios operativos registrados por el sistema.
+            Ingresos, salidas y cambios importantes registrados por el sistema.
           </p>
         </div>
 
@@ -146,11 +146,11 @@ export default function AdminAudit() {
 
       <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
         <div className="fni-metric-card border-slate-200 bg-slate-50">
-          <div className="text-xs font-semibold tracking-wide text-slate-500">Eventos hoy</div>
+          <div className="text-xs font-semibold tracking-wide text-slate-500">Actividad hoy</div>
           <div className="mt-2 text-3xl font-semibold text-slate-900">{metrics.today}</div>
         </div>
         <div className="fni-metric-card border-emerald-200 bg-emerald-50">
-          <div className="text-xs font-semibold tracking-wide text-emerald-700">Logins</div>
+          <div className="text-xs font-semibold tracking-wide text-emerald-700">Ingresos</div>
           <div className="mt-2 text-3xl font-semibold text-emerald-900">{metrics.logins}</div>
         </div>
         <div className="fni-metric-card border-blue-200 bg-blue-50">
@@ -158,7 +158,7 @@ export default function AdminAudit() {
           <div className="mt-2 text-3xl font-semibold text-blue-900">{metrics.changes}</div>
         </div>
         <div className="fni-metric-card border-slate-200 bg-white">
-          <div className="text-xs font-semibold tracking-wide text-slate-500">Logouts</div>
+          <div className="text-xs font-semibold tracking-wide text-slate-500">Salidas</div>
           <div className="mt-2 text-3xl font-semibold text-slate-900">{metrics.logouts}</div>
         </div>
       </div>
@@ -170,25 +170,25 @@ export default function AdminAudit() {
             <input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder="Actor, email, rol o detalle"
+              placeholder="Usuario, email, rol o detalle"
               className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-200"
             />
           </div>
 
           <div className="md:col-span-4">
-            <label className="fni-field-label">Tipo</label>
+            <label className="fni-field-label">Evento</label>
             <select
               value={typeFilter}
-              onChange={(event) => setTypeFilter(event.target.value as "ALL" | AuditEventType)}
-              className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium"
-            >
-              <option value="ALL">Todos</option>
-              <option value="LOGIN">Login</option>
-              <option value="LOGOUT">Logout</option>
+                onChange={(event) => setTypeFilter(event.target.value as "ALL" | AuditEventType)}
+                className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium"
+              >
+                <option value="ALL">Todos</option>
+              <option value="LOGIN">Ingreso</option>
+              <option value="LOGOUT">Salida</option>
               <option value="CHANGE">Cambio</option>
               <option value="ROLE_SWITCH">Cambio de rol</option>
-              <option value="HEARTBEAT">Heartbeat</option>
-            </select>
+              <option value="HEARTBEAT">Actividad</option>
+              </select>
           </div>
         </div>
       </div>
@@ -204,8 +204,8 @@ export default function AdminAudit() {
           <table className="fni-data-table">
             <thead className="bg-slate-50 text-slate-600">
               <tr>
-                <th className="px-4 py-3 text-left font-semibold">Actor</th>
-                <th className="px-4 py-3 text-left font-semibold">Tipo</th>
+                <th className="px-4 py-3 text-left font-semibold">Usuario</th>
+                <th className="px-4 py-3 text-left font-semibold">Evento</th>
                 <th className="px-4 py-3 text-left font-semibold">Roles</th>
                 <th className="px-4 py-3 text-left font-semibold">Fecha</th>
                 <th className="px-4 py-3 text-left font-semibold">Detalle</th>
