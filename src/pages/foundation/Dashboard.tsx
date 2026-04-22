@@ -920,7 +920,7 @@ export function ManagementDashboard({ mode }: { mode: ManagementDashboardMode })
                           </div>
                         </div>
 
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-col gap-2">
                           <Link
                             to={schoolDocumentsLink(cycle.id, school.id)}
                             className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-100"

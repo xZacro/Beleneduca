@@ -410,7 +410,7 @@ export default function FoundationSchoolsPage() {
                 {(s.pendingCount ?? 0) > 0 && <Chip>Pendientes: {s.pendingCount}</Chip>}
               </div>
 
-              <div className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2">
+              <div className="mt-5 grid grid-cols-1 gap-2">
                 <Link
                   to={`/foundation/schools/${encodeURIComponent(s.id)}/documents${cycleQuery}&schoolLabel=${encodeURIComponent(buildSchoolLabel(s))}`}
                   className="fni-toolbar-button justify-center"
