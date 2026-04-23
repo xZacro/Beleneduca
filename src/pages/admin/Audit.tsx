@@ -32,6 +32,19 @@ function eventTone(type: AuditEventType) {
   return "border-slate-200 bg-slate-50 text-slate-700";
 }
 
+function friendlyActionLabel(action: string) {
+  if (action === "RESPONSES_SAVED") return "Respuestas guardadas";
+  if (action === "REVIEWS_SAVED") return "Revisión guardada";
+  if (action === "SUBMISSION_SAVED") return "Envío guardado";
+  if (action === "DOCUMENT_UPLOADED") return "Documento subido";
+  if (action === "PASSWORD_CHANGED") return "Contraseña actualizada";
+  return action
+    .toLowerCase()
+    .split("_")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
 function formatMeta(meta: Record<string, unknown> | null) {
   if (!meta) return "Sin detalle.";
 
@@ -61,7 +74,8 @@ function formatMeta(meta: Record<string, unknown> | null) {
     if (Array.isArray(value)) {
       formatted.push(`${key}: ${value.join(", ")}`);
     } else if (value != null && value !== "") {
-      formatted.push(`${key}: ${String(value)}`);
+      const label = key === "action" ? friendlyActionLabel(String(value)) : String(value);
+      formatted.push(`${key === "action" ? "Acción" : key}: ${label}`);
     }
   }
 
