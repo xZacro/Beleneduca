@@ -1,4 +1,17 @@
 services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
   postgres:
     image: postgres:16-alpine
     restart: unless-stopped
@@ -32,8 +45,8 @@ services:
       FNI_SERVE_STATIC: "true"
       FNI_STATIC_DIR: dist
       DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/fni_portal?schema=public
-    ports:
-      - "${APP_PORT:-80}:4100"
+    expose:
+      - "4100"
     volumes:
       - fni_documents:/app/server/.data
 
@@ -60,5 +73,7 @@ services:
       - tools
 
 volumes:
+  caddy_data:
+  caddy_config:
   postgres_data:
   fni_documents:

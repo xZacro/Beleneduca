@@ -16,7 +16,7 @@ Frontend React/Vite del portal FNI, trabajando en modo API-only contra una API l
 - `npm run ops:backup`: genera un respaldo segun `FNI_API_STORAGE`.
 - `npm run ops:backup:json`: respalda `server/.data`.
 - `npm run ops:backup:prisma`: exporta tablas Prisma y documentos locales.
-- `docker compose -f docker-compose.prod.yml up -d --build`: levanta app + Postgres en produccion.
+- `docker compose -f docker-compose.prod.yml up -d --build`: levanta Caddy + app + Postgres en produccion con HTTPS automatico.
 - `npm run db:deploy`: aplica migraciones Prisma en entornos no interactivos.
 
 ## Flujo local recomendado

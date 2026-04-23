@@ -1,0 +1,11 @@
+fnibeleneduca.cl {
+  encode zstd gzip
+  reverse_proxy app:4100
+  header {
+    Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  }
+}
+
+www.fnibeleneduca.cl {
+  redir https://fnibeleneduca.cl{uri} permanent
+}

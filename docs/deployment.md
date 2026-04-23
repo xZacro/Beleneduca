@@ -66,6 +66,7 @@ Hay un stack listo en [docker-compose.prod.yml](C:/Users/tokyotech/Desktop/Lunar
 
 Incluye:
 
+- `caddy` como terminador HTTPS y proxy inverso
 - `app` con la imagen del proyecto
 - `postgres` interno y persistente
 - volumen separado para documentos
@@ -73,7 +74,6 @@ Incluye:
 Variables que debes definir al desplegar:
 
 - `POSTGRES_PASSWORD`: contrasena del superusuario de PostgreSQL
-- `APP_PORT`: opcional, puerto publico del host, por defecto `80`
 
 Flujo recomendado:
 
@@ -82,6 +82,7 @@ Flujo recomendado:
 3. Ejecuta `docker compose -f docker-compose.prod.yml up -d --build`.
 4. Corre `docker compose -f docker-compose.prod.yml --profile tools run --rm seed` una sola vez.
 5. Verifica `GET /api/ready`.
+6. Comprueba `https://fnibeleneduca.cl` y `https://www.fnibeleneduca.cl`.
 
 Si ya cambiaste codigo:
 
