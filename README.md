@@ -127,6 +127,8 @@ El seed deja el ciclo 2026 vacio para que los usuarios finales comiencen a compl
 - Guia de arquitectura y buenas practicas: [docs/guia-arquitectura-buenas-practicas.md](docs/guia-arquitectura-buenas-practicas.md)
 - Guia de contribucion: [docs/guia-contribucion.md](docs/guia-contribucion.md)
 - Checklist de QA manual: [docs/qa-manual-checklist.md](docs/qa-manual-checklist.md)
+- Manual de usuario PDF: [docs/manual-usuario.pdf](docs/manual-usuario.pdf)
+- Manual de usuario fuente: [docs/manual-usuario.md](docs/manual-usuario.md)
 - Imagen lista para staging: [Dockerfile](C:/Users/tokyotech/Desktop/Lunaria%20IA/BELEN%20EDUCA/fni-portal/Dockerfile)
 - Stack de despliegue: [docker-compose.prod.yml](C:/Users/tokyotech/Desktop/Lunaria%20IA/BELEN%20EDUCA/fni-portal/docker-compose.prod.yml)
 
