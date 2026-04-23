@@ -66,7 +66,7 @@ Ademas, GitHub Actions ejecuta automaticamente:
 - `lint + build + test:api` en cada push y pull request
 - `db:push + db:seed + test:api:prisma` en un job separado con PostgreSQL
 
-## Credenciales de desarrollo para auth API
+## Credenciales de acceso para auth API
 
 - Admins: `pablo.munoz@beleneduca.cl`, `felipe.munoz@beleneduca.cl`, `mariajose.rojas@beleneduca.cl`, `arantza.farias@beleneduca.cl`, `ebravo@outlook.cl` / `demo`
 - Fundacion: `pedro.letelier@beleneduca.cl`, `gabriel.olate@beleneduca.cl`, `pedro.larrain@beleneduca.cl`, `jose.bustamante@beleneduca.cl`, `matias.bascur@beleneduca.cl`, `monica.luna@beleneduca.cl`, `pilar.reyes@beleneduca.cl` / `demo`
