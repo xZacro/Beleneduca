@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import type { AdminAuditEventDto, AuditEventType } from "../../shared/admin/apiContracts";
 import { listAuditEvents } from "../../shared/admin/client";
+import { useSchoolDirectory } from "../../shared/useSchoolDirectory";
 
 // Trazabilidad operativa: eventos relevantes para entender acciones sensibles.
 function formatDate(value: string | null) {
@@ -45,7 +46,10 @@ function friendlyActionLabel(action: string) {
     .join(" ");
 }
 
-function formatMeta(meta: Record<string, unknown> | null) {
+function formatMeta(
+  meta: Record<string, unknown> | null,
+  schoolNameById: Map<string, string>
+) {
   if (!meta) return "Sin detalle.";
 
   // Solo mostramos las claves mas utiles para lectura humana y debugging rapido.
@@ -62,8 +66,6 @@ function formatMeta(meta: Record<string, unknown> | null) {
     "targetEmail",
     "targetUserId",
     "status",
-    "source",
-    "storage",
   ];
 
   const formatted: string[] = [];
@@ -74,8 +76,37 @@ function formatMeta(meta: Record<string, unknown> | null) {
     if (Array.isArray(value)) {
       formatted.push(`${key}: ${value.join(", ")}`);
     } else if (value != null && value !== "") {
-      const label = key === "action" ? friendlyActionLabel(String(value)) : String(value);
-      formatted.push(`${key === "action" ? "Acción" : key}: ${label}`);
+      let label = String(value);
+      let friendlyKey = key;
+
+      if (key === "action") {
+        friendlyKey = "Acción";
+        label = friendlyActionLabel(label);
+      } else if (key === "cycleName" || key === "cycleId") {
+        friendlyKey = "Ciclo";
+        label = key === "cycleName" ? String(value) : `Ciclo ${value}`;
+      } else if (key === "schoolId") {
+        friendlyKey = "Colegio";
+        label = schoolNameById.get(String(value)) ?? String(value);
+      } else if (key === "indicatorCount") {
+        friendlyKey = "Indicadores";
+      } else if (key === "submissionStatus") {
+        friendlyKey = "Estado del envío";
+      } else if (key === "targetEmail") {
+        friendlyKey = "Correo destino";
+      } else if (key === "targetUserId") {
+        friendlyKey = "Usuario destino";
+      } else if (key === "indicatorId") {
+        friendlyKey = "Indicador";
+      } else if (key === "documentId") {
+        friendlyKey = "Documento";
+      } else if (key === "fileName") {
+        friendlyKey = "Archivo";
+      } else if (key === "status") {
+        friendlyKey = "Estado";
+      }
+
+      formatted.push(`${friendlyKey}: ${label}`);
     }
   }
 
@@ -87,11 +118,16 @@ function formatMeta(meta: Record<string, unknown> | null) {
 }
 
 export default function AdminAudit() {
+  const { schools } = useSchoolDirectory();
   const [events, setEvents] = useState<AdminAuditEventDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState<"ALL" | AuditEventType>("ALL");
+  const schoolNameById = useMemo(
+    () => new Map(schools.map((school) => [school.id, `${school.code} - ${school.name}`])),
+    [schools]
+  );
 
   const load = async () => {
     setLoading(true);
@@ -118,12 +154,15 @@ export default function AdminAudit() {
     return events.filter((event) => {
       // Unificamos actor + meta para que la busqueda sea util desde una sola caja.
       const haystack =
-        `${event.actorName} ${event.actorEmail} ${event.actorRoles.join(" ")} ${formatMeta(event.meta)}`.toLowerCase();
+        `${event.actorName} ${event.actorEmail} ${event.actorRoles.join(" ")} ${formatMeta(
+          event.meta,
+          schoolNameById
+        )}`.toLowerCase();
       const matchesSearch = !term || haystack.includes(term);
       const matchesType = typeFilter === "ALL" || event.type === typeFilter;
       return matchesSearch && matchesType;
     });
-  }, [events, search, typeFilter]);
+  }, [events, schoolNameById, search, typeFilter]);
 
   const metrics = useMemo(() => {
     const startOfToday = new Date();
@@ -258,7 +297,9 @@ export default function AdminAudit() {
                       {event.actorRoles.length ? event.actorRoles.join(", ") : "-"}
                     </td>
                     <td className="px-4 py-4 text-sm text-slate-700">{formatDate(event.at)}</td>
-                    <td className="px-4 py-4 text-sm text-slate-700">{formatMeta(event.meta)}</td>
+                    <td className="px-4 py-4 text-sm text-slate-700">
+                      {formatMeta(event.meta, schoolNameById)}
+                    </td>
                   </tr>
                 ))
               )}
