@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { matchPath, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import belenLogo from "../../assets/belen-logo.png";
 import { hasRole, logout, roleLabel } from "../../shared/auth";
@@ -25,12 +25,44 @@ type NavSection = {
   items: NavItem[];
 };
 
+const PAGE_TITLES: Array<{ path: string; title: string }> = [
+  { path: ROUTES.foundation.dashboard, title: "FNI | Panel del ciclo" },
+  { path: ROUTES.foundation.schools, title: "FNI | Colegios" },
+  { path: ROUTES.foundation.schoolForm, title: "FNI | Formulario del colegio" },
+  { path: ROUTES.foundation.schoolDocuments, title: "FNI | Documentos del colegio" },
+  { path: ROUTES.foundation.schoolReview, title: "FNI | Revisión del colegio" },
+  { path: ROUTES.foundation.catalog, title: "FNI | Catálogo FNI" },
+  { path: ROUTES.foundation.catalogIndicator, title: "FNI | Indicador FNI" },
+  { path: ROUTES.school.dashboard, title: "FNI | Dashboard colegio" },
+  { path: ROUTES.school.evaluation, title: "FNI | Evaluación FNI" },
+  { path: ROUTES.school.documents, title: "FNI | Documentos del colegio" },
+  { path: ROUTES.account.security, title: "FNI | Seguridad" },
+  { path: ROUTES.admin.root, title: "FNI | Panel administrativo" },
+  { path: ROUTES.admin.users, title: "FNI | Usuarios" },
+  { path: ROUTES.admin.sessions, title: "FNI | Accesos" },
+  { path: ROUTES.admin.audit, title: "FNI | Actividad" },
+];
+
+function resolvePageTitle(pathname: string) {
+  for (const page of PAGE_TITLES) {
+    if (matchPath({ path: page.path, end: true }, pathname)) {
+      return page.title;
+    }
+  }
+
+  return "FNI | Fundación Belén Educa";
+}
+
 export default function AppLayout() {
   useHeartbeat();
 
   const navigate = useNavigate();
   const location = useLocation();
   const { user, loading, setUser } = useResolvedAuthUser({ validateOnMount: true });
+
+  useEffect(() => {
+    document.title = resolvePageTitle(location.pathname);
+  }, [location.pathname]);
 
   useEffect(() => {
     if (!loading && !user) {

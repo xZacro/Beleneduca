@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 import belenLogo from "../assets/belen-logo.png";
@@ -152,6 +152,10 @@ function Illustration() {
 }
 
 export default function Login() {
+  useEffect(() => {
+    document.title = "FNI | Acceso";
+  }, []);
+
   const navigate = useNavigate();
   const [email, setEmail] = useState("ebravo@outlook.cl");
   const [password, setPassword] = useState("demo");
