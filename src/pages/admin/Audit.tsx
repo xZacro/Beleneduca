@@ -96,7 +96,7 @@ function formatMeta(
       let friendlyKey = key;
 
       if (key === "action") {
-        friendlyKey = "AcciÃ³n";
+        friendlyKey = "Acción";
         label = friendlyActionLabel(label);
       } else if (key === "cycleName" || key === "cycleId") {
         friendlyKey = "Ciclo";
@@ -107,7 +107,7 @@ function formatMeta(
       } else if (key === "indicatorCount") {
         friendlyKey = "Indicadores";
       } else if (key === "submissionStatus") {
-        friendlyKey = "Estado del envÃ­o";
+        friendlyKey = "Estado del envío";
       } else if (key === "targetEmail") {
         friendlyKey = "Correo destino";
       } else if (key === "requesterEmail") {
@@ -279,7 +279,7 @@ export default function AdminAudit() {
           <div>
             <h2 className="text-lg font-semibold text-slate-900">Solicitudes de acceso</h2>
             <p className="mt-1 text-sm text-slate-600">
-              Recuperaciones pedidas desde el inicio de sesiÃ³n para revisiÃ³n manual.
+              Recuperaciones pedidas desde el inicio de sesión para revisión manual.
             </p>
           </div>
 
@@ -422,4 +422,5 @@ export default function AdminAudit() {
     </div>
   );
 }
+
 
