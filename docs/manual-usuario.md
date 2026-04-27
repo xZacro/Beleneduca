@@ -1,10 +1,12 @@
 # Manual de usuario
 
-Este manual explica como usar `fni-portal` desde la perspectiva de una persona que entra a revisar, cargar o administrar informacion del sistema.
+Este archivo queda como manual general e historico. Para versiones mas detalladas y dirigidas por perfil, use:
 
-Version con capturas y exportacion lista para compartir: [docs/manual-usuario.pdf](docs/manual-usuario.pdf)
+- [Manual de Administrador](docs/manual-administrador.pdf)
+- [Manual de Fundacion](docs/manual-fundacion.pdf)
+- [Manual de Colegio](docs/manual-colegio.pdf)
 
-Las capturas fuente viven en `docs/assets/manual-usuario/`.
+Las capturas fuente viven en `docs/assets/manual-usuario/` y se usan para generar los tres PDFs anteriores.
 
 ## 1. Que hace la aplicacion
 
