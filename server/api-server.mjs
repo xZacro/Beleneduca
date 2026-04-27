@@ -43,7 +43,6 @@ import {
   updateManagementUser,
 } from "./fni-management.mjs";
 import { createLogger, isRequestLoggingEnabled } from "./fni-logger.mjs";
-import { isRecoveryMailConfigured, sendRecoveryRequestEmail } from "./fni-mail.mjs";
 import { createStorage } from "./fni-storage.mjs";
 
 // Entrada HTTP principal: primero resuelve infraestructura y luego enruta cada dominio.
@@ -578,42 +577,47 @@ async function handleRequest(request, response) {
   if (request.method === "POST" && pathname === "/auth/password-recovery") {
     const body = await readJsonBody(request);
     const email = String(body.email ?? "").trim().toLowerCase();
-    const message = String(body.message ?? "").trim();
+    const message = String(body.message ?? "").trim().slice(0, 500);
 
     if (!email) {
       sendError(request, response, 400, "Debes enviar un correo institucional.");
       return;
     }
 
-    if (!isRecoveryMailConfigured()) {
-      sendError(
-        request,
-        response,
-        503,
-        "El envio automatico de recuperacion todavia no esta configurado en el servidor.",
-      );
-      return;
-    }
-
     try {
-      await sendRecoveryRequestEmail({
-        requesterEmail: email,
-        message,
-        userAgent: request.headers["user-agent"] ?? null,
-        ipAddress: request.socket.remoteAddress ?? null,
-      });
+      await recordAuditEvent(
+        "CHANGE",
+        {
+          name: email,
+          email,
+          roles: [],
+        },
+        {
+          action: "PASSWORD_RECOVERY_REQUESTED",
+          requesterEmail: email,
+          message: message || null,
+          status: "PENDING",
+          source: "login",
+          userAgent: request.headers["user-agent"] ?? null,
+          ipAddress: request.socket.remoteAddress ?? null,
+        }
+      );
     } catch (error) {
-      logger.error("password recovery email failed", { error, email });
+      logger.error("password recovery request failed", { error, email });
       sendError(
         request,
         response,
         500,
-        "No se pudo enviar la solicitud de recuperacion. Intenta nuevamente o contacta a administracion.",
+        "No se pudo registrar la solicitud de recuperaci\u00f3n. Intenta nuevamente o contacta a administraci\u00f3n.",
       );
       return;
     }
 
-    sendJson(request, response, 200, { ok: true });
+    sendJson(request, response, 200, {
+      ok: true,
+      status: "PENDING",
+      requesterEmail: email,
+    });
     return;
   }
 

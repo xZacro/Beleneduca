@@ -145,6 +145,39 @@ describe("API backend Prisma smoke", { concurrency: 1 }, () => {
     assert.equal(payload.storage.mode, "prisma");
   });
 
+  test("solicitud de recuperacion queda registrada en Prisma", async () => {
+    const recoveryResponse = await fetch(`${baseUrl}/api/auth/password-recovery`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: "ebravo@outlook.cl",
+        message: "Perdi el acceso a mi cuenta.",
+      }),
+    });
+
+    assert.equal(recoveryResponse.status, 200);
+
+    const recoveryPayload = await readJson(recoveryResponse);
+    assert.equal(recoveryPayload.ok, true);
+    assert.equal(recoveryPayload.status, "PENDING");
+    assert.equal(recoveryPayload.requesterEmail, "ebravo@outlook.cl");
+
+    const admin = await loginAs("ebravo@outlook.cl");
+    const auditResponse = await admin.request("/api/admin/audit");
+    assert.equal(auditResponse.status, 200);
+
+    const auditEvents = await readJson(auditResponse);
+    assert.ok(
+      auditEvents.some(
+        (event) =>
+          event.meta?.action === "PASSWORD_RECOVERY_REQUESTED" &&
+          event.meta?.requesterEmail === "ebravo@outlook.cl"
+      )
+    );
+  });
+
   test("ready expone estado operativo de Prisma", async () => {
     const response = await fetch(`${baseUrl}/api/ready`);
     assert.equal(response.status, 200);

@@ -164,6 +164,7 @@ export default function Login() {
   const [helpOpen, setHelpOpen] = useState(false);
   const [helpMessage, setHelpMessage] = useState("");
   const [helpStatus, setHelpStatus] = useState<string | null>(null);
+  const [helpStatusTone, setHelpStatusTone] = useState<"success" | "error" | null>(null);
   const [helpSending, setHelpSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -191,21 +192,25 @@ export default function Login() {
   const openRecoveryRequest = () => {
     setHelpMessage("");
     setHelpStatus(null);
+    setHelpStatusTone(null);
     setHelpOpen(true);
   };
 
   const sendRecoveryRequest = async () => {
     setHelpSending(true);
     setHelpStatus(null);
+    setHelpStatusTone(null);
 
     try {
       await requestPasswordRecovery(email, helpMessage);
-      setHelpStatus("Solicitud enviada a administración. Te contactaremos por el correo institucional.");
+      setHelpStatus("Tu solicitud quedó registrada y será revisada por administración.");
+      setHelpStatusTone("success");
       setHelpMessage("");
     } catch (sendError) {
       setHelpStatus(
-        sendError instanceof Error ? sendError.message : "No se pudo enviar la solicitud. Inténtalo de nuevo.",
+        sendError instanceof Error ? sendError.message : "No pudimos registrar la solicitud. Inténtalo de nuevo.",
       );
+      setHelpStatusTone("error");
     } finally {
       setHelpSending(false);
     }
@@ -379,7 +384,7 @@ export default function Login() {
                     </h2>
                     <p className="mt-3 text-sm leading-6 text-slate-600">
                       La recuperación la gestiona el equipo de administración. Cuéntanos brevemente qué pasó y
-                      enviaremos tu solicitud.
+                      dejaremos tu solicitud registrada.
                     </p>
 
                     <div className="mt-5 space-y-4">
@@ -396,7 +401,7 @@ export default function Login() {
                           className="min-h-28 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-blue-200 focus:ring-4 focus:ring-blue-100"
                           value={helpMessage}
                           onChange={(event) => setHelpMessage(event.target.value)}
-                          placeholder="Cuéntanos qué ocurrió o si necesitas resetear el acceso."
+                          placeholder="Cuéntanos qué ocurrió o si necesitas restablecer el acceso."
                         />
                       </div>
                     </div>
@@ -421,9 +426,9 @@ export default function Login() {
                     {helpStatus && (
                       <div
                         className={`mt-4 rounded-2xl border px-4 py-3 text-sm ${
-                          helpStatus.toLowerCase().includes("enviada")
+                          helpStatusTone === "success"
                             ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-                            : "border-amber-200 bg-amber-50 text-amber-700"
+                            : "border-rose-200 bg-rose-50 text-rose-700"
                         }`}
                       >
                         {helpStatus}

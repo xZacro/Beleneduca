@@ -152,6 +152,39 @@ describe("API backend", { concurrency: 1 }, () => {
     assert.match(await response.text(), /Sesion no valida o expirada/i);
   });
 
+  test("solicitud de recuperacion se registra como actividad interna", async () => {
+    const recoveryResponse = await fetch(`${baseUrl}/api/auth/password-recovery`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: "ebravo@outlook.cl",
+        message: "Perdi el acceso a mi cuenta.",
+      }),
+    });
+
+    assert.equal(recoveryResponse.status, 200);
+
+    const recoveryPayload = await readJson(recoveryResponse);
+    assert.equal(recoveryPayload.ok, true);
+    assert.equal(recoveryPayload.status, "PENDING");
+    assert.equal(recoveryPayload.requesterEmail, "ebravo@outlook.cl");
+
+    const admin = await loginAs("ebravo@outlook.cl");
+    const auditResponse = await admin.request("/api/admin/audit");
+    assert.equal(auditResponse.status, 200);
+
+    const auditEvents = await readJson(auditResponse);
+    assert.ok(
+      auditEvents.some(
+        (event) =>
+          event.meta?.action === "PASSWORD_RECOVERY_REQUESTED" &&
+          event.meta?.requesterEmail === "ebravo@outlook.cl"
+      )
+    );
+  });
+
   test("ready expone estado operativo del modo JSON", async () => {
     const response = await fetch(`${baseUrl}/api/ready`);
     assert.equal(response.status, 200);

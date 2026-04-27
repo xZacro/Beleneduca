@@ -88,6 +88,29 @@ function getMetaAction(event: AdminAuditEventDto) {
   return typeof action === "string" ? action : null;
 }
 
+function eventLabel(type: AdminAuditEventDto["type"]) {
+  if (type === "LOGIN") return "Ingreso";
+  if (type === "LOGOUT") return "Salida";
+  if (type === "HEARTBEAT") return "Actividad";
+  if (type === "ROLE_SWITCH") return "Cambio de rol";
+  return "Cambio";
+}
+
+function friendlyActionLabel(action: string) {
+  if (action === "RESPONSES_SAVED") return "Respuestas guardadas";
+  if (action === "REVIEWS_SAVED") return "Revisión guardada";
+  if (action === "SUBMISSION_SAVED") return "Envío guardado";
+  if (action === "DOCUMENT_UPLOADED") return "Documento subido";
+  if (action === "PASSWORD_CHANGED") return "Contraseña actualizada";
+  if (action === "PASSWORD_RECOVERY_REQUESTED") return "Solicitud de recuperación";
+
+  return action
+    .toLowerCase()
+    .split("_")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
 function summarizeAuditEvent(event: AdminAuditEventDto) {
   const action = getMetaAction(event);
 
@@ -101,6 +124,10 @@ function summarizeAuditEvent(event: AdminAuditEventDto) {
 
   if (action === "USER_PASSWORD_RESET") {
     return `Restableció la contraseña de ${String(event.meta?.targetEmail ?? "un usuario")}.`;
+  }
+
+  if (action === "PASSWORD_RECOVERY_REQUESTED") {
+    return `Solicitó recuperación de contraseña para ${String(event.meta?.requesterEmail ?? event.actorEmail ?? "un usuario")}.`;
   }
 
   if (action === "CYCLE_CREATED") {
@@ -137,6 +164,7 @@ function summarizeAuditEvent(event: AdminAuditEventDto) {
 function eventTone(event: AdminAuditEventDto): Tone {
   const action = getMetaAction(event);
 
+  if (action === "PASSWORD_RECOVERY_REQUESTED") return "amber";
   if (action === "CYCLE_CREATED") return "green";
   if (action === "CYCLE_REOPENED") return "green";
   if (action === "CYCLE_CLOSED") return "blue";
@@ -1190,7 +1218,10 @@ export default function AdminDashboard() {
                                 eventTone(event)
                               )}`}
                             >
-                              {getMetaAction(event) ?? event.type}
+                              {(() => {
+                                const action = getMetaAction(event);
+                                return action ? friendlyActionLabel(action) : eventLabel(event.type);
+                              })()}
                             </span>
                           </div>
 

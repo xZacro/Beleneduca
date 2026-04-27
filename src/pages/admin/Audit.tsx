@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 
 import type { AdminAuditEventDto, AuditEventType } from "../../shared/admin/apiContracts";
 import { listAuditEvents } from "../../shared/admin/client";
@@ -25,25 +25,39 @@ function eventLabel(type: AuditEventType) {
   return "Cambio";
 }
 
-function eventTone(type: AuditEventType) {
-  if (type === "LOGIN") return "border-emerald-200 bg-emerald-50 text-emerald-800";
-  if (type === "LOGOUT") return "border-slate-200 bg-slate-50 text-slate-700";
-  if (type === "CHANGE") return "border-blue-200 bg-blue-50 text-blue-800";
-  if (type === "ROLE_SWITCH") return "border-amber-200 bg-amber-50 text-amber-800";
-  return "border-slate-200 bg-slate-50 text-slate-700";
+function getMetaAction(event: AdminAuditEventDto) {
+  const action = event.meta?.action;
+  return typeof action === "string" ? action : null;
 }
 
-function friendlyActionLabel(action: string) {
+function friendlyActionLabelLegacy(action: string): string {
   if (action === "RESPONSES_SAVED") return "Respuestas guardadas";
   if (action === "REVIEWS_SAVED") return "Revisión guardada";
   if (action === "SUBMISSION_SAVED") return "Envío guardado";
   if (action === "DOCUMENT_UPLOADED") return "Documento subido";
   if (action === "PASSWORD_CHANGED") return "Contraseña actualizada";
+  if (action === "PASSWORD_RECOVERY_REQUESTED") return "Solicitud de recuperación";
+
   return action
     .toLowerCase()
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function eventTone(event: AdminAuditEventDto) {
+  const action = getMetaAction(event);
+
+  if (action === "PASSWORD_RECOVERY_REQUESTED") return "border-amber-200 bg-amber-50 text-amber-800";
+  if (event.type === "LOGIN") return "border-emerald-200 bg-emerald-50 text-emerald-800";
+  if (event.type === "LOGOUT") return "border-slate-200 bg-slate-50 text-slate-700";
+  if (event.type === "CHANGE") return "border-blue-200 bg-blue-50 text-blue-800";
+  if (event.type === "ROLE_SWITCH") return "border-amber-200 bg-amber-50 text-amber-800";
+  return "border-slate-200 bg-slate-50 text-slate-700";
+}
+
+function friendlyActionLabel(action: string): string {
+  return friendlyActionLabelLegacy(action);
 }
 
 function formatMeta(
@@ -58,11 +72,13 @@ function formatMeta(
     "cycleName",
     "cycleId",
     "schoolId",
+    "requesterEmail",
     "indicatorId",
     "documentId",
     "fileName",
     "indicatorCount",
     "submissionStatus",
+    "message",
     "targetEmail",
     "targetUserId",
     "status",
@@ -80,7 +96,7 @@ function formatMeta(
       let friendlyKey = key;
 
       if (key === "action") {
-        friendlyKey = "Acción";
+        friendlyKey = "AcciÃ³n";
         label = friendlyActionLabel(label);
       } else if (key === "cycleName" || key === "cycleId") {
         friendlyKey = "Ciclo";
@@ -91,9 +107,11 @@ function formatMeta(
       } else if (key === "indicatorCount") {
         friendlyKey = "Indicadores";
       } else if (key === "submissionStatus") {
-        friendlyKey = "Estado del envío";
+        friendlyKey = "Estado del envÃ­o";
       } else if (key === "targetEmail") {
         friendlyKey = "Correo destino";
+      } else if (key === "requesterEmail") {
+        friendlyKey = "Correo solicitante";
       } else if (key === "targetUserId") {
         friendlyKey = "Usuario destino";
       } else if (key === "indicatorId") {
@@ -182,13 +200,23 @@ export default function AdminAudit() {
     return { today, logins, changes, logouts };
   }, [events]);
 
+  const recoveryRequests = useMemo(() => {
+    return events
+      .filter((event) => getMetaAction(event) === "PASSWORD_RECOVERY_REQUESTED")
+      .sort((left, right) => {
+        const leftDate = left.at ? new Date(left.at).getTime() : 0;
+        const rightDate = right.at ? new Date(right.at).getTime() : 0;
+        return rightDate - leftDate;
+      });
+  }, [events]);
+
   return (
     <div className="fni-page-shell">
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="fni-page-title">Actividad</h1>
           <p className="fni-page-subtitle">
-            Ingresos, salidas y cambios importantes registrados por el sistema.
+            Ingresos, salidas, cambios importantes y solicitudes de acceso registradas por el sistema.
           </p>
         </div>
 
@@ -241,9 +269,86 @@ export default function AdminAudit() {
               <option value="CHANGE">Cambio</option>
               <option value="ROLE_SWITCH">Cambio de rol</option>
               <option value="HEARTBEAT">Actividad</option>
-              </select>
+            </select>
           </div>
         </div>
+      </div>
+
+      <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h2 className="text-lg font-semibold text-slate-900">Solicitudes de acceso</h2>
+            <p className="mt-1 text-sm text-slate-600">
+              Recuperaciones pedidas desde el inicio de sesiÃ³n para revisiÃ³n manual.
+            </p>
+          </div>
+
+          <span
+            className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-medium ${
+              recoveryRequests.length > 0
+                ? "border-amber-200 bg-amber-50 text-amber-800"
+                : "border-emerald-200 bg-emerald-50 text-emerald-800"
+            }`}
+          >
+            {recoveryRequests.length > 0
+              ? `${recoveryRequests.length} pendientes`
+              : "Sin solicitudes pendientes"}
+          </span>
+        </div>
+
+        {recoveryRequests.length === 0 ? (
+          <div className="fni-empty-state-panel mt-4 min-h-[140px]">
+            No hay solicitudes de acceso registradas por ahora.
+          </div>
+        ) : (
+          <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200">
+            <table className="fni-data-table">
+              <thead className="bg-slate-50 text-slate-600">
+                <tr>
+                  <th className="px-4 py-3 text-left font-semibold">Correo</th>
+                  <th className="px-4 py-3 text-left font-semibold">Detalle</th>
+                  <th className="px-4 py-3 text-left font-semibold">Fecha</th>
+                  <th className="px-4 py-3 text-left font-semibold">Estado</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 bg-white">
+                {recoveryRequests.slice(0, 12).map((event) => {
+                  const message =
+                    typeof event.meta?.message === "string" && event.meta.message.trim()
+                      ? event.meta.message.trim()
+                      : "Sin detalle adicional.";
+                  const status =
+                    typeof event.meta?.status === "string" && event.meta.status.trim()
+                      ? event.meta.status.trim()
+                      : "PENDING";
+                  const statusLabel = status === "PENDING" ? "Pendiente" : status;
+                  const statusTone =
+                    status === "PENDING"
+                      ? "border-amber-200 bg-amber-50 text-amber-800"
+                      : "border-slate-200 bg-slate-50 text-slate-700";
+
+                  return (
+                    <tr key={event.id} className="align-top hover:bg-slate-50/60">
+                      <td className="px-4 py-4">
+                        <div className="font-medium text-slate-900">{event.actorEmail}</div>
+                        <div className="text-sm text-slate-600">{event.actorName}</div>
+                      </td>
+                      <td className="px-4 py-4 text-sm text-slate-700">{message}</td>
+                      <td className="px-4 py-4 text-sm text-slate-700">{formatDate(event.at)}</td>
+                      <td className="px-4 py-4">
+                        <span
+                          className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-medium ${statusTone}`}
+                        >
+                          {statusLabel}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       {error && (
@@ -278,30 +383,37 @@ export default function AdminAudit() {
                   </td>
                 </tr>
               ) : (
-                filteredEvents.map((event) => (
-                  <tr key={event.id} className="align-top hover:bg-slate-50/60">
-                    <td className="px-4 py-4">
-                      <div className="font-medium text-slate-900">{event.actorName}</div>
-                      <div className="text-sm text-slate-600">{event.actorEmail}</div>
-                    </td>
-                    <td className="px-4 py-4">
-                      <span
-                        className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-medium ${eventTone(
-                          event.type
-                        )}`}
-                      >
-                        {eventLabel(event.type)}
-                      </span>
-                    </td>
-                    <td className="px-4 py-4 text-sm text-slate-700">
-                      {event.actorRoles.length ? event.actorRoles.join(", ") : "-"}
-                    </td>
-                    <td className="px-4 py-4 text-sm text-slate-700">{formatDate(event.at)}</td>
-                    <td className="px-4 py-4 text-sm text-slate-700">
-                      {formatMeta(event.meta, schoolNameById)}
-                    </td>
-                  </tr>
-                ))
+                filteredEvents.map((event) => {
+                  const action = getMetaAction(event);
+                  const badgeLabel = action ? friendlyActionLabel(action) : eventLabel(event.type);
+                  const badgeTone =
+                    action === "PASSWORD_RECOVERY_REQUESTED"
+                      ? "border-amber-200 bg-amber-50 text-amber-800"
+                      : eventTone(event);
+
+                  return (
+                    <tr key={event.id} className="align-top hover:bg-slate-50/60">
+                      <td className="px-4 py-4">
+                        <div className="font-medium text-slate-900">{event.actorName}</div>
+                        <div className="text-sm text-slate-600">{event.actorEmail}</div>
+                      </td>
+                      <td className="px-4 py-4">
+                        <span
+                          className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-medium ${badgeTone}`}
+                        >
+                          {badgeLabel}
+                        </span>
+                      </td>
+                      <td className="px-4 py-4 text-sm text-slate-700">
+                        {event.actorRoles.length ? event.actorRoles.join(", ") : "-"}
+                      </td>
+                      <td className="px-4 py-4 text-sm text-slate-700">{formatDate(event.at)}</td>
+                      <td className="px-4 py-4 text-sm text-slate-700">
+                        {formatMeta(event.meta, schoolNameById)}
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>
@@ -310,3 +422,4 @@ export default function AdminAudit() {
     </div>
   );
 }
+
