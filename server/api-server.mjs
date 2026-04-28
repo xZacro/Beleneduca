@@ -1128,6 +1128,44 @@ async function handleRequest(request, response) {
     return;
   }
 
+  if (request.method === "POST" && pathname === "/admin/audit/password-recovery/resolve") {
+    if (!session.user.roles.includes("ADMIN")) {
+      sendError(request, response, 403, "Este recurso requiere perfil Admin.");
+      return;
+    }
+
+    const body = await readJsonBody(request);
+    const requesterEmail = String(body.requesterEmail ?? "").trim().toLowerCase();
+
+    if (!requesterEmail) {
+      sendError(request, response, 400, "Debes enviar requesterEmail.");
+      return;
+    }
+
+    try {
+      await recordAuditEventSafe("CHANGE", session.user, {
+        action: "PASSWORD_RECOVERY_RESOLVED",
+        requesterEmail,
+        status: "RESOLVED",
+        source: "admin",
+        userAgent: request.headers["user-agent"] ?? null,
+        ipAddress: request.socket.remoteAddress ?? null,
+      });
+    } catch (error) {
+      logger.error("password recovery resolution failed", { error, requesterEmail });
+      sendError(
+        request,
+        response,
+        500,
+        "No se pudo registrar el cierre de la solicitud. Intenta nuevamente.",
+      );
+      return;
+    }
+
+    sendNoContent(request, response);
+    return;
+  }
+
   // Catalogo compartido: areas, indicadores y seed base para el entorno local.
   if (request.method === "GET" && pathname === "/areas") {
     const areas = await storage.listAreas();

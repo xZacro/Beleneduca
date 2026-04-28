@@ -103,6 +103,7 @@ function friendlyActionLabel(action: string) {
   if (action === "DOCUMENT_UPLOADED") return "Documento subido";
   if (action === "PASSWORD_CHANGED") return "Contraseña actualizada";
   if (action === "PASSWORD_RECOVERY_REQUESTED") return "Solicitud de recuperación";
+  if (action === "PASSWORD_RECOVERY_RESOLVED") return "Solicitud resuelta";
 
   return action
     .toLowerCase()
@@ -128,6 +129,12 @@ function summarizeAuditEvent(event: AdminAuditEventDto) {
 
   if (action === "PASSWORD_RECOVERY_REQUESTED") {
     return `Solicitó recuperación de contraseña para ${String(event.meta?.requesterEmail ?? event.actorEmail ?? "un usuario")}.`;
+  }
+
+  if (action === "PASSWORD_RECOVERY_RESOLVED") {
+    return `Marcó como resuelta la solicitud de recuperación de ${String(
+      event.meta?.requesterEmail ?? event.actorEmail ?? "un usuario"
+    )}.`;
   }
 
   if (action === "CYCLE_CREATED") {
@@ -165,6 +172,7 @@ function eventTone(event: AdminAuditEventDto): Tone {
   const action = getMetaAction(event);
 
   if (action === "PASSWORD_RECOVERY_REQUESTED") return "amber";
+  if (action === "PASSWORD_RECOVERY_RESOLVED") return "green";
   if (action === "CYCLE_CREATED") return "green";
   if (action === "CYCLE_REOPENED") return "green";
   if (action === "CYCLE_CLOSED") return "blue";

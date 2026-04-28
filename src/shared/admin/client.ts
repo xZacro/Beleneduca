@@ -50,6 +50,12 @@ export function listAuditEvents() {
   return apiGet<AdminAuditEventDto[]>("/admin/audit");
 }
 
+export function resolvePasswordRecoveryRequest(requesterEmail: string) {
+  return apiPost<void, { requesterEmail: string }>("/admin/audit/password-recovery/resolve", {
+    requesterEmail,
+  });
+}
+
 export function updateCatalogIndicator(indicatorId: string, payload: CatalogIndicatorUpdateRequest) {
   return apiPut<CatalogIndicatorDto, CatalogIndicatorUpdateRequest>(
     `/indicators/${encodeURIComponent(indicatorId)}`,

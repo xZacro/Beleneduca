@@ -1,7 +1,7 @@
 ﻿import { useEffect, useMemo, useState } from "react";
 
 import type { AdminAuditEventDto, AuditEventType } from "../../shared/admin/apiContracts";
-import { listAuditEvents } from "../../shared/admin/client";
+import { listAuditEvents, resolvePasswordRecoveryRequest } from "../../shared/admin/client";
 import { useSchoolDirectory } from "../../shared/useSchoolDirectory";
 
 // Trazabilidad operativa: eventos relevantes para entender acciones sensibles.
@@ -30,6 +30,24 @@ function getMetaAction(event: AdminAuditEventDto) {
   return typeof action === "string" ? action : null;
 }
 
+function getRecoveryRequesterEmail(event: AdminAuditEventDto) {
+  const requesterEmail = event.meta?.requesterEmail;
+  if (typeof requesterEmail === "string" && requesterEmail.trim()) {
+    return requesterEmail.trim().toLowerCase();
+  }
+
+  return event.actorEmail.trim().toLowerCase();
+}
+
+function getRecoveryStatus(event: AdminAuditEventDto) {
+  const status = event.meta?.status;
+  if (typeof status === "string" && status.trim()) {
+    return status.trim().toUpperCase();
+  }
+
+  return "PENDING";
+}
+
 function friendlyActionLabelLegacy(action: string): string {
   if (action === "RESPONSES_SAVED") return "Respuestas guardadas";
   if (action === "REVIEWS_SAVED") return "Revisión guardada";
@@ -37,6 +55,7 @@ function friendlyActionLabelLegacy(action: string): string {
   if (action === "DOCUMENT_UPLOADED") return "Documento subido";
   if (action === "PASSWORD_CHANGED") return "Contraseña actualizada";
   if (action === "PASSWORD_RECOVERY_REQUESTED") return "Solicitud de recuperación";
+  if (action === "PASSWORD_RECOVERY_RESOLVED") return "Solicitud resuelta";
 
   return action
     .toLowerCase()
@@ -49,6 +68,7 @@ function eventTone(event: AdminAuditEventDto) {
   const action = getMetaAction(event);
 
   if (action === "PASSWORD_RECOVERY_REQUESTED") return "border-amber-200 bg-amber-50 text-amber-800";
+  if (action === "PASSWORD_RECOVERY_RESOLVED") return "border-emerald-200 bg-emerald-50 text-emerald-800";
   if (event.type === "LOGIN") return "border-emerald-200 bg-emerald-50 text-emerald-800";
   if (event.type === "LOGOUT") return "border-slate-200 bg-slate-50 text-slate-700";
   if (event.type === "CHANGE") return "border-blue-200 bg-blue-50 text-blue-800";
@@ -142,6 +162,9 @@ export default function AdminAudit() {
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState<"ALL" | AuditEventType>("ALL");
+  const [recoveryActionTarget, setRecoveryActionTarget] = useState<string | null>(null);
+  const [recoveryActionError, setRecoveryActionError] = useState<string | null>(null);
+  const [recoveryActionNotice, setRecoveryActionNotice] = useState<string | null>(null);
   const schoolNameById = useMemo(
     () => new Map(schools.map((school) => [school.id, `${school.code} - ${school.name}`])),
     [schools]
@@ -159,6 +182,26 @@ export default function AdminAudit() {
       setError(loadError instanceof Error ? loadError.message : "No se pudo cargar la actividad.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResolveRecoveryRequest = async (requesterEmail: string) => {
+    setRecoveryActionTarget(requesterEmail);
+    setRecoveryActionError(null);
+    setRecoveryActionNotice(null);
+
+    try {
+      await resolvePasswordRecoveryRequest(requesterEmail);
+      setRecoveryActionNotice(`La solicitud de ${requesterEmail} quedó marcada como resuelta.`);
+      await load();
+    } catch (resolveError) {
+      setRecoveryActionError(
+        resolveError instanceof Error
+          ? resolveError.message
+          : "No se pudo cerrar la solicitud de acceso.",
+      );
+    } finally {
+      setRecoveryActionTarget(null);
     }
   };
 
@@ -201,8 +244,30 @@ export default function AdminAudit() {
   }, [events]);
 
   const recoveryRequests = useMemo(() => {
-    return events
-      .filter((event) => getMetaAction(event) === "PASSWORD_RECOVERY_REQUESTED")
+    const relevantEvents = events
+      .filter((event) => {
+        const action = getMetaAction(event);
+        return action === "PASSWORD_RECOVERY_REQUESTED" || action === "PASSWORD_RECOVERY_RESOLVED";
+      })
+      .sort((left, right) => {
+        const leftDate = left.at ? new Date(left.at).getTime() : 0;
+        const rightDate = right.at ? new Date(right.at).getTime() : 0;
+        return rightDate - leftDate;
+      });
+
+    const latestByRequester = new Map<string, AdminAuditEventDto>();
+
+    for (const event of relevantEvents) {
+      const requesterEmail = getRecoveryRequesterEmail(event);
+      if (!requesterEmail || latestByRequester.has(requesterEmail)) continue;
+      latestByRequester.set(requesterEmail, event);
+    }
+
+    return [...latestByRequester.values()]
+      .filter(
+        (event) =>
+          getMetaAction(event) === "PASSWORD_RECOVERY_REQUESTED" && getRecoveryStatus(event) === "PENDING"
+      )
       .sort((left, right) => {
         const leftDate = left.at ? new Date(left.at).getTime() : 0;
         const rightDate = right.at ? new Date(right.at).getTime() : 0;
@@ -279,7 +344,8 @@ export default function AdminAudit() {
           <div>
             <h2 className="text-lg font-semibold text-slate-900">Solicitudes de acceso</h2>
             <p className="mt-1 text-sm text-slate-600">
-              Recuperaciones pedidas desde el inicio de sesión para revisión manual.
+              Recuperaciones pedidas desde el inicio de sesión para revisión manual. Cuando se atienden,
+              dejan de aparecer aquí.
             </p>
           </div>
 
@@ -296,6 +362,18 @@ export default function AdminAudit() {
           </span>
         </div>
 
+        {recoveryActionError && (
+          <div className="mt-4 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800">
+            {recoveryActionError}
+          </div>
+        )}
+
+        {recoveryActionNotice && (
+          <div className="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">
+            {recoveryActionNotice}
+          </div>
+        )}
+
         {recoveryRequests.length === 0 ? (
           <div className="fni-empty-state-panel mt-4 min-h-[140px]">
             No hay solicitudes de acceso registradas por ahora.
@@ -309,10 +387,12 @@ export default function AdminAudit() {
                   <th className="px-4 py-3 text-left font-semibold">Detalle</th>
                   <th className="px-4 py-3 text-left font-semibold">Fecha</th>
                   <th className="px-4 py-3 text-left font-semibold">Estado</th>
+                  <th className="px-4 py-3 text-left font-semibold">Acción</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 bg-white">
                 {recoveryRequests.slice(0, 12).map((event) => {
+                  const requesterEmail = getRecoveryRequesterEmail(event);
                   const message =
                     typeof event.meta?.message === "string" && event.meta.message.trim()
                       ? event.meta.message.trim()
@@ -341,6 +421,16 @@ export default function AdminAudit() {
                         >
                           {statusLabel}
                         </span>
+                      </td>
+                      <td className="px-4 py-4">
+                        <button
+                          type="button"
+                          onClick={() => void handleResolveRecoveryRequest(requesterEmail)}
+                          disabled={recoveryActionTarget === requesterEmail}
+                          className="fni-toolbar-button whitespace-nowrap"
+                        >
+                          {recoveryActionTarget === requesterEmail ? "Cerrando..." : "Marcar resuelta"}
+                        </button>
                       </td>
                     </tr>
                   );

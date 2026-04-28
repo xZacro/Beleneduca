@@ -176,6 +176,38 @@ describe("API backend Prisma smoke", { concurrency: 1 }, () => {
           event.meta?.requesterEmail === "ebravo@outlook.cl"
       )
     );
+
+    const resolveResponse = await admin.request("/api/admin/audit/password-recovery/resolve", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        requesterEmail: "ebravo@outlook.cl",
+      }),
+    });
+
+    assert.equal(resolveResponse.status, 204);
+
+    const auditAfterResolveResponse = await admin.request("/api/admin/audit");
+    assert.equal(auditAfterResolveResponse.status, 200);
+
+    const auditAfterResolve = await readJson(auditAfterResolveResponse);
+    const latestRecoveryEvent = auditAfterResolve
+      .filter(
+        (event) =>
+          event.meta?.requesterEmail === "ebravo@outlook.cl" &&
+          (event.meta?.action === "PASSWORD_RECOVERY_REQUESTED" ||
+            event.meta?.action === "PASSWORD_RECOVERY_RESOLVED")
+      )
+      .sort((left, right) => {
+        const leftDate = left.at ? new Date(left.at).getTime() : 0;
+        const rightDate = right.at ? new Date(right.at).getTime() : 0;
+        return rightDate - leftDate;
+      })[0];
+
+    assert.equal(latestRecoveryEvent?.meta?.action, "PASSWORD_RECOVERY_RESOLVED");
+    assert.equal(latestRecoveryEvent?.meta?.status, "RESOLVED");
   });
 
   test("ready expone estado operativo de Prisma", async () => {
@@ -188,6 +220,28 @@ describe("API backend Prisma smoke", { concurrency: 1 }, () => {
     assert.equal(payload.storage.mode, "prisma");
     assert.equal(payload.storage.readiness.mode, "prisma");
     assert.equal(payload.documents.ok, true);
+  });
+
+  test("rechaza archivos que no sean PDF en Prisma", async () => {
+    const school = await loginAs("ppontillo@beleneduca.cl");
+    const formData = new FormData();
+
+    formData.set(
+      "file",
+      new Blob([Buffer.from("Este no es un PDF")], { type: "text/plain" }),
+      "evidencia.txt"
+    );
+
+    const uploadResponse = await school.request(
+      "/api/fni/documents/upload?schoolId=sch_1&cycleId=2026&indicatorId=ind_doc_test",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    assert.equal(uploadResponse.status, 400);
+    assert.match(await uploadResponse.text(), /Solo se permiten archivos PDF/i);
   });
 
   test("admin puede autenticarse y ver usuarios", async () => {
