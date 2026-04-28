@@ -186,6 +186,7 @@ async function printChromePdf(url, filePath) {
     "--disable-dev-shm-usage",
     "--allow-file-access-from-files",
     "--hide-scrollbars",
+    "--no-pdf-header-footer",
     `--print-to-pdf=${filePath}`,
     "--print-to-pdf-no-header",
     url,
@@ -329,11 +330,18 @@ function manualFigure(imageSrc, shot) {
   `;
 }
 
-function buildSectionHtml(section, images) {
+function buildSectionHtml(section, images, pageLogoDataUri) {
   const image = manualFigure(images[section.screenshot], screenshots.find((shot) => shot.file === section.screenshot));
   return `
     <section class="manual-page page">
       <div class="manual-section">
+        <div class="manual-page-header">
+          <img class="manual-page-logo" src="${pageLogoDataUri}" alt="Fundación Belén Educa" />
+          <div class="manual-page-header-copy">
+            <div class="manual-page-header-kicker">Fundación Belén Educa</div>
+            <div class="manual-page-header-subtitle">Manual institucional</div>
+          </div>
+        </div>
         <div class="manual-eyebrow">${escapeHtml(section.eyebrow)}</div>
         <h2>${escapeHtml(section.title)}</h2>
         <p class="manual-intro">${escapeHtml(section.summary)}</p>
@@ -365,9 +373,9 @@ function buildSectionHtml(section, images) {
   `;
 }
 
-function buildManualHtml(manual, images) {
+function buildManualHtml(manual, images, coverLogoDataUri, pageLogoDataUri) {
   const theme = roleTheme(manual.role);
-  const sectionsHtml = manual.sections.map((section) => buildSectionHtml(section, images)).join("");
+  const sectionsHtml = manual.sections.map((section) => buildSectionHtml(section, images, pageLogoDataUri)).join("");
   const hero = manualFigure(images[manual.heroScreenshot], screenshots.find((shot) => shot.file === manual.heroScreenshot));
 
   return `<!doctype html>
@@ -437,7 +445,10 @@ function buildManualHtml(manual, images) {
         box-shadow: 0 18px 48px rgba(15, 23, 42, 0.08);
       }
       .cover-card {
-        padding: 26px;
+        padding: 28px;
+        display: grid;
+        gap: 12px;
+        text-align: center;
       }
       .manual-section {
         padding: 18px;
@@ -455,11 +466,125 @@ function buildManualHtml(manual, images) {
         color: var(--muted);
         max-width: 72ch;
       }
+      .manual-cover-roadmap {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 16px;
+      }
+      .manual-brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 14px;
+      }
+      .manual-brand-logo {
+        width: 118px;
+        height: auto;
+        display: block;
+      }
+      .manual-brand-text {
+        display: grid;
+        gap: 4px;
+      }
+      .manual-brand-kicker {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.24em;
+        color: var(--accent);
+        font-weight: 800;
+      }
+      .manual-brand-name {
+        font-size: 22px;
+        line-height: 1.05;
+        font-weight: 900;
+        color: var(--ink);
+      }
+      .manual-cover-logo-wrap {
+        display: grid;
+        justify-items: center;
+        margin: 8px 0 4px;
+      }
+      .manual-cover-logo {
+        width: min(100%, 520px);
+        max-width: 520px;
+        height: auto;
+        display: block;
+      }
+      .manual-page-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+      .manual-page-logo {
+        width: 72px;
+        height: auto;
+        flex: none;
+      }
+      .manual-page-header-copy {
+        display: grid;
+        gap: 2px;
+      }
+      .manual-page-header-kicker {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: var(--accent);
+        font-weight: 800;
+      }
+      .manual-page-header-subtitle {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .manual-cover-chip {
+        padding: 12px 14px;
+        border-radius: 18px;
+        border: 1px solid var(--accent-soft-2);
+        background: linear-gradient(180deg, var(--accent-soft) 0%, #fff 100%);
+      }
+      .manual-cover-chip strong {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--accent-deep);
+        font-size: 13px;
+      }
+      .manual-cover-chip span {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+      .manual-index-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 18px;
+      }
+      .manual-index-hero {
+        padding: 18px;
+        border-radius: 24px;
+        border: 1px solid var(--border);
+        background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+      }
+      .manual-index-bullets {
+        margin: 10px 0 0 18px;
+        padding: 0;
+      }
+      .manual-index-bullets li {
+        margin: 0 0 8px;
+      }
+      .manual-cover-credit {
+        margin-top: 12px;
+        font-size: 12px;
+        color: #64748b;
+      }
       .manual-role-pill {
         display: inline-flex;
         align-items: center;
         gap: 8px;
         margin-top: 14px;
+        margin-left: auto;
+        margin-right: auto;
         border-radius: 999px;
         padding: 8px 14px;
         background: var(--accent-soft);
@@ -527,6 +652,8 @@ function buildManualHtml(manual, images) {
         border-radius: 22px;
         border: 1px solid var(--border);
         background: #fff;
+        break-inside: avoid;
+        page-break-inside: avoid;
       }
       .manual-shot img {
         width: 100%;
@@ -622,6 +749,17 @@ function buildManualHtml(manual, images) {
         position: sticky;
         top: 12px;
       }
+      .manual-button-row,
+      .manual-step,
+      .manual-check,
+      .manual-quick-card,
+      .manual-toc-item,
+      .manual-summary-card,
+      .manual-callout,
+      .manual-footer {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
       .manual-footer {
         margin-top: 16px;
         padding: 14px 16px;
@@ -700,7 +838,7 @@ function buildManualHtml(manual, images) {
         font-weight: 800;
       }
       .manual-cover-title {
-        margin-top: 8px;
+        margin-top: 2px;
       }
       .manual-cover-note {
         margin-top: 14px;
@@ -716,55 +854,174 @@ function buildManualHtml(manual, images) {
         max-width: 72ch;
       }
       @media print {
-        .manual-figure-wrap { position: static; }
+        .cover {
+          min-height: auto;
+          align-items: start;
+        }
+        .cover-card {
+          padding: 22px;
+        }
+        .manual-cover-logo {
+          width: min(100%, 360px);
+        }
+        .manual-page-logo {
+          width: 62px;
+        }
+        h1 {
+          font-size: 31px;
+        }
+        .manual-subtitle {
+          font-size: 15px;
+          max-width: 64ch;
+        }
+        .manual-cover-roadmap {
+          gap: 8px;
+          margin-top: 12px;
+        }
+        .manual-cover-chip {
+          padding: 10px 12px;
+        }
+        .manual-cover-grid {
+          grid-template-columns: 1fr;
+          gap: 14px;
+          margin-top: 14px;
+        }
+        .manual-hero-grid {
+          grid-template-columns: 1fr;
+        }
+        .manual-quick-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 8px;
+          margin-top: 12px;
+        }
+        .manual-summary-card {
+          padding: 14px;
+        }
+        .manual-quick-card {
+          padding: 10px 12px;
+        }
+        .manual-quick-card strong {
+          font-size: 12px;
+          margin-bottom: 4px;
+        }
+        .manual-quick-card span {
+          font-size: 12px;
+        }
+        .manual-footer {
+          margin-top: 10px;
+          padding: 10px 12px;
+          font-size: 12px;
+        }
+        .manual-grid {
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+        }
+        .manual-figure-wrap {
+          order: -1;
+          position: static;
+        }
+        .manual-panel {
+          break-inside: avoid-page;
+          page-break-inside: avoid;
+        }
+        .manual-shot {
+          break-inside: avoid-page;
+          page-break-inside: avoid;
+        }
+        .manual-shot img {
+          max-height: 74mm;
+          object-fit: contain;
+        }
+        .manual-step-list,
+        .manual-button-list {
+          gap: 8px;
+        }
+        .manual-step,
+        .manual-button-row {
+          break-inside: avoid-page;
+          page-break-inside: avoid;
+        }
       }
     </style>
   </head>
   <body>
     <section class="cover page">
       <div class="cover-card">
-        <div class="manual-kicker">FNI Portal</div>
         <div class="manual-role-pill">${escapeHtml(manual.roleLabel)}</div>
+        <div class="manual-cover-logo-wrap">
+          <img class="manual-cover-logo" src="${coverLogoDataUri}" alt="Fundación Belén Educa" />
+        </div>
         <h1 class="manual-cover-title">${escapeHtml(manual.title)}</h1>
         <p class="manual-subtitle">${escapeHtml(manual.subtitle)}</p>
 
-        <div class="manual-cover-grid">
-          <div class="manual-summary-card">
-            <div class="manual-summary-title">Lo que aprenderá</div>
+        <div class="manual-cover-roadmap">
+          <div class="manual-cover-chip">
+            <strong>1. Lea con calma</strong>
+            <span>Primero revise para qué sirve la pantalla y luego mire la captura.</span>
+          </div>
+          <div class="manual-cover-chip">
+            <strong>2. Siga los pasos</strong>
+            <span>Haga una acción a la vez y espere a que termine de cargar.</span>
+          </div>
+          <div class="manual-cover-chip">
+            <strong>3. Pida ayuda</strong>
+            <span>Si algo se ve distinto, use la guía final antes de arriesgar un cambio.</span>
+          </div>
+        </div>
+
+        <div class="manual-cover-credit">Desarrollado por Lunaria IA</div>
+
+      </div>
+    </section>
+
+    <section class="page">
+      <div class="manual-section">
+        <div class="manual-page-header">
+          <img class="manual-page-logo" src="${pageLogoDataUri}" alt="Fundación Belén Educa" />
+          <div class="manual-page-header-copy">
+            <div class="manual-page-header-kicker">Fundación Belén Educa</div>
+            <div class="manual-page-header-subtitle">Manual institucional</div>
+          </div>
+        </div>
+        <div class="manual-eyebrow">Cómo usar este manual</div>
+        <h2>Qué encontrará en este manual</h2>
+        <p class="manual-intro">
+          Esta página resume lo importante para que usted pueda ir directo al tema que necesita.
+          La idea es que no tenga que buscar demasiado ni perderse entre pantallas.
+        </p>
+
+        <div class="manual-index-grid">
+          <div class="manual-index-hero">
+            <h3>Lo que aprenderá</h3>
             ${htmlList(manual.learningGoals)}
 
             <div class="manual-cover-note">
-              <strong>Consejo para personas que usan la plataforma por primera vez</strong>
+              <strong>Cómo leer este manual</strong>
               <div style="margin-top:6px;">
-                Lea una sección completa antes de hacer clic. En esta plataforma casi todo se guarda
-                al momento, por eso es mejor ir paso a paso y esperar a que termine de cargar cada pantalla.
+                Cada sección incluye una pantalla, una explicación corta de para qué sirve, los botones
+                más importantes y los pasos necesarios para hacer la tarea.
               </div>
             </div>
 
-            <div class="manual-quick-grid">
-              ${manual.quickCards
-                .map(
-                  (item) => `
-                    <div class="manual-quick-card">
-                      <strong>${escapeHtml(item.title)}</strong>
-                      <span>${escapeHtml(item.text)}</span>
-                    </div>`
-                )
-                .join("")}
-            </div>
+            <ul class="manual-index-bullets">
+              <li>Primero vea la captura.</li>
+              <li>Después lea para qué sirve la pantalla.</li>
+              <li>Luego siga los pasos en orden.</li>
+            </ul>
           </div>
 
           <div>
             ${hero}
             <div class="manual-footer">
-              Este manual usa el mismo estilo visual en todas sus secciones para que la lectura sea
-              más cómoda. Las capturas muestran la pantalla real del sistema con botones y textos visibles.
+              Use esta imagen como referencia visual. Después continúe con el índice rápido para ir
+              directo a la sección que le interesa.
             </div>
           </div>
         </div>
 
         <div class="manual-summary-card" style="margin-top:18px;">
-          <div class="manual-summary-title">Índice rápido</div>
+          <div class="manual-summary-title">Secciones del manual</div>
           <div class="manual-toc">
             ${manual.sections
               .map(
@@ -782,11 +1039,17 @@ function buildManualHtml(manual, images) {
         </div>
       </div>
     </section>
-
     ${sectionsHtml}
 
     <section class="page">
       <div class="manual-section">
+        <div class="manual-page-header">
+          <img class="manual-page-logo" src="${pageLogoDataUri}" alt="Fundación Belén Educa" />
+          <div class="manual-page-header-copy">
+            <div class="manual-page-header-kicker">Fundación Belén Educa</div>
+            <div class="manual-page-header-subtitle">Manual institucional</div>
+          </div>
+        </div>
         <div class="manual-eyebrow">Apoyo final</div>
         <h2>Qué hacer si algo se ve distinto</h2>
         <p class="manual-intro">
@@ -830,6 +1093,7 @@ function buildManualConfigs() {
       heroScreenshot: "admin-dashboard.png",
       learningGoals: [
         "Entrar al sistema y llegar al panel administrativo sin confundirse de perfil.",
+        "Recuperar acceso cuando un usuario olvidó su contraseña y revisar la solicitud.",
         "Crear, editar y restablecer usuarios con pasos claros.",
         "Revisar sesiones y actividad para detectar movimientos importantes.",
         "Abrir el catálogo FNI y entender cuándo un cambio es editable.",
@@ -866,7 +1130,33 @@ function buildManualConfigs() {
             "Si el sistema no lo lleva al panel correcto, revise que esté usando la cuenta de administrador y no una cuenta de fundación o colegio.",
         },
         {
-          eyebrow: "2. Panel administrativo",
+          eyebrow: "2. Recuperación de acceso",
+          title: "Atender solicitudes de contraseña",
+          summary:
+            "Cuando alguien usa Recuperar contraseña en el login, aquí se revisa la solicitud y se deja resuelta para que el acceso vuelva a funcionar.",
+          screenshot: "admin-audit.png",
+          purpose: [
+            "Muestra las solicitudes de acceso registradas desde la pantalla de ingreso.",
+            "Permite marcar una solicitud como resuelta cuando ya fue atendida.",
+            "Ayuda a decidir si además hace falta restablecer la contraseña desde Usuarios.",
+          ],
+          buttons: [
+            { label: "Marcar resuelta", description: "Cierra la solicitud cuando el acceso ya fue atendido." },
+            { label: "Refrescar", description: "Vuelve a cargar la auditoría y las solicitudes pendientes." },
+            { label: "Restablecer contraseña", description: "Se usa en Usuarios para asignar una nueva clave." },
+          ],
+          steps: [
+            "Pida al usuario que complete la recuperación desde la pantalla de ingreso.",
+            "Entre a Actividad y revise la sección de solicitudes de acceso.",
+            "Lea el correo y el detalle para confirmar qué necesita la persona.",
+            "Si corresponde, abra Usuarios y restablezca la contraseña.",
+            "Marque la solicitud como resuelta cuando el caso ya quedó atendido.",
+          ],
+          note:
+            "Si la solicitud no aparece, presione Refrescar y verifique que el correo escrito coincida con la cuenta registrada.",
+        },
+        {
+          eyebrow: "3. Panel administrativo",
           title: "Revisar el tablero principal",
           summary:
             "Este tablero resume los ciclos, colegios, accesos y atajos más usados por administración.",
@@ -893,7 +1183,7 @@ function buildManualConfigs() {
             "El panel le sirve como punto de partida. Si no sabe dónde entrar, empiece aquí y siga el menú lateral según la tarea.",
         },
         {
-          eyebrow: "3. Usuarios",
+          eyebrow: "4. Usuarios",
           title: "Crear, editar y restablecer cuentas",
           summary:
             "Aquí administra personas, roles y contraseñas. Es la pantalla que más usan los equipos de apoyo y control.",
@@ -921,7 +1211,7 @@ function buildManualConfigs() {
             "Para usuarios de colegio, no olvide asociar un establecimiento. Si ese campo queda vacío, el usuario puede quedar mal configurado.",
         },
         {
-          eyebrow: "4. Sesiones",
+          eyebrow: "5. Sesiones",
           title: "Ver quién está conectado",
           summary:
             "Esta pantalla ayuda a detectar inicios de sesión recientes, sesiones activas y accesos que ya no deberían estar abiertos.",
@@ -944,7 +1234,7 @@ function buildManualConfigs() {
             "Esta pantalla no cambia datos por sí sola. Sirve para observación y control operativo.",
         },
         {
-          eyebrow: "5. Actividad",
+          eyebrow: "6. Actividad",
           title: "Revisar trazabilidad y cambios",
           summary:
             "Aquí se registran ingresos, salidas, cambios de datos y acciones sensibles del sistema.",
@@ -967,7 +1257,7 @@ function buildManualConfigs() {
             "Si el evento no aparece, puede que todavía no haya sincronizado. Presione Refrescar y vuelva a revisar.",
         },
         {
-          eyebrow: "6. Catálogo FNI",
+          eyebrow: "7. Catálogo FNI",
           title: "Entender y modificar indicadores",
           summary:
             "El catálogo reúne las áreas e indicadores. Desde aquí administración puede mantener los nombres, el orden y el estado.",
@@ -1002,6 +1292,7 @@ function buildManualConfigs() {
       heroScreenshot: "foundation-dashboard.png",
       learningGoals: [
         "Llegar al tablero de Fundación y entender el estado del ciclo activo.",
+        "Recuperar acceso si olvidó la contraseña y dejar la solicitud registrada.",
         "Buscar colegios por nombre, estado o avance y abrir su revisión.",
         "Leer respuestas, documentos y observaciones con calma y sin perder contexto.",
         "Usar el catálogo como referencia de áreas e indicadores.",
@@ -1038,7 +1329,33 @@ function buildManualConfigs() {
             "Si al entrar lo redirige a otro perfil, revise que la cuenta sea de Fundación y no de otro rol.",
         },
         {
-          eyebrow: "2. Tablero de Fundación",
+          eyebrow: "2. Recuperar acceso",
+          title: "Solicitar ayuda si olvidó la contraseña",
+          summary:
+            "La pantalla de ingreso también permite pedir recuperación de contraseña. Esa solicitud queda registrada para que administración la revise.",
+          screenshot: "login.png",
+          purpose: [
+            "La pantalla de ingreso incluye la opción ¿Olvidaste tu contraseña?.",
+            "El formulario registra una solicitud para revisión de administración.",
+            "Después de enviar el mensaje, solo queda esperar la respuesta del equipo de soporte.",
+          ],
+          buttons: [
+            { label: "¿Olvidaste tu contraseña?", description: "Abre el formulario de recuperación." },
+            { label: "Solicitar recuperación de contraseña", description: "Envía la solicitud con el correo y el mensaje." },
+            { label: "Cerrar", description: "Cierra el panel de ayuda sin enviar cambios." },
+          ],
+          steps: [
+            "Abra ¿Olvidaste tu contraseña? desde la pantalla de ingreso.",
+            "Revise que el correo institucional sea el correcto.",
+            "Escriba un mensaje breve explicando el problema.",
+            "Presione Solicitar recuperación de contraseña y espere la confirmación.",
+            "Luego espere a que administración revise el caso.",
+          ],
+          note:
+            "Si no recibe respuesta inmediata, eso es normal: la solicitud queda pendiente para revisión manual.",
+        },
+        {
+          eyebrow: "3. Tablero de Fundación",
           title: "Revisar el ciclo y los colegios",
           summary:
             "Este tablero le muestra el estado general del ciclo, los colegios activos y los puntos que requieren prioridad.",
@@ -1065,7 +1382,7 @@ function buildManualConfigs() {
             "Cuando el ciclo está cerrado, la revisión queda solo en modo lectura. Eso evita cambios accidentales.",
         },
         {
-          eyebrow: "3. Colegios",
+          eyebrow: "4. Colegios",
           title: "Encontrar un colegio y filtrar su estado",
           summary:
             "La lista de colegios permite buscar por nombre, código, completitud o bloqueos para revisar primero lo más urgente.",
@@ -1091,7 +1408,7 @@ function buildManualConfigs() {
             "Si necesita trabajar más rápido, empiece por los colegios bloqueados o con observaciones recientes.",
         },
         {
-          eyebrow: "4. Formulario del colegio",
+          eyebrow: "5. Formulario del colegio",
           title: "Leer respuestas, documentos y archivos",
           summary:
             "Esta pantalla muestra el formulario completo del colegio con respuestas, PDF de soporte y textos de referencia.",
@@ -1116,7 +1433,7 @@ function buildManualConfigs() {
             "Cada cambio en el formulario se sincroniza con el workspace del ciclo, por eso conviene revisar antes de editar.",
         },
         {
-          eyebrow: "5. Revisión del colegio",
+          eyebrow: "6. Revisión del colegio",
           title: "Aprobar, observar o bloquear",
           summary:
             "La revisión es la pantalla donde Fundación deja el criterio final para cada indicador y escribe el comentario correspondiente.",
@@ -1146,7 +1463,7 @@ function buildManualConfigs() {
             "Si el ciclo está cerrado, la pantalla queda solo para consulta. En ese caso no podrá editar estados ni comentarios.",
         },
         {
-          eyebrow: "6. Catálogo FNI",
+          eyebrow: "7. Catálogo FNI",
           title: "Usar el catálogo como referencia",
           summary:
             "El catálogo reúne áreas e indicadores para que la revisión siempre use el mismo lenguaje y orden.",
@@ -1182,6 +1499,7 @@ function buildManualConfigs() {
       heroScreenshot: "school-dashboard.png",
       learningGoals: [
         "Entrar al sistema y reconocer su panel de colegio.",
+        "Recuperar acceso si olvidó la contraseña y registrar la solicitud.",
         "Responder la evaluación sin perder información ni confundirse de área.",
         "Adjuntar y revisar PDF de respaldo con calma.",
         "Enviar el formulario y volver a editar cuando Fundación devuelva observaciones.",
@@ -1218,7 +1536,33 @@ function buildManualConfigs() {
             "Si entra con otra cuenta, puede terminar viendo un panel que no corresponde a su colegio. Revise siempre el correo antes de continuar.",
         },
         {
-          eyebrow: "2. Tablero del colegio",
+          eyebrow: "2. Recuperar acceso",
+          title: "Solicitar ayuda si olvidó la contraseña",
+          summary:
+            "La pantalla de ingreso permite pedir recuperación de contraseña. La solicitud queda registrada para revisión manual de administración.",
+          screenshot: "login.png",
+          purpose: [
+            "La pantalla de ingreso también tiene la opción ¿Olvidaste tu contraseña?.",
+            "El formulario registra una solicitud para revisión de administración.",
+            "Después de enviar el mensaje, solo queda esperar la respuesta del equipo de soporte.",
+          ],
+          buttons: [
+            { label: "¿Olvidaste tu contraseña?", description: "Abre el formulario de recuperación." },
+            { label: "Solicitar recuperación de contraseña", description: "Envía la solicitud con el correo y el mensaje." },
+            { label: "Cerrar", description: "Cierra el panel de ayuda sin enviar cambios." },
+          ],
+          steps: [
+            "Abra ¿Olvidaste tu contraseña? desde la pantalla de ingreso.",
+            "Revise que el correo institucional sea el correcto.",
+            "Escriba un mensaje breve explicando el problema.",
+            "Presione Solicitar recuperación de contraseña y espere la confirmación.",
+            "Luego espere a que administración revise el caso.",
+          ],
+          note:
+            "Si no recibe respuesta inmediata, eso es normal: la solicitud queda pendiente para revisión manual.",
+        },
+        {
+          eyebrow: "3. Tablero del colegio",
           title: "Ver el avance general",
           summary:
             "El tablero del colegio muestra el progreso, lo pendiente y las acciones más importantes para seguir avanzando.",
@@ -1245,7 +1589,7 @@ function buildManualConfigs() {
             "Si ve observaciones o bloqueos, lo más útil es abrir la evaluación y corregir solo lo que Fundación señaló.",
         },
         {
-          eyebrow: "3. Evaluación FNI",
+          eyebrow: "4. Evaluación FNI",
           title: "Responder el formulario paso a paso",
           summary:
             "En esta pantalla se completan las preguntas por indicador, se adjuntan PDFs y se envía el formulario a revisión.",
@@ -1273,7 +1617,7 @@ function buildManualConfigs() {
             "No existe botón Guardar. Cada cambio queda registrado al instante, así que avance despacio y espere a que cargue cada indicador.",
         },
         {
-          eyebrow: "4. Documentos",
+          eyebrow: "5. Documentos",
           title: "Revisar archivos y evidencias",
           summary:
             "La biblioteca de documentos le muestra los PDF cargados, la referencia escrita y el estado de cada evidencia.",
@@ -1298,7 +1642,7 @@ function buildManualConfigs() {
             "Si un archivo no aparece, confirme que se haya subido en formato PDF y que no esté roto o incompleto.",
         },
         {
-          eyebrow: "5. Feedback y corrección",
+          eyebrow: "6. Feedback y corrección",
           title: "Qué hacer si Fundación devuelve el formulario",
           summary:
             "Cuando el trabajo vuelve con observaciones, el colegio debe corregir lo indicado y reenviar el formulario.",
@@ -1352,6 +1696,11 @@ async function main() {
     throw new Error("No existe dist/. Ejecuta primero `npm run build`.");
   }
 
+  const belenCoverLogo = await readFile(path.join(rootDir, "src", "assets", "belen-logo-print.png"));
+  const belenPageLogo = await readFile(path.join(rootDir, "src", "assets", "belen-logo.png"));
+  const belenCoverLogoDataUri = `data:image/png;base64,${belenCoverLogo.toString("base64")}`;
+  const belenPageLogoDataUri = `data:image/png;base64,${belenPageLogo.toString("base64")}`;
+
   const apiPort = await getFreePort();
   const apiBaseUrl = `http://127.0.0.1:${apiPort}`;
   const apiServer = await spawnProcess(process.execPath, ["server/api-server.mjs"], {
@@ -1401,7 +1750,7 @@ async function main() {
     const manuals = buildManualConfigs();
 
     for (const manual of manuals) {
-      const html = buildManualHtml(manual, images);
+    const html = buildManualHtml(manual, images, belenCoverLogoDataUri, belenPageLogoDataUri);
       const manualHtmlPath = path.join(docsDir, `${manual.slug}.html`);
       const manualPdfPath = path.join(docsDir, `${manual.slug}.pdf`);
       await writeFile(manualHtmlPath, html, "utf8");

@@ -66,14 +66,16 @@ Ademas, GitHub Actions ejecuta automaticamente:
 - `lint + build + test:api` en cada push y pull request
 - `db:push + db:seed + test:api:prisma` en un job separado con PostgreSQL
 
-## Credenciales de acceso para auth API
+## Acceso de prueba
 
-- Admins: `pablo.munoz@beleneduca.cl`, `felipe.munoz@beleneduca.cl`, `mariajose.rojas@beleneduca.cl`, `arantza.farias@beleneduca.cl`, `ebravo@outlook.cl` / `demo`
-- Fundacion: `pedro.letelier@beleneduca.cl`, `gabriel.olate@beleneduca.cl`, `pedro.larrain@beleneduca.cl`, `jose.bustamante@beleneduca.cl`, `matias.bascur@beleneduca.cl`, `monica.luna@beleneduca.cl`, `pilar.reyes@beleneduca.cl` / `demo`
-- Colegios: `aespinoza@beleneduca.cl`, `carolina.fuentes@beleneduca.cl`, `kimberly.orellana@beleneduca.cl`, `mariapaz.carbonell@beleneduca.cl`, `ppontillo@beleneduca.cl`, `rfuentes@beleneduca.cl`, `romina.correa@beleneduca.cl`, `carolina.osses@molokai.cl`, `jgonzalez@molokai.cl`, `marjorie.espinoza@molokai.cl`, `nadia.sandoval@molokai.cl`, `cc@beleneduca.cl`, `cjlu@beleneduca.cl` / `demo`
+Las cuentas demo no se documentan aqui para evitar exponer credenciales en el repositorio.
+Si necesitas probar localmente, usa los seeds del entorno de desarrollo y las variables de prueba definidas en `server/fni-demo-users.mjs` y `server/.data/` cuando corresponda.
 
-Esas mismas credenciales quedan sembradas en Prisma cuando corres `npm run db:seed`.
-El seed deja el ciclo 2026 vacio para que los usuarios finales comiencen a completarlo desde cero.
+Cuando el repositorio se comparte fuera del equipo, conviene revisar tambien:
+
+- cualquier archivo de seed o fixture con usuarios de prueba,
+- capturas o PDFs generados que puedan mostrar datos reales o demo,
+- y el historial de Git si alguna credencial sensible llego a commitearse alguna vez.
 
 ## Endpoints locales disponibles
 
@@ -126,6 +128,7 @@ El seed deja el ciclo 2026 vacio para que los usuarios finales comiencen a compl
 - Guia de despliegue y respaldos: [docs/deployment.md](C:/Users/tokyotech/Desktop/Lunaria%20IA/BELEN%20EDUCA/fni-portal/docs/deployment.md)
 - Guia de arquitectura y buenas practicas: [docs/guia-arquitectura-buenas-practicas.md](docs/guia-arquitectura-buenas-practicas.md)
 - Guia de contribucion: [docs/guia-contribucion.md](docs/guia-contribucion.md)
+- Listado de pruebas QA: [docs/listado-pruebas-qa.md](docs/listado-pruebas-qa.md)
 - Checklist de QA manual: [docs/qa-manual-checklist.md](docs/qa-manual-checklist.md)
 - Manual de Administrador: [docs/manual-administrador.pdf](docs/manual-administrador.pdf)
 - Manual de Fundacion: [docs/manual-fundacion.pdf](docs/manual-fundacion.pdf)

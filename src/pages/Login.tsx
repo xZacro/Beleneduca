@@ -157,8 +157,8 @@ export default function Login() {
   }, []);
 
   const navigate = useNavigate();
-  const [email, setEmail] = useState("ebravo@outlook.cl");
-  const [password, setPassword] = useState("demo");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [rememberSession, setRememberSession] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
@@ -190,9 +190,15 @@ export default function Login() {
   };
 
   const openRecoveryRequest = () => {
+    if (!email.trim()) {
+      setError("Escribe tu correo institucional antes de pedir recuperación.");
+      return;
+    }
+
     setHelpMessage("");
     setHelpStatus(null);
     setHelpStatusTone(null);
+    setError(null);
     setHelpOpen(true);
   };
 
@@ -295,7 +301,7 @@ export default function Login() {
                 </p>
               </div>
 
-              <form className="mt-8 grid gap-4" onSubmit={(event) => void onSubmit(event)}>
+              <form className="mt-8 grid gap-4" onSubmit={(event) => void onSubmit(event)} autoComplete="off">
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-slate-700">Correo institucional</label>
                   <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 transition focus-within:border-blue-200 focus-within:ring-4 focus-within:ring-blue-100">
@@ -303,6 +309,7 @@ export default function Login() {
                       <IconEnvelope />
                     </span>
                     <input
+                      autoComplete="username"
                       className="w-full bg-transparent outline-none placeholder:text-slate-400"
                       value={email}
                       onChange={(event) => setEmail(event.target.value)}
@@ -319,6 +326,7 @@ export default function Login() {
                     </span>
                     <input
                       type={showPassword ? "text" : "password"}
+                      autoComplete="current-password"
                       className="w-full bg-transparent outline-none placeholder:text-slate-400"
                       value={password}
                       onChange={(event) => setPassword(event.target.value)}

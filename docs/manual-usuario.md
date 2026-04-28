@@ -33,9 +33,10 @@ La plataforma FNI centraliza el seguimiento de ciclos, evidencias, observaciones
 Si no recuerdas tu acceso:
 
 1. Abre la opcion de recuperacion de contrasena desde la pantalla de login.
-2. Escribe tu correo.
+2. Escribe tu correo institucional.
 3. Agrega un mensaje corto explicando el problema.
-4. Envialo para que administracion lo revise.
+4. Presiona la opcion para enviar la solicitud.
+5. Espera a que administracion revise el caso y confirme la ayuda.
 
 ## 4. Navegacion general
 
@@ -168,6 +169,7 @@ La vista administrativa muestra una lectura global del sistema:
 2. Revisa los eventos registrados por el sistema.
 3. Busca acciones relevantes por tipo o fecha.
 4. Usa la auditoria como respaldo cuando necesites confirmar un cambio.
+5. Si hay solicitudes de recuperacion de contrasena, marcarlas como resueltas cuando ya fueron atendidas.
 
 ### 7.5 Ciclos
 
