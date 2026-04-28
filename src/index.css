@@ -30,19 +30,19 @@
   }
 
   .fni-page-title {
-    @apply mt-1 text-[2rem] font-semibold leading-tight tracking-tight text-slate-900;
+    @apply mt-1 text-[1.65rem] font-semibold leading-tight tracking-tight text-slate-900 sm:text-[2rem];
   }
 
   .fni-page-subtitle {
-    @apply mt-2 text-sm leading-6 text-slate-600;
+    @apply mt-2 text-[0.92rem] leading-6 text-slate-600 sm:text-sm;
   }
 
   .fni-toolbar-button {
-    @apply rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:border-slate-400 hover:bg-slate-50 active:translate-y-[1px];
+    @apply inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:border-slate-400 hover:bg-slate-50 active:translate-y-[1px];
   }
 
   .fni-toolbar-button-primary {
-    @apply rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 active:translate-y-[1px];
+    @apply inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 active:translate-y-[1px];
   }
 
   .fni-toolbar-select {
@@ -50,7 +50,7 @@
   }
 
   .fni-cycle-select {
-    @apply min-w-[140px] rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 outline-none;
+    @apply min-w-[120px] rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-medium text-slate-700 outline-none sm:min-w-[140px] sm:px-4;
   }
 
   .fni-brand-ribbon {
@@ -83,11 +83,11 @@
   }
 
   .fni-logo-shell-header {
-    @apply min-h-[72px] min-w-[260px] px-5 py-3;
+    @apply min-h-[72px] min-w-[220px] px-4 py-3 sm:min-w-[240px] sm:px-5 md:min-w-[260px];
   }
 
   .fni-logo-shell-login {
-    @apply min-h-[92px] min-w-[320px] px-6 py-4;
+    @apply min-h-[88px] min-w-[280px] px-5 py-4 sm:min-w-[320px] sm:px-6;
   }
 
   .fni-menu-label {
@@ -115,11 +115,11 @@
   }
 
   .fni-data-panel {
-    @apply w-full rounded-2xl border border-slate-200 bg-white p-5 shadow-sm;
+    @apply w-full rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5;
   }
 
   .fni-metric-card {
-    @apply min-h-[132px] rounded-3xl border p-5 shadow-sm;
+    @apply min-h-[112px] rounded-3xl border p-4 shadow-sm sm:min-h-[132px] sm:p-5;
   }
 
   .fni-data-table-shell {
@@ -131,11 +131,11 @@
   }
 
   .fni-data-table {
-    @apply min-w-[1120px] w-full text-sm;
+    @apply min-w-[920px] w-full text-sm sm:min-w-[1120px];
   }
 
   .fni-empty-state-panel {
-    @apply flex min-h-[180px] w-full items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500;
+    @apply flex min-h-[160px] w-full items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white p-6 text-center text-sm text-slate-500 sm:min-h-[180px] sm:p-8;
   }
 
   .fni-route-panel-enter {

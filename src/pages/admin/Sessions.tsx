@@ -123,7 +123,7 @@ export default function AdminSessions() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <div className="fni-metric-card border-slate-200 bg-slate-50">
           <div className="text-xs font-semibold tracking-wide text-slate-500">Total</div>
           <div className="mt-2 text-3xl font-semibold text-slate-900">{metrics.total}</div>
@@ -143,8 +143,8 @@ export default function AdminSessions() {
       </div>
 
       <div className="fni-data-panel p-4">
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-12 md:items-end">
-          <div className="md:col-span-8">
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-8">
             <label className="fni-field-label">Buscar</label>
             <input
               value={search}
@@ -154,7 +154,7 @@ export default function AdminSessions() {
             />
           </div>
 
-          <div className="md:col-span-4">
+          <div className="lg:col-span-4">
             <label className="fni-field-label">Estado</label>
             <select
               value={statusFilter}

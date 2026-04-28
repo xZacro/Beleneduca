@@ -290,7 +290,7 @@ export default function AdminAudit() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <div className="fni-metric-card border-slate-200 bg-slate-50">
           <div className="text-xs font-semibold tracking-wide text-slate-500">Actividad hoy</div>
           <div className="mt-2 text-3xl font-semibold text-slate-900">{metrics.today}</div>
@@ -310,8 +310,8 @@ export default function AdminAudit() {
       </div>
 
       <div className="fni-data-panel p-4">
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-12 md:items-end">
-          <div className="md:col-span-8">
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-8">
             <label className="fni-field-label">Buscar</label>
             <input
               value={search}
@@ -321,7 +321,7 @@ export default function AdminAudit() {
             />
           </div>
 
-          <div className="md:col-span-4">
+          <div className="lg:col-span-4">
             <label className="fni-field-label">Evento</label>
             <select
               value={typeFilter}
@@ -379,7 +379,8 @@ export default function AdminAudit() {
             No hay solicitudes de acceso registradas por ahora.
           </div>
         ) : (
-          <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200">
+          <div className="fni-data-table-shell mt-4">
+            <div className="fni-data-table-scroll">
             <table className="fni-data-table">
               <thead className="bg-slate-50 text-slate-600">
                 <tr>
@@ -437,6 +438,7 @@ export default function AdminAudit() {
                 })}
               </tbody>
             </table>
+            </div>
           </div>
         )}
       </div>

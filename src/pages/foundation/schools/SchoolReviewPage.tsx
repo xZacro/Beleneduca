@@ -401,7 +401,7 @@ function SchoolReviewWorkspace({
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
         <StatCard label="Total indicadores" value={summary.total} />
         <StatCard label="Pendientes" value={summary.pendientes} tone="slate" />
         <StatCard label="Aprobados" value={summary.aprobados} tone="green" />
@@ -410,8 +410,8 @@ function SchoolReviewWorkspace({
       </div>
 
       <div className="fni-data-panel p-4">
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-12 md:items-end">
-          <div className="md:col-span-4">
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-4">
             <label className="fni-field-label">Buscar</label>
             <input
               value={search}
@@ -421,7 +421,7 @@ function SchoolReviewWorkspace({
             />
           </div>
 
-          <div className="md:col-span-3">
+          <div className="lg:col-span-3">
             <label className="fni-field-label">Área</label>
             <select
               value={areaFilter}
@@ -437,7 +437,7 @@ function SchoolReviewWorkspace({
             </select>
           </div>
 
-          <div className="md:col-span-2">
+          <div className="lg:col-span-2">
             <label className="fni-field-label">Estado de revisión</label>
             <select
               value={reviewFilter}
@@ -452,7 +452,7 @@ function SchoolReviewWorkspace({
             </select>
           </div>
 
-          <div className="md:col-span-2">
+          <div className="lg:col-span-2">
             <label className="fni-field-label">Completitud</label>
             <select
               value={completionFilter}
@@ -466,7 +466,7 @@ function SchoolReviewWorkspace({
             </select>
           </div>
 
-          <div className="md:col-span-1">
+          <div className="lg:col-span-1">
             <button type="button" onClick={clearFilters} className="w-full fni-toolbar-button">
               Limpiar
             </button>

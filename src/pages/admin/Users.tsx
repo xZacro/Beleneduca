@@ -388,7 +388,7 @@ export default function AdminUsers() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <div className="fni-metric-card border-slate-200 bg-slate-50">
           <div className="text-xs font-semibold tracking-wide text-slate-500">Usuarios</div>
           <div className="mt-2 text-3xl font-semibold text-slate-900">{kpis.total}</div>
@@ -422,8 +422,8 @@ export default function AdminUsers() {
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1.4fr)_minmax(360px,0.9fr)]">
         <div className="space-y-4">
           <div className="fni-data-panel p-4">
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-12 md:items-end">
-              <div className="md:col-span-6">
+            <div className="grid grid-cols-1 gap-3 lg:grid-cols-12 lg:items-end">
+              <div className="lg:col-span-6">
                 <label className="fni-field-label">Buscar</label>
                 <input
                   value={search}
@@ -436,7 +436,7 @@ export default function AdminUsers() {
                 </p>
               </div>
 
-              <div className="md:col-span-3">
+              <div className="lg:col-span-3">
                 <label className="fni-field-label">Rol</label>
                 <select
                   value={roleFilter}
@@ -452,7 +452,7 @@ export default function AdminUsers() {
                 </select>
               </div>
 
-              <div className="md:col-span-3">
+              <div className="lg:col-span-3">
                 <label className="fni-field-label">Estado</label>
                 <select
                   value={statusFilter}

@@ -284,8 +284,8 @@ function IndicatorCard({
 
         {indicator.hasDocumentFields && (
           <>
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-12">
-              <div className="md:col-span-5">
+            <div className="grid grid-cols-1 gap-3 lg:grid-cols-12">
+              <div className="lg:col-span-5">
                 <label className="block text-xs font-medium text-slate-600">
                   Documento (referencia)
                 </label>
@@ -306,7 +306,7 @@ function IndicatorCard({
                 />
               </div>
 
-              <div className="md:col-span-7">
+              <div className="lg:col-span-7">
                 <label className="block text-xs font-medium text-slate-600">Comentarios</label>
                 <input
                   disabled={disabled}
@@ -326,8 +326,8 @@ function IndicatorCard({
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-12">
-              <div className="md:col-span-7">
+            <div className="grid grid-cols-1 gap-3 lg:grid-cols-12">
+              <div className="lg:col-span-7">
                 <label className="block text-xs font-medium text-slate-600">Adjuntar PDF</label>
                 <input
                   type="file"
@@ -376,7 +376,7 @@ function IndicatorCard({
                 </p>
               </div>
 
-              <div className="md:col-span-5">
+              <div className="lg:col-span-5">
                 <label className="block text-xs font-medium text-slate-600">Archivo cargado</label>
                 <div className="mt-1 rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
                   {response.file ? (
@@ -752,8 +752,8 @@ function EvaluationWorkspace({
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
-        <div className="lg:col-span-3">
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-12">
+        <div className="xl:col-span-3">
           <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
             <div className="fni-menu-label">Áreas</div>
 

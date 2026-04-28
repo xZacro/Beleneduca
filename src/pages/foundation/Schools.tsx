@@ -272,7 +272,7 @@ export default function FoundationSchoolsPage() {
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-5">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5">
         <StatCard label="Colegios" value={`${kpis.total}`} hint="Activos en el ciclo" tone="blue" />
         <StatCard label="Completitud promedio" value={`${kpis.avg}%`} hint="Promedio real del ciclo" tone="emerald" />
         <StatCard label="Pendientes" value={`${kpis.pending}`} hint="Indicadores por completar" tone="amber" />
@@ -282,8 +282,8 @@ export default function FoundationSchoolsPage() {
 
       {/* Filters */}
     <div className="fni-data-panel p-4">
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-12 md:items-end">
-          <div className="md:col-span-4">
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-4">
             <label className="fni-field-label">Buscar</label>
             <input
               value={q}
@@ -293,7 +293,7 @@ export default function FoundationSchoolsPage() {
             />
           </div>
 
-          <div className="md:col-span-2">
+          <div className="lg:col-span-2">
             <label className="fni-field-label">Estado</label>
             <select
               value={status}
@@ -309,7 +309,7 @@ export default function FoundationSchoolsPage() {
             </select>
           </div>
 
-          <div className="md:col-span-2">
+          <div className="lg:col-span-2">
             <label className="fni-field-label">Completitud</label>
             <select
               value={bucket}
@@ -326,7 +326,7 @@ export default function FoundationSchoolsPage() {
             </select>
           </div>
 
-          <div className="md:col-span-2">
+          <div className="lg:col-span-2">
             <label className="fni-field-label">Orden</label>
             <select
               value={sort}
@@ -340,7 +340,7 @@ export default function FoundationSchoolsPage() {
             </select>
           </div>
 
-          <div className="md:col-span-2">
+          <div className="lg:col-span-2">
             <label className="fni-field-label">Opciones</label>
             <label className="mt-2 flex items-center gap-2 text-sm text-slate-700">
               <input

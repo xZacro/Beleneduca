@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { matchPath, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import belenLogo from "../../assets/belen-logo.png";
@@ -59,10 +59,22 @@ export default function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, loading, setUser } = useResolvedAuthUser({ validateOnMount: true });
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     document.title = resolvePageTitle(location.pathname);
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [mobileMenuOpen]);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -134,8 +146,8 @@ export default function AppLayout() {
 
   if (loading && !user) {
     return (
-      <div className="min-h-screen bg-slate-50 p-6">
-        <div className="mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-600 shadow-sm">
+      <div className="min-h-screen bg-slate-50 p-4 sm:p-6">
+        <div className="mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-5 text-sm text-slate-600 shadow-sm sm:p-6">
           {"Cargando tu acceso..."}
         </div>
       </div>
@@ -147,28 +159,43 @@ export default function AppLayout() {
       <div className="fni-brand-ribbon fni-brand-ribbon-thin" />
 
       <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex w-full max-w-[1600px] items-center justify-between gap-4 px-4 py-3">
-          <div className="flex items-center gap-3">
+        <div className="mx-auto flex w-full max-w-[1600px] items-center justify-between gap-2 px-3 py-3 sm:gap-3 sm:px-4">
+          <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
             <div className="fni-logo-shell fni-logo-shell-header">
-              <img src={belenLogo} alt="Belen Educa" className="h-12 w-auto max-w-[300px] object-contain md:h-14" />
+              <img
+                src={belenLogo}
+                alt="Belen Educa"
+                className="h-9 w-auto max-w-[180px] object-contain sm:h-12 sm:max-w-[220px] md:h-14"
+              />
             </div>
 
-            <div className="leading-tight">
-              <div className="text-xl font-bold tracking-tight text-slate-900">FNI</div>
-              <div className="text-base font-semibold text-slate-600">Belen Educa</div>
+            <div className="min-w-0 leading-tight">
+              <div className="truncate text-lg font-bold tracking-tight text-slate-900 sm:text-xl">FNI</div>
+              <div className="truncate text-sm font-semibold text-slate-600 sm:text-base">Belen Educa</div>
             </div>
 
-            <span className="ml-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-600">
+            <span className="ml-1 hidden rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-600 sm:inline-flex">
               Rol: {roleLabel(user)}
             </span>
           </div>
 
           <div className="flex items-center gap-2">
             <button
+              type="button"
+              onClick={() => setMobileMenuOpen((current) => !current)}
+              className="inline-flex items-center rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-800 shadow-sm transition hover:border-slate-400 hover:bg-slate-50 lg:hidden"
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-navigation"
+            >
+              {mobileMenuOpen ? "Cerrar" : "Menú"}
+            </button>
+
+            <button
+              type="button"
               onClick={() => {
                 void onLogout();
               }}
-              className="fni-toolbar-button active:translate-y-[1px]"
+              className="fni-toolbar-button px-3 py-2 text-sm active:translate-y-[1px] sm:px-4 sm:py-2.5"
             >
               Salir
             </button>
@@ -176,8 +203,67 @@ export default function AppLayout() {
         </div>
       </header>
 
-      <main className="mx-auto grid w-full max-w-[1600px] flex-1 grid-cols-1 gap-4 px-4 py-4 md:grid-cols-[260px_minmax(0,1fr)]">
-        <aside className="relative z-10 h-fit rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+      <main className="mx-auto grid w-full max-w-[1600px] flex-1 grid-cols-1 gap-3 px-3 py-3 sm:px-4 sm:py-4 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-4">
+        <aside
+          id="mobile-navigation"
+          className={`fixed inset-y-0 left-0 z-40 w-[min(84vw,300px)] transform overflow-y-auto border-r border-slate-200 bg-white p-4 shadow-[0_25px_80px_rgba(15,23,42,0.18)] transition-transform duration-200 lg:hidden ${
+            mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <div className="mb-4 flex items-center justify-between lg:hidden">
+            <div className="text-xs font-semibold tracking-[0.18em] text-slate-500 uppercase">Navegación</div>
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(false)}
+              className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700"
+            >
+              Cerrar
+            </button>
+          </div>
+
+          <div className="mb-3 text-[11px] font-semibold tracking-widest text-slate-500">MENU</div>
+
+          <nav className="space-y-4 pb-6 md:pb-0">
+            {navSections.map((section) => {
+              return (
+                <div key={section.key} className="space-y-2">
+                  <div className="px-2 text-[11px] font-semibold tracking-[0.18em] text-slate-400 uppercase">
+                    {section.label}
+                  </div>
+
+                  <div className="grid gap-2">
+                    {section.items.map((item) => (
+                      <NavLink
+                        key={item.to}
+                        to={item.to}
+                        end
+                        onClick={() => setMobileMenuOpen(false)}
+                        className={({ isActive }) =>
+                          `block rounded-xl border border-transparent px-3 py-2 text-sm font-medium ${navItemClass(
+                            isActive
+                          )}`
+                        }
+                      >
+                        {item.label}
+                      </NavLink>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </nav>
+        </aside>
+
+        {mobileMenuOpen && (
+          <button
+            type="button"
+            aria-label="Cerrar menú"
+            onClick={() => setMobileMenuOpen(false)}
+            className="fixed inset-0 z-30 bg-slate-950/30 backdrop-blur-[1px] lg:hidden"
+          />
+        )}
+
+        <aside className="relative z-10 hidden h-fit rounded-2xl border border-slate-200 bg-white p-4 shadow-sm lg:block">
           <div className="mb-3 text-[11px] font-semibold tracking-widest text-slate-500">MENU</div>
 
           <nav className="space-y-4">
@@ -212,7 +298,7 @@ export default function AppLayout() {
 
         <section
           key={location.pathname}
-          className="fni-route-panel-enter min-h-[560px] min-w-0 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
+          className="fni-route-panel-enter min-h-[420px] min-w-0 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:min-h-[500px] sm:p-4 lg:min-h-[560px] lg:p-5"
         >
           <Outlet />
         </section>
