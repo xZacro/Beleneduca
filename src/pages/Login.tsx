@@ -309,7 +309,10 @@ export default function Login() {
                       <IconEnvelope />
                     </span>
                     <input
-                      autoComplete="username"
+                      name="login-email"
+                      autoComplete="off"
+                      inputMode="email"
+                      spellCheck={false}
                       className="w-full bg-transparent outline-none placeholder:text-slate-400"
                       value={email}
                       onChange={(event) => setEmail(event.target.value)}
@@ -326,7 +329,9 @@ export default function Login() {
                     </span>
                     <input
                       type={showPassword ? "text" : "password"}
-                      autoComplete="current-password"
+                      name="login-password"
+                      autoComplete="new-password"
+                      spellCheck={false}
                       className="w-full bg-transparent outline-none placeholder:text-slate-400"
                       value={password}
                       onChange={(event) => setPassword(event.target.value)}
