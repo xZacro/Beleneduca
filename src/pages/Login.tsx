@@ -160,6 +160,8 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberSession, setRememberSession] = useState(true);
+  const [emailLocked, setEmailLocked] = useState(true);
+  const [passwordLocked, setPasswordLocked] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
   const [helpMessage, setHelpMessage] = useState("");
@@ -313,9 +315,15 @@ export default function Login() {
                       autoComplete="off"
                       inputMode="email"
                       spellCheck={false}
+                      readOnly={emailLocked}
+                      data-lpignore="true"
+                      data-1p-ignore="true"
+                      data-form-type="other"
                       className="w-full bg-transparent outline-none placeholder:text-slate-400"
                       value={email}
                       onChange={(event) => setEmail(event.target.value)}
+                      onFocus={() => setEmailLocked(false)}
+                      onMouseDown={() => setEmailLocked(false)}
                       placeholder="usuario@beleneduca.cl"
                     />
                   </div>
@@ -332,9 +340,15 @@ export default function Login() {
                       name="login-password"
                       autoComplete="new-password"
                       spellCheck={false}
+                      readOnly={passwordLocked}
+                      data-lpignore="true"
+                      data-1p-ignore="true"
+                      data-form-type="other"
                       className="w-full bg-transparent outline-none placeholder:text-slate-400"
                       value={password}
                       onChange={(event) => setPassword(event.target.value)}
+                      onFocus={() => setPasswordLocked(false)}
+                      onMouseDown={() => setPasswordLocked(false)}
                       placeholder="••••••••"
                     />
                     <button
