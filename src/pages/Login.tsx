@@ -269,23 +269,6 @@ export default function Login() {
                   </div>
                 ))}
               </div>
-
-              <div className="mt-10 flex flex-wrap items-center gap-3 border-t border-slate-200 pt-6 text-xs text-slate-500">
-                <div className="inline-flex items-center gap-2">
-                  <span className="text-slate-400">◌</span>
-                  Plataforma segura y confiable
-                </div>
-                <span className="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sky-700">Colegio</span>
-                <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-700">
-                  Fundación
-                </span>
-                <span className="rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-indigo-700">
-                  Administración
-                </span>
-                <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-amber-700">
-                  PDF y auditoría
-                </span>
-              </div>
             </div>
           </section>
 

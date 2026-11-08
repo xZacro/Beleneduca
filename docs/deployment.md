@@ -84,11 +84,38 @@ Flujo recomendado:
 5. Verifica `GET /api/ready`.
 6. Comprueba `https://fnibeleneduca.cl` y `https://www.fnibeleneduca.cl`.
 
-Si ya cambiaste codigo:
+### Actualizar la web con un solo comando
 
-1. actualiza el repo
-2. corre `docker compose -f docker-compose.prod.yml up -d --build`
-3. si hubo cambios de esquema, ejecuta `docker compose -f docker-compose.prod.yml --profile tools run --rm seed` o usa `npm run db:push` / `npm run db:migrate` dentro de un contenedor de herramientas
+Para cambios de pantallas, textos o codigo que no requieren modificar el esquema de
+PostgreSQL, sube primero los cambios revisados a la rama `main` de GitHub. Luego,
+desde la carpeta del proyecto en el servidor, ejecuta:
+
+```bash
+bash scripts/ops/actualizar-web.sh
+```
+
+La primera vez, si el servidor todavia no tiene este script, descargalo con
+`git pull --ff-only origin main` antes de ejecutar el comando.
+
+El script descarga `main`, acepta solo avances sin conflictos, construye la nueva
+imagen mientras la version anterior sigue funcionando y reemplaza el servicio
+`app`. Finalmente espera una respuesta correcta de `/api/ready` dentro del
+contenedor. El reemplazo de `app` puede causar una breve interrupcion del acceso.
+
+No reinicia PostgreSQL ni Caddy, conserva los volumenes de documentos y datos y no
+ejecuta semillas. Si encuentra cambios locales pendientes o cambios en el esquema
+o las migraciones de Prisma, se detiene antes de actualizar. Esta pensado para una
+instalacion existente en `main`, con `app` y `postgres` ya en ejecucion.
+
+Si la construccion falla, la version anterior continua en ejecucion. Si la
+comprobacion final falla, el comando informa el error; no hace una reversion
+automatica. Revisa el servicio con
+`docker compose -f docker-compose.prod.yml logs --tail 80 app` y comprueba tambien
+`https://fnibeleneduca.cl` desde el navegador.
+
+Los cambios de esquema requieren un despliegue planificado con respaldo y las
+migraciones correspondientes; no ejecutes `db:seed` como parte de una actualizacion
+normal.
 
 Si solo cambiaste configuracion:
 
