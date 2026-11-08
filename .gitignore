@@ -17,6 +17,9 @@ dist-ssr
 server/.data/
 backups/
 
+# Internal privacy assessments and draft notices for the foundation
+informes-privacidad/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

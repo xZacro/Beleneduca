@@ -25,13 +25,15 @@ async function getProvider() {
 
 export function buildSetSessionCookie(sessionToken) {
   const maxAge = Math.floor(SESSION_TTL_MS / 1000);
+  const secureAttribute = process.env.NODE_ENV === "production" ? "; Secure" : "";
   return `${SESSION_COOKIE}=${encodeURIComponent(
     sessionToken
-  )}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAge}`;
+  )}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAge}${secureAttribute}`;
 }
 
 export function buildClearSessionCookie() {
-  return `${SESSION_COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`;
+  const secureAttribute = process.env.NODE_ENV === "production" ? "; Secure" : "";
+  return `${SESSION_COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${secureAttribute}`;
 }
 
 export async function initAuthStore() {
