@@ -78,6 +78,9 @@ jobs:
       - name: Push Prisma schema
         run: npm run db:push
 
+      - name: Generate Prisma client
+        run: npm run db:generate
+
       - name: Seed Prisma data
         run: npm run db:seed
 

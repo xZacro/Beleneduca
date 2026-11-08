@@ -65,7 +65,7 @@ Ejemplos por ambiente:
 Ademas, GitHub Actions ejecuta automaticamente:
 
 - `lint + build + test:api` en cada push y pull request
-- `db:push + db:seed + test:api:prisma` en un job separado con PostgreSQL
+- `db:push + db:generate + db:seed + test:api:prisma` en un job separado con PostgreSQL
 
 ## Acceso de prueba
 
