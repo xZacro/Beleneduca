@@ -1,7 +1,7 @@
 import test, { after, before, describe } from "node:test";
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import net from "node:net";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -113,6 +113,9 @@ describe("API backend", { concurrency: 1 }, () => {
   before(async () => {
     const port = await getFreePort();
     testDataDir = await mkdtemp(path.join(workspaceRoot, "server", ".test-data-"));
+    const staticDir = path.join(testDataDir, "static");
+    await mkdir(staticDir);
+    await writeFile(path.join(staticDir, "index.html"), "<!doctype html><title>FNI test</title><p>Portal FNI</p>");
     baseUrl = `http://127.0.0.1:${port}`;
 
     apiProcess = spawn(process.execPath, ["server/api-server.mjs"], {
@@ -122,6 +125,8 @@ describe("API backend", { concurrency: 1 }, () => {
         FNI_API_STORAGE: "json",
         FNI_API_PORT: String(port),
         FNI_API_DATA_DIR: testDataDir,
+        FNI_SERVE_STATIC: "true",
+        FNI_STATIC_DIR: staticDir,
       },
       stdio: ["ignore", "pipe", "pipe"],
     });
@@ -150,6 +155,18 @@ describe("API backend", { concurrency: 1 }, () => {
 
     assert.equal(response.status, 401);
     assert.match(await response.text(), /Sesion no valida o expirada/i);
+  });
+
+  test("HTML, API y errores incluyen protecciones de privacidad y contenido", async () => {
+    for (const [pathname, status] of [["/", 200], ["/api/health", 200], ["/api/auth/me", 401]]) {
+      const response = await fetch(`${baseUrl}${pathname}`);
+      assert.equal(response.status, status);
+      assert.equal(response.headers.get("referrer-policy"), "same-origin");
+      assert.equal(response.headers.get("x-content-type-options"), "nosniff");
+      assert.equal(response.headers.get("x-frame-options"), "SAMEORIGIN");
+      assert.equal(response.headers.get("content-security-policy"), "frame-ancestors 'self'");
+      await response.arrayBuffer();
+    }
   });
 
   test("solicitud de recuperacion se registra como actividad interna", async () => {
@@ -329,6 +346,9 @@ describe("API backend", { concurrency: 1 }, () => {
     );
     assert.equal(downloadResponse.status, 200);
     assert.equal(downloadResponse.headers.get("content-type"), "application/pdf");
+    assert.equal(downloadResponse.headers.get("cache-control"), "no-store");
+    assert.equal(downloadResponse.headers.get("x-frame-options"), "SAMEORIGIN");
+    assert.equal(downloadResponse.headers.get("content-security-policy"), "frame-ancestors 'self'");
     assert.equal(Buffer.from(await downloadResponse.arrayBuffer()).compare(pdfBuffer), 0);
 
     const deleteResponse = await school.request(

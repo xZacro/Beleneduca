@@ -1242,6 +1242,11 @@ async function handleRequest(request, response) {
 const logAllRequests = isRequestLoggingEnabled();
 
 const server = createServer((request, response) => {
+  response.setHeader("X-Content-Type-Options", "nosniff");
+  response.setHeader("Referrer-Policy", "same-origin");
+  response.setHeader("X-Frame-Options", "SAMEORIGIN");
+  response.setHeader("Content-Security-Policy", "frame-ancestors 'self'");
+
   const requestId = randomUUID();
   const startedAt = Date.now();
   const pathname = getPathname(request);
