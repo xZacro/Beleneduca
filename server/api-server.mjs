@@ -122,10 +122,15 @@ function sendError(request, response, statusCode, message, extraHeaders = {}) {
 }
 
 function sendPdf(request, response, file) {
+  const filename = String(file.meta.name ?? "").replace(/\p{Cc}/gu, "").toWellFormed() || "documento.pdf";
+  const fallback = filename.replace(/[^\x20-\x7e]|["\\/%]/g, "_");
+  const encoded = encodeURIComponent(filename).replace(/[\x27()*]/g, (character) =>
+    "%" + character.charCodeAt(0).toString(16).toUpperCase()
+  );
   response.writeHead(200, {
     "Content-Type": file.meta.type,
     "Content-Length": String(file.buffer.length),
-    "Content-Disposition": `inline; filename="${String(file.meta.name).replace(/"/g, "")}"`,
+    "Content-Disposition": `inline; filename="${fallback}"; filename*=UTF-8''${encoded}`,
     "Cache-Control": "no-store",
     ...buildCorsHeaders(request),
   });

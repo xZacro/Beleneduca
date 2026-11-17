@@ -20,7 +20,6 @@ import {
   getUploadedPdfHref,
   uploadIndicatorDocument,
 } from "../../shared/fni/documentClient";
-import { getIndicatorDocumentStem } from "../../shared/fni/documentNaming";
 import {
   defaultIndicatorResponse,
   defaultSubmissionRecord,
@@ -33,7 +32,7 @@ import {
 } from "../../shared/fni/types";
 import { useFniWorkspace } from "../../shared/fni/useFniWorkspace";
 import { useCycleOptions } from "../../shared/useCycleOptions";
-import { resolveSchoolDirectoryEntry, useSchoolDirectory, useSchoolDisplayName } from "../../shared/useSchoolDirectory";
+import { useSchoolDisplayName } from "../../shared/useSchoolDirectory";
 
 // Vista principal del colegio: edicion de respuestas, evidencia PDF y estado de envio.
 function formatDate(value: string | null) {
@@ -184,7 +183,6 @@ function IndicatorCard({
   disabled,
   highlighted,
   schoolRef,
-  schoolCode,
   onUpdate,
 }: {
   indicator: IndicatorSchema;
@@ -193,7 +191,6 @@ function IndicatorCard({
   disabled: boolean;
   highlighted: boolean;
   schoolRef: SchoolCycleRef;
-  schoolCode: string;
   onUpdate: (next: IndicatorResponse) => void;
 }) {
   const pct = calcIndicatorPct(indicator, response);
@@ -335,12 +332,13 @@ function IndicatorCard({
                   disabled={disabled}
                   className={`mt-1 block w-full text-sm ${disabled ? "cursor-not-allowed opacity-60" : ""}`}
                   onChange={async (event) => {
-                    const file = event.target.files?.[0];
+                    const input = event.currentTarget;
+                    const file = input.files?.[0];
                     if (!file) return;
 
                     if (file.type !== "application/pdf") {
                       window.alert("Solo se permiten archivos PDF.");
-                      event.currentTarget.value = "";
+                      input.value = "";
                       return;
                     }
 
@@ -350,12 +348,7 @@ function IndicatorCard({
                         schoolRef,
                         indicator.id,
                         file,
-                        response.file,
-                        {
-                          indicatorName: getIndicatorDocumentStem(indicator.id, indicator.name),
-                          schoolCode,
-                          uploadedAt: uploadMoment,
-                        }
+                        response.file
                       );
                       onUpdate({
                         ...response,
@@ -367,7 +360,7 @@ function IndicatorCard({
                         error instanceof Error ? error.message : "No se pudo cargar el archivo.";
                       window.alert(message);
                     } finally {
-                      event.currentTarget.value = "";
+                      input.value = "";
                     }
                   }}
                 />
@@ -464,21 +457,11 @@ function EvaluationWorkspace({
   setSearchParams,
 }: EvaluationWorkspaceProps) {
   const { schoolLabel } = useSchoolDisplayName(schoolId);
-  const { schools } = useSchoolDirectory();
   const { cycles, loading: cyclesLoading } = useCycleOptions(cycleId);
   const { workspace, loading, error, setResponses, setSubmission } = useFniWorkspace({
     schoolId,
     cycleId,
   });
-  const schoolCode = useMemo(() => {
-    const schoolEntry = resolveSchoolDirectoryEntry(schoolId, schools);
-    if (schoolEntry?.code) {
-      return schoolEntry.code;
-    }
-
-    const displayPrefix = schoolLabel.includes(" - ") ? schoolLabel.split(" - ")[0]?.trim() : "";
-    return displayPrefix || schoolId;
-  }, [schoolId, schoolLabel, schools]);
   const responses = useMemo<Record<string, IndicatorResponse>>(
     () => workspace?.responses ?? {},
     [workspace]
@@ -847,7 +830,6 @@ function EvaluationWorkspace({
                 disabled={!canEdit}
                 highlighted={indicator.id === highlightedIndicatorId}
                 schoolRef={{ schoolId, cycleId }}
-                schoolCode={schoolCode}
                 onUpdate={(next) => onUpdateIndicator(indicator.id, next)}
               />
             ))

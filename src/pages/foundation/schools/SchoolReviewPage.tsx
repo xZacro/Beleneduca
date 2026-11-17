@@ -312,11 +312,7 @@ function SchoolReviewWorkspace({
         return;
       }
 
-      const uploadedFile = await uploadIndicatorDocument(ref, indicator.id, nextFile, response.file, {
-        indicatorName: indicator.name,
-        schoolCode: schoolId,
-        uploadedAt: uploadMoment,
-      });
+      const uploadedFile = await uploadIndicatorDocument(ref, indicator.id, nextFile, response.file);
 
       await setResponses((current) => ({
         ...current,
