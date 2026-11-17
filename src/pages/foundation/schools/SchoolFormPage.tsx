@@ -400,14 +400,6 @@ function SchoolFormWorkspace({
   );
   const cycleLocked = selectedCycle?.isClosed ?? false;
   const canManageEvidence = !cycleLocked;
-  const schoolCode = useMemo(() => {
-    const label = resolvedSchoolLabel.trim();
-    if (label.includes(" - ")) {
-      return label.split(" - ")[0].trim() || schoolId;
-    }
-    return schoolId;
-  }, [resolvedSchoolLabel, schoolId]);
-
   const activeArea: AreaSchema | undefined =
     AREAS_SCHEMA.find((area) => area.id === activeAreaId) ?? AREAS_SCHEMA[0];
 
@@ -447,12 +439,7 @@ function SchoolFormWorkspace({
       { schoolId, cycleId },
       indicator.id,
       nextFile,
-      response.file,
-      {
-        indicatorName: indicator.name,
-        schoolCode,
-        uploadedAt: uploadMoment,
-      }
+      response.file
     );
 
     void setResponses((current) => ({

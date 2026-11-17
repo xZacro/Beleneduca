@@ -1,6 +1,6 @@
 # Listado de nombres est?ndar para documentos FNI
 
-Formato de archivo: `COLEGIO_nombre_estandar_YYYY-MM-DD_HH-MM.pdf`
+FNI conserva el nombre del PDF que se selecciona al cargarlo. El listado siguiente sirve como referencia para identificar los indicadores.
 
 ## Infraestructura
 

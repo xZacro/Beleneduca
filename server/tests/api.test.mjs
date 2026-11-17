@@ -312,12 +312,14 @@ describe("API backend", { concurrency: 1 }, () => {
     assert.equal(workspace.submission.message, "Envio de prueba");
   });
 
-  test("documentos PDF se suben, descargan y eliminan", async () => {
+  test("documentos PDF conservan el nombre original al subir, recargar y descargar", async () => {
     const school = await loginAs("ppontillo@beleneduca.cl");
+    const filename = 'Acta de difusión "aprobada" (2) 📄.PDF';
     const pdfBuffer = Buffer.from("%PDF-1.4\n1 0 obj\n<< /Type /Catalog >>\nendobj\ntrailer\n<<>>\n%%EOF");
     const formData = new FormData();
 
-    formData.set("file", new Blob([pdfBuffer], { type: "application/pdf" }), "evidencia-test.pdf");
+    formData.set("file", new Blob([pdfBuffer], { type: "application/pdf" }), filename);
+    formData.set("fileName", filename);
 
     const uploadResponse = await school.request(
       "/api/fni/documents/upload?schoolId=sch_1&cycleId=2026&indicatorId=ind_doc_test",
@@ -329,7 +331,7 @@ describe("API backend", { concurrency: 1 }, () => {
     assert.equal(uploadResponse.status, 200);
 
     const uploadedFile = await readJson(uploadResponse);
-    assert.equal(uploadedFile.name, "evidencia-test.pdf");
+    assert.equal(uploadedFile.name, filename);
     assert.equal(uploadedFile.type, "application/pdf");
     assert.ok(uploadedFile.id);
     assert.ok(uploadedFile.downloadUrl);
@@ -340,12 +342,16 @@ describe("API backend", { concurrency: 1 }, () => {
     const workspaceAfterUpload = await readJson(workspaceAfterUploadResponse);
 
     assert.equal(workspaceAfterUpload.responses.ind_doc_test.file.id, uploadedFile.id);
+    assert.equal(workspaceAfterUpload.responses.ind_doc_test.file.name, filename);
 
     const downloadResponse = await school.request(
       `/api/fni/documents/${encodeURIComponent(uploadedFile.id)}/download`
     );
     assert.equal(downloadResponse.status, 200);
     assert.equal(downloadResponse.headers.get("content-type"), "application/pdf");
+    const disposition = downloadResponse.headers.get("content-disposition");
+    assert.match(disposition, /^inline; filename="[^"]+"; filename\*=UTF-8''/);
+    assert.equal(decodeURIComponent(disposition.split("filename*=UTF-8''")[1]), filename);
     assert.equal(downloadResponse.headers.get("cache-control"), "no-store");
     assert.equal(downloadResponse.headers.get("x-frame-options"), "SAMEORIGIN");
     assert.equal(downloadResponse.headers.get("content-security-policy"), "frame-ancestors 'self'");

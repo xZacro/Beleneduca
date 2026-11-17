@@ -263,9 +263,11 @@ export async function uploadDocumentFromRequest(request, payload) {
     throw new Error("No se encontro el archivo PDF en la solicitud.");
   }
 
-  const fileName = filePart.fileName || "document.pdf";
+  const originalName = multipartPayload.fields.fileName || filePart.fileName;
+  const fileName = path.posix.basename(originalName.replaceAll("\\", "/"))
+    .replace(/\p{Cc}/gu, "") || "document.pdf";
   const isPdf =
-    filePart.contentType === "application/pdf" || fileName.toLowerCase().endsWith(".pdf");
+    filePart.contentType === "application/pdf" || filePart.fileName.toLowerCase().endsWith(".pdf");
 
   if (!isPdf) {
     throw new Error("Solo se permiten archivos PDF.");
@@ -286,7 +288,7 @@ export async function uploadDocumentFromRequest(request, payload) {
   }
 
   const documentId = randomUUID();
-  const storageFileName = `${documentId}-${safeFileName(fileName)}`;
+  const storageFileName = documentId + ".pdf";
   const storagePath = path.join(documentsDir, storageFileName);
   const uploadedAt = new Date().toISOString();
 
